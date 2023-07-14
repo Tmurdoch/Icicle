@@ -1,5 +1,7 @@
 #include "Zergcore.h"
 
+
+// TODO: move to header file 
 RenderManager           zRenderManager;
 PhysicsManager          zPhysicsManager;
 AnimationManager        zAnimationManager;
