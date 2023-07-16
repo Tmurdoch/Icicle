@@ -8,3 +8,5 @@ Technologies/Libraries used:
 - Container library: Loki
 
 C++ reference: https://en.cppreference.com/w/
+
+Using gcc, gdb, g++ version 13.1
