@@ -1,6 +1,6 @@
 #include "IceRoot.h"
 
-int main(int argc, const char* argv) {
+int main(int argc, char** argv) {
     
 
     std::cout<<"Hello World"<<std::endl;
