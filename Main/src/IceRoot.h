@@ -3,6 +3,10 @@
 #include <iostream>
 #include "MemoryManager.h"
 
+
+/**
+ * Singleton class, everything in game engine is started here
+*/
 class Root
 {
     private:

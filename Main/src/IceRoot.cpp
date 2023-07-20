@@ -13,8 +13,6 @@ class Root
 
     public:
 
-    Root(const Root& obj) = delete; //delete copy constructor
-
     void operator=(const Root &) = delete;
 
     static Root* getInstance()
