@@ -14,5 +14,8 @@ elseif(WIN32)
     message("This is a Windows System")
 endif()
 
+
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/out)
+
 #Testing
 #see add_test command, CTest***
