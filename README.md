@@ -13,3 +13,12 @@ Using gcc, gdb, g++ version 13.1
 
 use : cmake -G "MSYS Makefiles" .. to build if using msys version of make
 Note: will not work on cmd??
+
+****Linux 
+- CMake for build: 
+    1. use Cmake -S . -B build #builds into build/ diretory
+    2. then cd into build and make all
+- CMake for tests: 
+    1. cd into Tests directory and run CMake -S .
+    2. make all
+    3. executable will be called "out"
