@@ -5,6 +5,7 @@ Technologies/Libraries used:
 - opengl
 - math library TBD
 - MYSYS2 (Cmake, gcc) https://code.visualstudio.com/docs/cpp/config-mingw
+- doctest for testing, https://github.com/doctest/doctest/blob/master/doc/markdown/tutorial.md
 
 
 C++ reference: https://en.cppreference.com/w/
