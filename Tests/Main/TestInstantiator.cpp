@@ -1,6 +1,7 @@
 #define DOCTEST_CONFIG_IMPLEMENT
-#define BUILD_TESTING
-#include "../doctest.h"
+
+#include "../build/_deps/doctest-src/doctest/doctest.h"
+
 
 int factorial(int number) { return number <= 1 ? number : factorial(number - 1) * number; }
 
