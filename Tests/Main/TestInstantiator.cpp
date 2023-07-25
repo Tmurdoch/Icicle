@@ -1,6 +1,9 @@
 #define DOCTEST_CONFIG_IMPLEMENT
 
 #include "../build/_deps/doctest-src/doctest/doctest.h"
+#include "../../Main/src/IceRoot.h" //All we should have to include to
+//implement game
+
 
 
 int factorial(int number) { return number <= 1 ? number : factorial(number - 1) * number; }
@@ -15,6 +18,7 @@ int main(int argc, char** argv) {
         return res;                   // propagate the result of the tests
     // your actual program execution goes here - only if we haven't exited
 
+    //Root iceroot = iceroot.getInstance();
 
 
     return res; // + your_program_res
