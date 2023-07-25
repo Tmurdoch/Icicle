@@ -1,0 +1,2 @@
+consider zipping files, see 6.2.2.2 game engine architecture
+also see OGREs resource manager and archive system
