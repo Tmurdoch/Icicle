@@ -7,3 +7,5 @@ out
 Makefile
 Achievements.cpp
 !Doctest.cmake
+.vscode
+_deps
