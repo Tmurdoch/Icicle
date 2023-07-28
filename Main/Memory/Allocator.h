@@ -1,6 +1,26 @@
 #include <stdio.h>
 #include <stddef.h>
 #include <assert.h>
+#include <stdint.h>
+
+#if ASSERTIONS_ENABLED
+// define some inline assembly that causes a break
+// into the debugger -- this will be different on each
+// target CPU
+#define debugBreak() asm { int 3 }
+// check the expression and fail if it is false
+#define ASSERT(expr) \
+if (expr) { } \
+else \
+{ \
+reportAssertionFailure(#expr, \
+__FILE__, __LINE__); \
+debugBreak(); \
+}
+#else
+#define ASSERT(expr) // evaluates to nothing
+#endif
+
 
 class Allocator
 
@@ -22,7 +42,7 @@ class Allocator
         _start = nullptr; _size = 0;
     }
 
-    virtual void* allocate(size_t size, u8 alignment = 4) = 0;
+    virtual void* allocate(size_t size, uint8_t alignment = 4) = 0;
     virtual void deallocate(void* p) = 0;
     void* getStart() const { return _start; }
     size_t getSize() const { return _size; }
@@ -58,7 +78,7 @@ namespace allocator
     template <class T> T* allocateArray(Allocator& allocator, size_t length)
     {
         ASSERT(length != 0);
-        u8 headerSize = sizeof(size_t)/sizeof(T);
+        uint8_t headerSize = sizeof(size_t)/sizeof(T);
 
         //Allocate extra space to store array length in the bytes before array
         T* p ( (T*) allocator.allocate(sizeof(T)*(length + headerSize), __alignof(T)) ) + headerSize;
@@ -78,7 +98,7 @@ namespace allocator
         for (size_t i = 0; i < length; i++) array.~T();
 
         //calculate how much extra memory was allocated to store the length before the array
-        u8 headerSize = sizeof(size_t)/sizeof(T);
+        uint8_t headerSize = sizeof(size_t)/sizeof(T);
         if (sizeof(size_t)%sizeof(T) > 0)
             headerSize +=1;
         allocator.deallocate(array - headerSize);

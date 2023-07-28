@@ -2,6 +2,7 @@
 #include "Allocator.h"
 #include "../src/IceRoot.h"
 #include <stddef.h>
+#include "../Math/IcicleMath.h"
 
 
 /**
@@ -23,7 +24,14 @@ class StackAllocator : public Allocator
     StackAllocator (size_t size, void* start);
     ~StackAllocator();
 
-    void* allocate(size_t size, u8 alignment) override;
+    void* allocate(size_t size, uint8_t alignment) override;
+    /**
+     * To deallocate memory the allocator checks if the address to the memory that you 
+     * want to deallocate corresponds to the address of the last allocation made. If 
+     * so the allocator accesses the allocation header so it also frees the memory 
+     * used to align the allocation and store the allocation header, and it replaces 
+     * the pointer to the last allocation made with the one in the allocation header.
+    */
     void deallocate(void* p) override;
 
     private: 
@@ -39,7 +47,7 @@ class StackAllocator : public Allocator
             void* prev_address;
         #endif
 
-        u8 alignment;
+        uint8_t alignment;
     };
 
     #if _DEBUG
