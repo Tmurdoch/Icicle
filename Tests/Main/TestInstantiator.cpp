@@ -50,3 +50,15 @@ TEST_CASE("vectors can be sized and resized") {
         CHECK(v.capacity() >= 6);
     }
 }
+
+TEST_CASE("Memory from stack allocator is freed correctly") {
+    
+}
+
+TEST_CASE("Both top and bottom of stack initialized and freed correctly") {
+
+}
+
+TEST_CASE("Determine whether given pointer resides in stack") {
+    
+}
