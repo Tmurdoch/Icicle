@@ -16,6 +16,17 @@
  * TODO: double allocator:
  * The lower stack is used for persistent data loads, while the upper
  * is used for temporary allocations that are freed every frame.
+ * 
+ * Contains: 
+ * A start pointer to the top of the memory arena (allocating from the
+ *  top).
+ * A start offset pointer to the current top of the stack (allocating 
+ * from the top).
+ * An end pointer to the top of the memory arena (allocating from the 
+ * bottom).
+ * An end offset pointer to the current top of the stack (allocating 
+ * from the bottom).
+ * A header before each allocation.
 */
 class StackAllocator : public Allocator
 {
@@ -25,6 +36,7 @@ class StackAllocator : public Allocator
     ~StackAllocator();
 
     void* allocate(size_t size, uint8_t alignment) override;
+    
     /**
      * To deallocate memory the allocator checks if the address to the memory that you 
      * want to deallocate corresponds to the address of the last allocation made. If 
@@ -35,6 +47,8 @@ class StackAllocator : public Allocator
     void deallocate(void* p) override;
 
     private: 
+
+    void* _current_pos;
 
     StackAllocator(const StackAllocator&);
 
@@ -54,6 +68,6 @@ class StackAllocator : public Allocator
         void* prev_position;
     #endif
 
-    void* _current_pos;
+    
 
 };

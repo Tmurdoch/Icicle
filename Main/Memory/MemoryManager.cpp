@@ -1,4 +1,5 @@
 #include "MemoryManager.h"
+#include "StackAllocator.h"
 
 
 
@@ -19,6 +20,7 @@ public:
     {
         std::cout<<" Starting Memory Manager. "<< std::endl;
         // start up manager...
+        StackAllocator stalloc;
     }
 
     void shutDown()
