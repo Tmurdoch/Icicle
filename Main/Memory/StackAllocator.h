@@ -3,6 +3,7 @@
 #include "../src/IceRoot.h"
 #include <stddef.h>
 #include "../Math/IcicleMath.h"
+#include <string>
 
 
 /**
@@ -35,8 +36,10 @@ class StackAllocator : public Allocator
     StackAllocator (size_t size, void* start);
     ~StackAllocator();
 
-    void* allocate(size_t size, uint8_t alignment) override;
-    
+    void* allocate (size_t size, uint8_t alignment) override;
+    void* allocate_bottom(size_t size, uint8_t alignment);
+    void* allocate_top(size_t size, uint8_t alignment);
+
     /**
      * To deallocate memory the allocator checks if the address to the memory that you 
      * want to deallocate corresponds to the address of the last allocation made. If 
@@ -48,12 +51,16 @@ class StackAllocator : public Allocator
 
     private: 
 
-    void* _current_pos;
+    void* start_top;
+    void* offset_top;
+    void* start_bottom;
+    void* offset_bottom;
 
     StackAllocator(const StackAllocator&);
 
     //prevent copies
     StackAllocator& operator=(const StackAllocator&);
+
 
     struct AllocationHeader
     {
@@ -62,6 +69,7 @@ class StackAllocator : public Allocator
         #endif
 
         uint8_t alignment;
+        uint8_t adjustment;
     };
 
     #if _DEBUG

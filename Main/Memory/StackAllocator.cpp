@@ -1,5 +1,6 @@
 #include "StackAllocator.h"
 
+
 StackAllocator::StackAllocator(size_t size, void* start) : Allocator(size, start), _current_pos(start)
 {
     ASSERT(size > 0);
@@ -15,12 +16,21 @@ StackAllocator::~StackAllocator()
         _prev_position = nullptr;
     #endif
 
-    _current_pos = nullptr;
+    void* start_top = nullptr;
+    void* offset_top = nullptr;
+    void* start_bottom = nullptr;
+    void* offset_bottom = nullptr;
 }
 
 void* StackAllocator::allocate(size_t size, uint8_t alignment)
 {
     ASSERT(size != 0);
+    
+    if (topBottom == "top") 
+        void* _current_pos = start_top;
+    else
+        void* _current_pos = start_bottom;
+    
     uint8_t adjustment = Math::alignForwardAdjustmentWithHeader(_current_pos, alignment, sizeof(AllocationHeader));
 
     if(_used_memory + adjustment + size > _size) return nullptr;

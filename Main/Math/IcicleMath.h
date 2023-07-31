@@ -1,10 +1,9 @@
 #include "stdint.h"
 
 
-class Math {
+namespace Math {
 
-
-    public:
+    //Declarations
 
     static void* ptr_add(void* pos, uint8_t adjustment);
 
@@ -14,5 +13,11 @@ class Math {
                                                 uint8_t alignment,
                                                 size_t size);
 
-};
+}
+
+//inline definitions
+
+namespace Math {
+    
+}
 

@@ -1,5 +1,6 @@
 #include "MemoryManager.h"
 #include "StackAllocator.h"
+#include "../src/IceRoot.h"
 
 
 
@@ -23,8 +24,27 @@ public:
         StackAllocator stalloc;
     }
 
-    void shutDown()
+    
+
+    void* operator new (size_t size) 
     {
-        //shut down manager...
+        return IceMemoryManager.allocate(size);
     }
+
+    void* operator new[ ] (size_t size)
+    {
+        return  gMemoryManager.allocate(size);
+    }
+
+    void operator delete (void∗ pointerToDelete)
+    {
+        gMemoryManager.free(pointerToDelete);
+    }
+
+    void operator delete[ ] (void∗ arrayToDelete)
+    {
+        gMemoryManager.free(arrayToDelete);
+    }
+
+  
 };

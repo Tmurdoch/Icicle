@@ -21,9 +21,14 @@ debugBreak(); \
 #define ASSERT(expr) // evaluates to nothing
 #endif
 
+/**
+ * compliant with std method allocators?
+*/
 
 class Allocator
-
+/**
+ * construct + destroy??
+*/
 
 {
     public:
