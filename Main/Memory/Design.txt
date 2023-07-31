@@ -1,0 +1,24 @@
+use memorymanager to allocate two stacks, one that is freed every 
+frame and the other is persistent, used for static level data and such
+ - see bitmapped memory manager https://developer.ibm.com/tutorials/au-memorymanager/
+
+ * TODO: double allocator:
+ * The lower stack is used for persistent data loads, while the upper
+ * is used for temporary allocations that are freed every frame.
+ * 
+ * Contains: 
+ * A start pointer to the top of the memory arena (allocating from the
+ *  top).
+ * A start offset pointer to the current top of the stack (allocating 
+ * from the top).
+ * An end pointer to the top of the memory arena (allocating from the 
+ * bottom).
+ * An end offset pointer to the current top of the stack (allocating 
+ * from the bottom).
+ * A header before each allocation.
+
+
+ use interface to define new and delete operations for resources
+
+ why even have a separate StackAllocator at this point? 
+    - would make more sense to just use MemoryManager

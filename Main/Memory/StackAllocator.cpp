@@ -16,20 +16,13 @@ StackAllocator::~StackAllocator()
         _prev_position = nullptr;
     #endif
 
-    void* start_top = nullptr;
-    void* offset_top = nullptr;
-    void* start_bottom = nullptr;
-    void* offset_bottom = nullptr;
+    void* _current_pos = nullptr;
 }
 
 void* StackAllocator::allocate(size_t size, uint8_t alignment)
 {
     ASSERT(size != 0);
-    
-    if (topBottom == "top") 
-        void* _current_pos = start_top;
-    else
-        void* _current_pos = start_bottom;
+
     
     uint8_t adjustment = Math::alignForwardAdjustmentWithHeader(_current_pos, alignment, sizeof(AllocationHeader));
 

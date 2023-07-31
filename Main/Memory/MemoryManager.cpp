@@ -1,5 +1,5 @@
 #include "MemoryManager.h"
-#include "StackAllocator.h"
+
 #include "../src/IceRoot.h"
 
 
@@ -21,7 +21,7 @@ public:
     {
         std::cout<<" Starting Memory Manager. "<< std::endl;
         // start up manager...
-        StackAllocator stalloc;
+        StackAllocator persistent_data;
     }
 
     
@@ -33,17 +33,17 @@ public:
 
     void* operator new[ ] (size_t size)
     {
-        return  gMemoryManager.allocate(size);
+        return  IceMemoryManager.allocate(size);
     }
 
-    void operator delete (void∗ pointerToDelete)
+    void operator delete (void* pointerToDelete)
     {
-        gMemoryManager.free(pointerToDelete);
+        IceMemoryManager.free(pointerToDelete);
     }
 
-    void operator delete[ ] (void∗ arrayToDelete)
+    void operator delete[ ] (void* arrayToDelete)
     {
-        gMemoryManager.free(arrayToDelete);
+        IceMemoryManager.free(arrayToDelete);
     }
 
   

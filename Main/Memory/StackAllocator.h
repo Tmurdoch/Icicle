@@ -1,6 +1,6 @@
 
 #include "Allocator.h"
-#include "../src/IceRoot.h"
+
 #include <stddef.h>
 #include "../Math/IcicleMath.h"
 #include <string>
@@ -13,21 +13,7 @@
  * This approach avoids memory fragmentation
  * Assumption: levels are loaded once, and whole level fits into 
  * memory in its entirety
- * 
- * TODO: double allocator:
- * The lower stack is used for persistent data loads, while the upper
- * is used for temporary allocations that are freed every frame.
- * 
- * Contains: 
- * A start pointer to the top of the memory arena (allocating from the
- *  top).
- * A start offset pointer to the current top of the stack (allocating 
- * from the top).
- * An end pointer to the top of the memory arena (allocating from the 
- * bottom).
- * An end offset pointer to the current top of the stack (allocating 
- * from the bottom).
- * A header before each allocation.
+ *
 */
 class StackAllocator : public Allocator
 {
@@ -37,8 +23,6 @@ class StackAllocator : public Allocator
     ~StackAllocator();
 
     void* allocate (size_t size, uint8_t alignment) override;
-    void* allocate_bottom(size_t size, uint8_t alignment);
-    void* allocate_top(size_t size, uint8_t alignment);
 
     /**
      * To deallocate memory the allocator checks if the address to the memory that you 
@@ -51,10 +35,7 @@ class StackAllocator : public Allocator
 
     private: 
 
-    void* start_top;
-    void* offset_top;
-    void* start_bottom;
-    void* offset_bottom;
+    void* _current_pos;
 
     StackAllocator(const StackAllocator&);
 
