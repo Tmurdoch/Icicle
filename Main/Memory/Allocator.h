@@ -27,7 +27,16 @@ debugBreak(); \
 
 class Allocator
 /**
- * construct + destroy??
+ * USAGE: 
+ * 
+ * 
+// Pre-allocate a memory block of size 1024 bytes
+char memoryBlock[1024];
+
+// Create an allocator instance using the pre-allocated memory block
+Allocator myAllocator(sizeof(memoryBlock), memoryBlock);
+
+// Now you can use myAllocator to manage memory within the provided memoryBlock.
 */
 
 {
@@ -35,8 +44,8 @@ class Allocator
 
     Allocator(size_t size, void* start)
     {
-        _start = start;
-        _size = size;
+        _start = start; //starting address of memory block
+        _size = size; //size of memory block
         _used_memory = 0;
         _num_allocations = 0;
     }

@@ -44,6 +44,19 @@ TEST_CASE("vectors can be sized and resized") {
     }
 }
 
+TEST_CASE("Stack Allocator") {
+
+    char memory_block[10]; 
+    StackAllocator* sa = new StackAllocator(sizeof(memory_block), memory_block);
+
+    SUBCASE("allocating right amount of bytes") {
+    StackAllocator *sa;
+    sa->allocate(16, 4);
+    CHECK(sa->getSize() == 16);
+    //printf(sa->getStart());
+    }
+}
+
 TEST_CASE("Memory from stack allocator is freed correctly") {
     
 }
