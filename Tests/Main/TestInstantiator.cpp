@@ -4,7 +4,9 @@
 #include "../../Main/src/IceRoot.h" //All we should have to include to
 //implement game
 
-
+/**
+ * USAGE: cmake -S . in tests directory, then make all, then executable will be out/TestInstantiator
+*/
 
 int main(int argc, char** argv) {
     doctest::Context ctx;
