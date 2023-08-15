@@ -21,10 +21,13 @@ debugBreak(); \
 #else
 #define ASSERT(expr) // evaluates to nothing
 #endif
-MemoryManager           IceMemoryManager;
+MemoryManager*          IceMemoryManager;
 
 /**
  * Singleton class, everything in game engine is started here
+ * 
+ *  * generally good idea to take advantage of all CPU cores, leaving 
+ * as little work as possible for main thread
 */
 class Root
 {

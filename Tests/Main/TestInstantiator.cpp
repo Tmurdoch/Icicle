@@ -1,12 +1,10 @@
 #define DOCTEST_CONFIG_IMPLEMENT
 
-#include "../build/_deps/doctest-src/doctest/doctest.h"
+#include "../_deps/doctest-src/doctest/doctest.h"
 #include "../../Main/src/IceRoot.h" //All we should have to include to
 //implement game
 
 
-
-int factorial(int number) { return number <= 1 ? number : factorial(number - 1) * number; }
 
 int main(int argc, char** argv) {
     doctest::Context ctx;
@@ -22,13 +20,6 @@ int main(int argc, char** argv) {
 
 
     return res; // + your_program_res
-}
-
-TEST_CASE("testing the factorial function") {
-    CHECK(factorial(1) == 1);
-    CHECK(factorial(2) == 2);
-    CHECK(factorial(3) == 6);
-    CHECK(factorial(10) == 3628800);
 }
 
 TEST_CASE("vectors can be sized and resized") {

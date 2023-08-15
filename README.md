@@ -16,9 +16,9 @@ Note: will not work on cmd??
 
 ****Linux 
 - CMake for build: 
-    1. use Cmake -S . -B build #builds into build/ diretory
+    1. use cmake -S . -B build #builds into build/ diretory
     2. then cd into build and make all
 - CMake for tests: 
-    1. cd into Tests directory and run CMake -S .
+    1. cd into Tests directory and run cmake -S .
     2. make all
     3. executable will be called "out"

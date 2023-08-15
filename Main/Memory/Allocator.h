@@ -80,13 +80,21 @@ namespace allocator
         allocator.deallocate(&object);
     }
 
+
+    /**
+     * this code snippet seems to mix C-style memory manipulation with C++ object construction, 
+     * which can be error-prone. Using standard containers like std::vector or smart pointers
+     *  like std::unique_ptr might be a more robust and safer way to manage dynamic arrays in 
+     * modern C++ code.
+    */
     template <class T> T* allocateArray(Allocator& allocator, size_t length)
     {
         ASSERT(length != 0);
         uint8_t headerSize = sizeof(size_t)/sizeof(T);
 
         //Allocate extra space to store array length in the bytes before array
-        T* p ( (T*) allocator.allocate(sizeof(T)*(length + headerSize), __alignof(T)) ) + headerSize;
+        T* p ( (T*) allocator.allocate(sizeof(T)*(length + headerSize), __alignof(T)) );
+        p = p + headerSize;
         *( ((size_t*)p) - 1 ) = length;
 
         for (size_t i = 0; i < length; i++)
