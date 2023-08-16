@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.9.1)
 
 project(Icicle_test)
 
-add_executable(out Main/src/main.cpp)
+add_executable(out Main/TestInstantiator.cpp)
 
 set(CMAKE_CXX_FLAGS "-Wall")
 

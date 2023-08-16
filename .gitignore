@@ -9,3 +9,4 @@ Achievements.cpp
 !Doctest.cmake
 .vscode
 _deps
+out.exe
