@@ -1,10 +1,13 @@
 
+#ifndef STACKALLOCATOR_H
+#define STACKALLOCATOR_H
+
+
 #include "Allocator.h"
 
 #include <stddef.h>
 #include "../Math/IcicleMath.h"
 #include <string>
-
 
 /**
  * taken from: https://www.gamedev.net/tutorials/programming/general-and-gameplay-programming/c-custom-memory-allocation-r3010/
@@ -60,3 +63,5 @@ class StackAllocator : public Allocator
     
 
 };
+
+#endif //STACKALLOCATOR_H

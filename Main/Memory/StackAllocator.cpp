@@ -4,9 +4,9 @@
 StackAllocator::StackAllocator(size_t size, void* start) : Allocator(size, start), _current_pos(start)
 {
     ASSERT(size > 0);
-    #if _DEBUG
-        _prev_position = nullptr;
-    #endif
+    // #if _DEBUG
+    //     _prev_position = nullptr;
+    // #endif
 
 }
 

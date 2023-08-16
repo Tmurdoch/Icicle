@@ -1,8 +1,8 @@
 #define DOCTEST_CONFIG_IMPLEMENT
 
 #include "../_deps/doctest-src/doctest/doctest.h"
-#include "../../Main/src/IceRoot.h" //All we should have to include to
-//implement game
+#include "../../Main/src/IceRoot.h" 
+#include "../../Main/Memory/StackAllocator.h"
 
 /**
  * USAGE: cmake -S . in tests directory, then make all, then executable will be out/TestInstantiator
@@ -50,7 +50,7 @@ TEST_CASE("Stack Allocator") {
     StackAllocator* sa = new StackAllocator(sizeof(memory_block), memory_block);
 
     SUBCASE("allocating right amount of bytes") {
-    StackAllocator *sa;
+    
     sa->allocate(16, 4);
     CHECK(sa->getSize() == 16);
     //printf(sa->getStart());
