@@ -3,7 +3,7 @@
 Allocator::~Allocator()
 {
 	ASSERT(_num_allocations == 0 && _used_memory == 0);
-
+	_start = nullptr; _size = 0;
 	//_size = 0;
 }
 

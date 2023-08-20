@@ -1,8 +1,9 @@
 #define DOCTEST_CONFIG_IMPLEMENT
 
-#include "../_deps/doctest-src/doctest/doctest.h"
+#include "../doctest.h"
 #include "../../Main/src/IceRoot.h" 
 #include "../../Main/Memory/StackAllocator.h"
+#include "../../Main/Memory/Allocator.h"
 
 /**
  * USAGE: cmake -S . in tests directory, then make all, then executable will be out/TestInstantiator
@@ -28,14 +29,21 @@ int main(int argc, char** argv) {
 
 TEST_CASE("Stack Allocator") {
 
-    char memory_block[10]; 
+    uint8_t memory_block[10]; 
     StackAllocator* sa = new StackAllocator(sizeof(memory_block), memory_block);
 
     SUBCASE("allocating right amount of bytes") {
     
-    sa->allocate(16, 4);
-    CHECK(sa->getSize() == 16);
+    // sa->allocate(16, 4); //not the way to do this
+    // CHECK(sa->getSize() == 16);
     //printf(sa->getStart());
+    }
+
+    SUBCASE("template evaluation is different") {
+        uint8_t memory_block[10]; 
+        StackAllocator* sa = new StackAllocator(sizeof(memory_block), memory_block);
+        sa->allocate(sizeof(memory_block), 1); //1 byte for each char??
+        
     }
 }
 

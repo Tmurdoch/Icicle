@@ -3,6 +3,9 @@
 #include <assert.h>
 #include <stdint.h>
 
+#ifndef ALLOCATOR_H
+#define ALLOCATOR_H
+
 #if ASSERTIONS_ENABLED
 // define some inline assembly that causes a break
 // into the debugger -- this will be different on each
@@ -50,18 +53,15 @@ Allocator myAllocator(sizeof(memoryBlock), memoryBlock);
         _num_allocations = 0;
     }
 
-    virtual ~Allocator()
-    {
-        ASSERT(_num_allocations == 0 && _used_memory == 0);
-        _start = nullptr; _size = 0;
-    }
+    ~Allocator();
+    
 
     virtual void* allocate(size_t size, uint8_t alignment = 4) = 0;
     virtual void deallocate(void* p) = 0;
     void* getStart() const { return _start; }
-    size_t getSize() const { return _size; }
-    size_t getUsedMemory() const { return _used_memory; }
-    size_t getNumAllocations() const { return _num_allocations; }
+    size_t getSize() const;
+    size_t getUsedMemory() const;
+    size_t getNumAllocations() const;
 
     protected:
 
@@ -126,3 +126,5 @@ namespace allocator
         allocator.deallocate(array - headerSize);
     }
 }
+
+#endif

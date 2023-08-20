@@ -23,8 +23,10 @@ void* StackAllocator::allocate(size_t size, uint8_t alignment)
 {
     ASSERT(size != 0);
 
+    ASSERT(type(alignment) == uint8_t);
+
     
-    uint8_t adjustment = Math::alignForwardAdjustmentWithHeader(_current_pos, alignment, sizeof(AllocationHeader));
+    uint8_t adjustment = Math::alignForwardAdjustmentWithHeader(_current_pos, alignment);
 
     //TODO: determine max size allocatable -> store in _size
     if(_used_memory + adjustment + size > _size) return nullptr;

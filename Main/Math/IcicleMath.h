@@ -1,13 +1,15 @@
-#include "stdint.h"
-
+#include "inttypes.h"
+#include <cstdint>
 
 namespace Math {
 
     //Declarations
 
-    static void* ptr_add(void* pos, uint8_t adjustment);
+    void* ptr_add(void* pos, size_t adjustment);
+    const void* ptr_add(const void* p, size_t x);
 
-    static void* ptr_subtract(void* pos, uint8_t adjustment);
+    void* ptr_subtract(void* pos, size_t adjustment);
+    const void* ptr_subtract(const void* pos, size_t adjustment);
 
 
     /**
@@ -15,15 +17,9 @@ namespace Math {
      *  to achieve the specified alignment while leaving space for the 
      * allocation header.
     */
-    static uint8_t alignForwardAdjustmentWithHeader(void* _current_pos,
-                                                uint8_t alignment,
-                                                size_t size);
+    uint8_t alignForwardAdjustmentWithHeader(void* _current_pos,
+                                                uint8_t alignment);
 
 }
 
-//inline definitions
-
-namespace Math {
-    
-}
 
