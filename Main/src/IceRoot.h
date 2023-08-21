@@ -21,7 +21,7 @@ debugBreak(); \
 #else
 #define ASSERT(expr) // evaluates to nothing
 #endif
-MemoryManager*          IceMemoryManager;
+
 
 /**
  * Singleton class, everything in game engine is started here

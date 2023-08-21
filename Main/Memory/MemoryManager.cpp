@@ -1,47 +1,51 @@
 #include "MemoryManager.h"
 
-#include "../src/IceRoot.h"
 
 
+namespace Icicle {
 
-class MemoryManager 
-{
-public:
-    MemoryManager() 
+    MemoryManager::MemoryManager() 
     {
         // do nothing, see http://ce.eng.usc.ac.ir/files/1511334027376.pdf pg.261
         // use startUp() instead to make sure order is preserved
     }
-    ~MemoryManager() 
+    MemoryManager::~MemoryManager() 
     {
         // do nothing
     }
 
-    void startUp()
+    void MemoryManager::startUp()
     {
         std::cout<<" Starting Memory Manager. "<< std::endl;
         // start up manager...
-        StackAllocator persistent_data;
+        
+    }
+
+    void* allocate(size_t size) {
+        printf("allocation called succesfully");
+    }
+    void free(void* address) {
+        printf("free called succesfully");
     }
 
     
 
-    void* operator new (size_t size) 
+    void* MemoryManager::operator new[] (size_t size) 
     {
         return IceMemoryManager.allocate(size);
     }
 
-    void* operator new[ ] (size_t size)
+    void* MemoryManager::operator new[ ] (size_t size)
     {
-        return  IceMemoryManager.allocate(size);
+        return IceMemoryManager.allocate(size);
     }
 
-    void operator delete (void* pointerToDelete)
+    void MemoryManager::operator delete (void* pointerToDelete)
     {
         IceMemoryManager.free(pointerToDelete);
     }
 
-    void operator delete[ ] (void* arrayToDelete)
+    void MemoryManager::operator delete[ ] (void* arrayToDelete)
     {
         IceMemoryManager.free(arrayToDelete);
     }

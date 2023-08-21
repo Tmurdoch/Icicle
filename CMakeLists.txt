@@ -10,8 +10,6 @@ cmake_minimum_required(VERSION 3.9.1)
 
 project(Icicle)
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/out)
-
 set(CMAKE_CXX_FLAGS "-Wall")
 
 # check OS
@@ -21,6 +19,25 @@ if(UNIX)
 elseif(WIN32)
     message("This is a Windows System")
 endif()
+
+
+#use this when adding packages as source to project, this is where cmakes search path is
+#set(CMAKE_MODULE_PATH) {
+#    $(PROJECT_SOURCE_DIR)
+#}
+
+if (NOT CMAKE_BUILD_TYPE)
+  # CMake defaults to leaving CMAKE_BUILD_TYPE empty. This screws up
+  # differentiation between debug and release builds.
+  set(CMAKE_BUILD_TYPE "None" CACHE STRING "Choose the type of build, options are: None (CMAKE_CXX_FLAGS or CMAKE_C_FLAGS used) Debug Release" FORCE)
+endif ()
+
+
+# Specify build paths
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/lib")
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/lib")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/bin")
+
 
 # TODO: 
 
@@ -34,21 +51,18 @@ endif()
 
 
 
-add_library(LibMemory SHARED
-Main/Memory/StackAllocator.cpp
-Main/Memory/Allocator.cpp
-Main/Math/IcicleMath.cpp)
+add_subdirectory(Main/Math)
+add_subdirectory(Main/Memory)
+add_subdirectory(Main/src)
 
-target_include_directories(LibMemory PUBLIC
-                           "${CMAKE_CURRENT_BINARY_DIR}"
-                           "${CMAKE_CURRENT_SOURCE_DIR}"
-                           )
 
 
 add_executable(TestInstantiator Tests/Main/TestInstantiator.cpp )
 
 # target_link_libraries(TestInstantiator vtkCommon)
-target_link_libraries(TestInstantiator PUBLIC doctest LibMemory)
+target_link_libraries(TestInstantiator PUBLIC doctest LibMemory Math)
+cmake_policy(SET CMP0079 NEW)
+target_link_libraries(LibMemory PUBLIC Math)
 add_test(NAME TestInstantiator
          COMMAND TestInstantiator)
 

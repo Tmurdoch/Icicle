@@ -30,13 +30,13 @@ namespace Math {
         return adjustment;
     }
 
-    template<typename T>
+    // template<typename T>
     inline uint8_t alignForwardAdjustmentWithHeader(void* address, uint8_t alignment) {
-        if (__alignof(T) > alignment)
-            alignment = __alignof(T);
+        // if (__alignof(T) > alignment)
+        //     alignment = __alignof(T);
         
-        uint8_t adjustment = sizeof(T) + alignForwardAdjustment(Math::ptr_add(address, sizeof(T)), alignment);
-
+        // uint8_t adjustment = sizeof(T) + alignForwardAdjustment(Math::ptr_add(address, sizeof(T)), alignment);
+        uint8_t adjustment = alignForwardAdjustment(address, alignment);
         return adjustment;
     }
 

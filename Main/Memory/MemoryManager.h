@@ -1,7 +1,13 @@
 #include <iostream>
 #include "StackAllocator.h"
 
+#ifndef MEM_MANAGER_H
+#define MEM_MANAGER_H
 
+
+namespace Icicle {
+
+MemoryManager          IceMemoryManager;
 
 /**
  * Interface for memory manager class
@@ -33,5 +39,12 @@ public:
     //this function does not call objects destructor
     void operator delete (void* pointerToDelete);
     void operator delete[ ] (void* arrayToDelete);
-};
 
+    void* allocate(size_t size);
+    void free(void* address);
+
+private:
+    Resource[RESOURCE_LIMIT] memory;
+};
+}
+#endif

@@ -46,7 +46,17 @@ TEST_CASE("Stack Allocator") {
         
     }
 }
+TEST_CASE("Memory Manager") {
+    //need root
+    
 
+    SUBCASE("allocate and free are called correctly from memorymanager") {
+        //should be two print statements if this works
+    }
+
+
+
+}
 TEST_CASE("Memory from stack allocator is freed correctly") {
     
 }

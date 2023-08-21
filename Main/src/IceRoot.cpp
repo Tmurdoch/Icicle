@@ -1,6 +1,8 @@
 #include <stddef.h>
 #include "IceRoot.h"
 
+namespace Icicle {
+
 class Root
 {
     private:
@@ -26,6 +28,7 @@ class Root
 
     int startUp()
     {
+        IceMemoryManager = new MemoryManager;
         std::cout<<"Starting up systems"<<std::endl;
     // Start up engine systems in correct order.
     //re-organize as necessary
@@ -50,3 +53,4 @@ class Root
     // zMemoryManager.shutDown();
     }
 };
+}

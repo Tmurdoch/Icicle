@@ -20,6 +20,7 @@ namespace Math {
     uint8_t alignForwardAdjustmentWithHeader(void* _current_pos,
                                                 uint8_t alignment);
 
+
 }
 
 

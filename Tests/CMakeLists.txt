@@ -32,8 +32,6 @@ include(Doctest.cmake)
 
 #add_test(NAME TestName COMMAND ExecutableToRun arg1 arg2 ...)
 
-
-
 add_executable(TestInstantiator Main/TestInstantiator.cpp)
 # target_link_libraries(TestInstantiator vtkCommon)
 target_link_libraries(TestInstantiator PUBLIC doctest)
