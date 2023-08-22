@@ -24,17 +24,17 @@ if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND BUILD_TESTING)
     add_subdirectory(tests)
 endif()
 
-option(ENABLE_DOCTESTS "Include tests in the library. Setting this to OFF will remove all doctest related code.
-                    Tests in tests/*.cpp will still be enabled." ON)
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
-include(Doctest.cmake)
+# option(ENABLE_DOCTESTS "Include tests in the library. Setting this to OFF will remove all doctest related code.
+#                     Tests in tests/*.cpp will still be enabled." ON)
+# set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
+# include(Doctest.cmake)
 
 
 #add_test(NAME TestName COMMAND ExecutableToRun arg1 arg2 ...)
 
 add_executable(TestInstantiator Main/TestInstantiator.cpp)
 # target_link_libraries(TestInstantiator vtkCommon)
-target_link_libraries(TestInstantiator PUBLIC doctest)
+# target_link_libraries(TestInstantiator PUBLIC doctest)
 add_test(NAME TestInstantiator
          COMMAND TestInstantiator)
 

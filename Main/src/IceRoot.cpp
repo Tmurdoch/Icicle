@@ -28,7 +28,7 @@ class Root
 
     int startUp()
     {
-        IceMemoryManager = new MemoryManager;
+        
         std::cout<<"Starting up systems"<<std::endl;
     // Start up engine systems in correct order.
     //re-organize as necessary

@@ -1,13 +1,16 @@
 #include <iostream>
 #include "StackAllocator.h"
+#include "../Resources/Resource.h"
 
 #ifndef MEM_MANAGER_H
 #define MEM_MANAGER_H
 
+#define RESOURCE_LIMIT 1000 //1 gb?
+
 
 namespace Icicle {
 
-MemoryManager          IceMemoryManager;
+
 
 /**
  * Interface for memory manager class
@@ -44,7 +47,9 @@ public:
     void free(void* address);
 
 private:
-    Resource[RESOURCE_LIMIT] memory;
+    Resource memory[RESOURCE_LIMIT] ;
 };
+
+MemoryManager          IceMemoryManager;
 }
 #endif

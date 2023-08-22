@@ -23,17 +23,12 @@ namespace Icicle {
 
     void* allocate(size_t size) {
         printf("allocation called succesfully");
+        return 0;
     }
     void free(void* address) {
         printf("free called succesfully");
     }
 
-    
-
-    void* MemoryManager::operator new[] (size_t size) 
-    {
-        return IceMemoryManager.allocate(size);
-    }
 
     void* MemoryManager::operator new[ ] (size_t size)
     {
