@@ -4,17 +4,30 @@
 
 namespace Icicle {
 
-    MemoryManager::MemoryManager() 
+class MemoryManager {
+    private:
+    static MemoryManager* instancePtr;
+
+    public:
+    MemoryManager() 
     {
         // do nothing, see http://ce.eng.usc.ac.ir/files/1511334027376.pdf pg.261
         // use startUp() instead to make sure order is preserved
     }
-    MemoryManager::~MemoryManager() 
+    ~MemoryManager() 
     {
         // do nothing
     }
 
-    void MemoryManager::startUp()
+    static MemoryManager* getInstance() {
+        if (instancePtr == NULL)
+        {
+            instancePtr = new MemoryManager();
+            return instancePtr;
+        }
+    }
+
+    void startUp()
     {
         std::cout<<" Starting Memory Manager. "<< std::endl;
         // start up manager...
@@ -30,9 +43,10 @@ namespace Icicle {
     }
 
 
-    void* MemoryManager::operator new[ ] (size_t size)
+    void* operator new[ ] (size_t size)
     {
-        return IceMemoryManager.allocate(size);
+        https://discourse.cmake.org/t/cmake-project-not-linking-correctly/8806/5
+        return getInstance.allocate(size);
     }
 
     void MemoryManager::operator delete (void* pointerToDelete)
@@ -45,5 +59,5 @@ namespace Icicle {
         IceMemoryManager.free(arrayToDelete);
     }
 
-  
+}
 };

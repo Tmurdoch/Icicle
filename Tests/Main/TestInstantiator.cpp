@@ -4,6 +4,7 @@
 #include "../../Main/src/IceRoot.h" 
 #include "../../Main/Memory/StackAllocator.h"
 #include "../../Main/Memory/Allocator.h"
+#include "../../Main/Math/IcicleMath.h"
 
 /**
  * USAGE: cmake -S . in tests directory, then make all, then executable will be out/TestInstantiator
@@ -54,7 +55,12 @@ TEST_CASE("Memory Manager") {
         //should be two print statements if this works
     }
 
+}
 
+TEST_CASE("Math Lib") {
+    int a = 10;
+    int* ptr = &a;
+    Math::ptr_add(ptr, 10);
 
 }
 TEST_CASE("Memory from stack allocator is freed correctly") {

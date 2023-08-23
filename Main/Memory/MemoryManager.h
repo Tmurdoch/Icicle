@@ -42,14 +42,15 @@ public:
     //this function does not call objects destructor
     void operator delete (void* pointerToDelete);
     void operator delete[ ] (void* arrayToDelete);
+    static MemoryManager* getInstance();
 
     void* allocate(size_t size);
     void free(void* address);
 
 private:
     Resource memory[RESOURCE_LIMIT] ;
+    
 };
 
-MemoryManager          IceMemoryManager;
 }
 #endif

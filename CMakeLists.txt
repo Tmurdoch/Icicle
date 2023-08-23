@@ -33,27 +33,45 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/lib")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/lib")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/bin")
 
-cmake_policy(SET CMP0079 NEW)
+#cmake_policy(SET CMP0079 NEW)
+
+
+
+file(GLOB HEADER_FILES $(CMAKE_SOURCE_DIR)/Main/src/*.h)
+list(APPEND HEADER_FILES 
+    "${CMAKE_CURRENT_SOURCE_DIR}/Main/Math/IcicleMath.h"
+    "${CMAKE_SOURCE_DIR}/Main/Memory/Allocator.h"
+    "${CMAKE_SOURCE_DIR}/Main/Memory/StackAllocator.h"
+    "${CMAKE_SOURCE_DIR}/Main/Memory/MemoryManager.h"
+    "${CMAKE_SOURCE_DIR}/Main/Resources/Resource.h"
+)
+
+file(GLOB SOURCE_FILES $(CMAKE_SOURCE_DIR)/Main/src/*.cpp)
+list(APPEND SOURCE_FILES
+"${CMAKE_CURRENT_SOURCE_DIR}/Main/Math/IcicleMath.cpp"
+"${CMAKE_SOURCE_DIR}/Main/Memory/Allocator.cpp"
+"${CMAKE_SOURCE_DIR}/Main/Memory/StackAllocator.cpp"
+"${CMAKE_SOURCE_DIR}/Main/Memory/MemoryManager.cpp"
+)
+
+
+add_library(IcicleMain SHARED ${HEADER_FILES} ${SOURCE_FILES})
+
+install(FILES ${HEADER_FILES} DESTINATION include/Icicle)
+
+
+add_executable(Test "Tests/Main/TestInstantiator.cpp")
+target_include_directories(Test PRIVATE 
+"${CMAKE_SOURCE_DIR}/Main/src" 
+"${CMAKE_SOURCE_DIR}/Main/Math" 
+"${CMAKE_SOURCE_DIR}/Main/Memory" 
+"${CMAKE_SOURCE_DIR}/Main/Resources")
+
 
 add_executable(TestInstantiator Tests/Main/TestInstantiator.cpp )
-
-target_include_directories(TestInstantiator PRIVATE "Tests" "Main/src" "Main/Math" "Main/Memory")
-
-add_subdirectory(Main/src)
-add_subdirectory(Main/Math)
-add_subdirectory(Main/Memory)
-#add_subdirectory(Main/Resources)
-
-
-
-
-
-
+target_link_libraries(TestInstantiator IcicleMain)
 # target_link_libraries(TestInstantiator vtkCommon)
-target_link_libraries(LibMemory PUBLIC Math)
-target_link_libraries(TestInstantiator PUBLIC LibMath LibMemory)
+
 
 add_test(NAME TestInstantiator
          COMMAND TestInstantiator)
-
-message($(SOURCE_FILES))

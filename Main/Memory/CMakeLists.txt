@@ -1,9 +1,0 @@
-# define header and source files for the library
-file(GLOB HEADER_FILES "${CMAKE_CURRENT_SOURCE_DIR}/*.h")
-
-file(GLOB SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")
-add_library(LibMemory ${ICICLE_LIB_TYPE} ${HEADER_FILES} ${SOURCE_FILES})
-target_include_directories(LibMemory PUBLIC $(CMAKE_BINARY_DIR)/Main/Math)
-target_include_directories(LibMemory PUBLIC $(CMAKE_BINARY_DIR)/Main/Resources)
-
-message($(SOURCE_FILES))
