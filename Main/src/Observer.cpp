@@ -1,3 +1,14 @@
+typedef struct Entity 
+{
+  /* data */
+};
+
+typedef struct Event
+{
+  /* data */
+};
+
+
 class Observer
 {
 public:

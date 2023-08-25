@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <iostream>
-#include "../Memory/MemoryManager.h"
+#include "MemoryManager.h"
 
 
 #if ASSERTIONS_ENABLED

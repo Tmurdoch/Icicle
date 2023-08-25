@@ -1,14 +1,12 @@
 #include "Observer.cpp"
 
+#define MAX_OBSERVERS 10
+
 class Subject
 {
 private:
   Observer* observers_[MAX_OBSERVERS];
   int numObservers_;
-};
-
-class Subject
-{
 
 public:
 

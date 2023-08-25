@@ -1,11 +1,18 @@
 #define DOCTEST_CONFIG_IMPLEMENT
 
-#include "../doctest.h"
-#include "../../Main/src/IceRoot.h" 
-#include "../../Main/Memory/StackAllocator.h"
-#include "../../Main/Memory/Allocator.h"
-#include "../../Main/Math/IcicleMath.h"
+// #include "../doctest.h"
+// #include "../../Main/src/IceRoot.h" 
+// #include "../../Main/Memory/StackAllocator.h"
+// #include "../../Main/Memory/Allocator.h"
+// #include "../../Main/Math/IcicleMath.h"
 
+#include "../doctest.h"
+#include "IceRoot.h"
+#include "StackAllocator.h"
+#include "Allocator.h"
+#include "IcicleMath.h"
+
+namespace Icicle{
 /**
  * USAGE: cmake -S . in tests directory, then make all, then executable will be out/TestInstantiator
  * 
@@ -60,7 +67,7 @@ TEST_CASE("Memory Manager") {
 TEST_CASE("Math Lib") {
     int a = 10;
     int* ptr = &a;
-    Math::ptr_add(ptr, 10);
+    Icicle::ptr_add(ptr, 10);
 
 }
 TEST_CASE("Memory from stack allocator is freed correctly") {
@@ -73,4 +80,5 @@ TEST_CASE("Both top and bottom of stack initialized and freed correctly") {
 
 TEST_CASE("Determine whether given pointer resides in stack") {
     
+}
 }

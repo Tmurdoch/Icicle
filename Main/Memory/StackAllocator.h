@@ -6,7 +6,8 @@
 #include "Allocator.h"
 
 #include <stddef.h>
-#include "../Math/IcicleMath.h"
+//#include "../Math/IcicleMath.h"
+#include "IcicleMath.h"
 #include <string>
 
 /**

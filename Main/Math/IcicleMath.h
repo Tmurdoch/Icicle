@@ -1,7 +1,7 @@
-#include "inttypes.h"
+#include <stddef.h>
 #include <cstdint>
 
-namespace Math {
+namespace Icicle {
 
     //Declarations
 
@@ -21,6 +21,5 @@ namespace Math {
                                                 uint8_t alignment);
 
 
+
 }
-
-

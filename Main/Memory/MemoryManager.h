@@ -1,6 +1,6 @@
 #include <iostream>
 #include "StackAllocator.h"
-#include "../Resources/Resource.h"
+#include "Resource.h"
 
 #ifndef MEM_MANAGER_H
 #define MEM_MANAGER_H
@@ -31,8 +31,20 @@ class IMemoryManager
 */
 class MemoryManager : public IMemoryManager
 {
-public:
+    private:
+    static MemoryManager* instancePtr;
+    Resource memory[RESOURCE_LIMIT] ;
+    
+    public:
+    void operator=(const MemoryManager &) = delete;
     MemoryManager() ;
+    static MemoryManager* getInstance() {
+        if (instancePtr == NULL) {
+            instancePtr = new MemoryManager();
+            return instancePtr;
+        }
+    }
+    
     ~MemoryManager() ;
     void startUp();
     void shutDown();
@@ -42,15 +54,11 @@ public:
     //this function does not call objects destructor
     void operator delete (void* pointerToDelete);
     void operator delete[ ] (void* arrayToDelete);
-    static MemoryManager* getInstance();
 
     void* allocate(size_t size);
     void free(void* address);
 
-private:
-    Resource memory[RESOURCE_LIMIT] ;
-    
-};
 
+};
 }
 #endif

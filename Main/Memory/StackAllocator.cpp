@@ -26,15 +26,15 @@ void* StackAllocator::allocate(size_t size, uint8_t alignment)
     ASSERT(type(alignment) == uint8_t);
 
     
-    uint8_t adjustment = Math::alignForwardAdjustmentWithHeader(_current_pos, alignment);
+    uint8_t adjustment = Icicle::alignForwardAdjustmentWithHeader(_current_pos, alignment);
 
     //TODO: determine max size allocatable -> store in _size
     if(_used_memory + adjustment + size > _size) return nullptr;
 
-    void* aligned_address = Math::ptr_add(_current_pos, adjustment);
+    void* aligned_address = Icicle::ptr_add(_current_pos, adjustment);
 
     //Add allocation header
-    AllocationHeader* header = (AllocationHeader*)(Math::ptr_subtract(aligned_address, sizeof(AllocationHeader)));
+    AllocationHeader* header = (AllocationHeader*)(Icicle::ptr_subtract(aligned_address, sizeof(AllocationHeader)));
     header->adjustment = adjustment;
 
     #if _DEBUG
@@ -42,7 +42,7 @@ void* StackAllocator::allocate(size_t size, uint8_t alignment)
         _prev_position = aligned_address;
     #endif
 
-    _current_pos = Math::ptr_add(aligned_address, size);
+    _current_pos = Icicle::ptr_add(aligned_address, size);
     _used_memory += size + adjustment;
     _num_allocations++;
 
@@ -54,9 +54,9 @@ void StackAllocator::deallocate(void* p)
     ASSERT( p == _prev_position );
 
     //Access the AllocationHeader in the bytes before p
-    AllocationHeader* header = (AllocationHeader*)(Math::ptr_subtract(p, sizeof(AllocationHeader)));
+    AllocationHeader* header = (AllocationHeader*)(Icicle::ptr_subtract(p, sizeof(AllocationHeader)));
     _used_memory -= (uintptr_t)_current_pos - (uintptr_t)p + header->adjustment;
-    _current_pos = Math::ptr_subtract(p, header->adjustment);
+    _current_pos = Icicle::ptr_subtract(p, header->adjustment);
 
     #if _DEBUG
         _prev_position = header->prev_address;

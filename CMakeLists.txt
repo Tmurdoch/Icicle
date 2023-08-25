@@ -36,39 +36,43 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/bin")
 #cmake_policy(SET CMP0079 NEW)
 
 
-
-file(GLOB HEADER_FILES $(CMAKE_SOURCE_DIR)/Main/src/*.h)
+file(GLOB HEADER_FILES "${CMAKE_SOURCE_DIR}/Main/src/*.h")
 list(APPEND HEADER_FILES 
-    "${CMAKE_CURRENT_SOURCE_DIR}/Main/Math/IcicleMath.h"
+    "${CMAKE_SOURCE_DIR}/Main/Math/IcicleMath.h"
     "${CMAKE_SOURCE_DIR}/Main/Memory/Allocator.h"
     "${CMAKE_SOURCE_DIR}/Main/Memory/StackAllocator.h"
     "${CMAKE_SOURCE_DIR}/Main/Memory/MemoryManager.h"
     "${CMAKE_SOURCE_DIR}/Main/Resources/Resource.h"
 )
 
-file(GLOB SOURCE_FILES $(CMAKE_SOURCE_DIR)/Main/src/*.cpp)
+file(GLOB SOURCE_FILES "${CMAKE_SOURCE_DIR}/Main/src/*.cpp")
 list(APPEND SOURCE_FILES
-"${CMAKE_CURRENT_SOURCE_DIR}/Main/Math/IcicleMath.cpp"
+"${CMAKE_SOURCE_DIR}/Main/Math/IcicleMath.cpp"
 "${CMAKE_SOURCE_DIR}/Main/Memory/Allocator.cpp"
 "${CMAKE_SOURCE_DIR}/Main/Memory/StackAllocator.cpp"
 "${CMAKE_SOURCE_DIR}/Main/Memory/MemoryManager.cpp"
 )
 
 
+install(FILES ${HEADER_FILES} DESTINATION lib)
+
+
 add_library(IcicleMain SHARED ${HEADER_FILES} ${SOURCE_FILES})
 
-install(FILES ${HEADER_FILES} DESTINATION include/Icicle)
 
-
-add_executable(Test "Tests/Main/TestInstantiator.cpp")
-target_include_directories(Test PRIVATE 
-"${CMAKE_SOURCE_DIR}/Main/src" 
-"${CMAKE_SOURCE_DIR}/Main/Math" 
-"${CMAKE_SOURCE_DIR}/Main/Memory" 
-"${CMAKE_SOURCE_DIR}/Main/Resources")
+target_include_directories(IcicleMain PUBLIC
+"${CMAKE_CURRENT_SOURCE_DIR}/Main/src" 
+"${CMAKE_CURRENT_SOURCE_DIR}/Main/Math" 
+"${CMAKE_CURRENT_SOURCE_DIR}/Main/Memory" 
+"${CMAKE_CURRENT_SOURCE_DIR}/Main/Resources"
+"${CMAKE_BINARY_DIR}/lib")
 
 
 add_executable(TestInstantiator Tests/Main/TestInstantiator.cpp )
+
+
+
+
 target_link_libraries(TestInstantiator IcicleMain)
 # target_link_libraries(TestInstantiator vtkCommon)
 
