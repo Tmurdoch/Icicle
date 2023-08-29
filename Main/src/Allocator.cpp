@@ -1,8 +1,11 @@
 #include "Allocator.h"
 
+
+namespace Icicle {
+
 Allocator::~Allocator()
 {
-	ASSERT(_num_allocations == 0 && _used_memory == 0);
+	assert(_num_allocations == 0 && _used_memory == 0);
 	_start = nullptr; _size = 0;
 	//_size = 0;
 }
@@ -20,4 +23,6 @@ size_t Allocator::getUsedMemory() const
 size_t Allocator::getNumAllocations() const
 {
 	return _num_allocations;
+}
+
 }

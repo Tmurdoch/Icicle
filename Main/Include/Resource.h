@@ -1,5 +1,5 @@
 #include <string>
 
-typedef struct Resource {
+struct Resource {
     std::string name;
 };

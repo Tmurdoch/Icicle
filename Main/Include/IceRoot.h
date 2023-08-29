@@ -4,23 +4,7 @@
 #include "MemoryManager.h"
 
 
-#if ASSERTIONS_ENABLED
-// define some inline assembly that causes a break
-// into the debugger -- this will be different on each
-// target CPU
-#define debugBreak() asm { int 3 }
-// check the expression and fail if it is false
-#define ASSERT(expr) \
-if (expr) { } \
-else \
-{ \
-reportAssertionFailure(#expr, \
-__FILE__, __LINE__); \
-debugBreak(); \
-}
-#else
-#define ASSERT(expr) // evaluates to nothing
-#endif
+namespace Icicle {
 
 
 /**
@@ -37,9 +21,19 @@ class Root
 
     static Root* instancePtr;
 
-    Root() {}
+    
+
+    Root();
 
     public:
+    static Root* getInstance()
+    {
+        if (instancePtr == NULL)
+        {
+            instancePtr = new Root();
+        }
+        return instancePtr;
+    };
 
     Root(const Root& obj) = delete; //delete copy constructor
 
@@ -55,6 +49,8 @@ class Root
 // FileSystemManager       zFileSystemManager;
     
 
-    static Root* getInstance();
+    
     int startUp();
 };
+
+}

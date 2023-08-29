@@ -1,9 +1,9 @@
-typedef struct Entity 
+struct Entity 
 {
   /* data */
 };
 
-typedef struct Event
+struct Event
 {
   /* data */
 };

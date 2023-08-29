@@ -1,4 +1,4 @@
-#include "MemoryManager.h"
+#include "../Include/MemoryManager.h"
 
 
 
@@ -19,7 +19,12 @@ namespace Icicle {
     {
         std::cout<<" Starting Memory Manager. "<< std::endl;
         // start up manager...
-        
+        uint8_t memory_block[10]; 
+        StackAllocator* sa = new StackAllocator(sizeof(memory_block), memory_block);
+        MemInstancePtr = new MemoryManager();
+        // new MemoryManager(sizeof(memory_block));
+
+        //TODO: setup listeners
     }
 
     void* MemoryManager::allocate(size_t size) {
@@ -30,20 +35,24 @@ namespace Icicle {
         printf("free called succesfully");
     }
 
-
-    void* MemoryManager::operator new[ ] (size_t size)
+    void *MemoryManager::operator new(size_t size)
     {
-        return instancePtr->allocate(size);
+        return MemoryManager::getInstance()->allocate(size);
+    }
+
+    void *MemoryManager::operator new[](size_t size)
+    {
+        return MemoryManager::getInstance()->allocate(size);
     }
 
     void MemoryManager::operator delete (void* pointerToDelete)
     {
-        instancePtr->free(pointerToDelete);
+        MemoryManager::getInstance()->free(pointerToDelete);
     }
 
     void MemoryManager::operator delete[ ] (void* arrayToDelete)
     {
-        instancePtr->free(arrayToDelete);
+        MemoryManager::getInstance()->free(arrayToDelete);
     }
 
 }

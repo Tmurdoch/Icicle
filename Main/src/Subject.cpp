@@ -13,11 +13,14 @@ public:
 void addObserver(Observer* observer)
   {
     // Add to array...
+    observers_[numObservers_] = observer;
+    numObservers_++;
   }
 
 void removeObserver(Observer* observer)
   {
-    // Remove from array...
+  //stub
+
   }
 
   // Other stuff...

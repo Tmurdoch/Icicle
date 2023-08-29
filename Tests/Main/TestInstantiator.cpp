@@ -35,6 +35,10 @@ int main(int argc, char** argv) {
     return res; // + your_program_res
 }
 
+TEST_CASE("Determine whether given pointer resides in stack") {
+    Icicle::Root::getInstance()->startUp();
+}
+
 TEST_CASE("Stack Allocator") {
 
     uint8_t memory_block[10]; 
@@ -78,7 +82,5 @@ TEST_CASE("Both top and bottom of stack initialized and freed correctly") {
 
 }
 
-TEST_CASE("Determine whether given pointer resides in stack") {
-    
-}
+
 }

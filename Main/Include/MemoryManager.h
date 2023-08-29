@@ -6,7 +6,7 @@
 #define MEM_MANAGER_H
 
 #define RESOURCE_LIMIT 1000 //1 gb?
-
+#define DEFAULT_MEM_SIZE 100
 
 namespace Icicle {
 
@@ -32,24 +32,18 @@ class IMemoryManager
 class MemoryManager : public IMemoryManager
 {
     private:
-    static MemoryManager* instancePtr;
+    
     Resource memory[RESOURCE_LIMIT] ;
     
     public:
-    void operator=(const MemoryManager &) = delete;
     MemoryManager() ;
-    static MemoryManager* getInstance() {
-        if (instancePtr == NULL) {
-            instancePtr = new MemoryManager();
-            return instancePtr;
-        }
-    }
-    
     ~MemoryManager() ;
-    void startUp();
+
+    static MemoryManager* MemInstancePtr;
+    static void startUp();
     void shutDown();
     void* operator new (size_t size);
-    void* operator new[ ] (size_t size);
+    void* operator new[] (size_t size);
     //delete should be called AFTER the destructor is called on object
     //this function does not call objects destructor
     void operator delete (void* pointerToDelete);
@@ -57,6 +51,22 @@ class MemoryManager : public IMemoryManager
 
     void* allocate(size_t size);
     void free(void* address);
+    void operator=(const MemoryManager &) = delete;
+    
+
+
+    /**
+     * Note: calling this initially will default to 100 memsize
+     * TODO: implement a constructor function
+    */
+    static MemoryManager* getInstance() {
+        if (MemInstancePtr == NULL) {
+            MemInstancePtr = new MemoryManager();
+        }
+        return MemInstancePtr;
+    }
+    
+    
 
 
 };

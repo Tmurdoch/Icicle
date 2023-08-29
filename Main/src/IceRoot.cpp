@@ -1,35 +1,15 @@
-#include <stddef.h>
 #include "IceRoot.h"
 
 namespace Icicle {
 
-class Root
-{
-    private:
-
-    // member variables
-
-    static Root* instancePtr;
-
-    Root() {}
-
-    public:
-
-    void operator=(const Root &) = delete;
-
-    static Root* getInstance()
-    {
-        if (instancePtr == NULL)
-        {
-            instancePtr = new Root();
-            return instancePtr;
-        }
-    }
+    Root::Root() {}
 
     int startUp()
     {
         
         std::cout<<"Starting up systems"<<std::endl;
+        MemoryManager::startUp();
+        return 0;
     // Start up engine systems in correct order.
     //re-organize as necessary
     // zMemoryManager.startUp();
@@ -52,5 +32,5 @@ class Root
     // zFileSystemManager.shutDown();
     // zMemoryManager.shutDown();
     }
-};
+
 }

@@ -9,7 +9,11 @@
 //#include "../Math/IcicleMath.h"
 #include "IcicleMath.h"
 #include <string>
+#include "Debug.h"
+#include <cstddef>
 
+
+namespace Icicle {
 /**
  * taken from: https://www.gamedev.net/tutorials/programming/general-and-gameplay-programming/c-custom-memory-allocation-r3010/
  * fill in where necessary, needs pointer math and asserts
@@ -18,7 +22,7 @@
  * Assumption: levels are loaded once, and whole level fits into 
  * memory in its entirety
  *
-*/
+**/
 class StackAllocator : public Allocator
 {
     public: 
@@ -58,11 +62,13 @@ class StackAllocator : public Allocator
     };
 
     #if _DEBUG
-        void* prev_position;
+        void* _prev_position;
     #endif
 
     
 
 };
 
+
+}
 #endif //STACKALLOCATOR_H

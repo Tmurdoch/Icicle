@@ -10,7 +10,7 @@ cmake_minimum_required(VERSION 3.9.1)
 
 project(Icicle)
 
-set(CMAKE_CXX_FLAGS "-Wall")
+set(CMAKE_CXX_FLAGS "-Wextra -Wall -Wundef -Wshadow -Wpointer-arith -Wcast-align -Wstrict-overflow=5 -Wwrite-strings -Waggregate-return -Wcast-qual -Wswitch-default -Wswitch-enum -Wconversion -Wunreachable-code")
 
 # check OS
 # UNIX, WIN32, WINRT, CYGWIN, APPLE are environment variables as flags set by default system
@@ -38,34 +38,35 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/bin")
 
 file(GLOB HEADER_FILES "${CMAKE_SOURCE_DIR}/Main/src/*.h")
 list(APPEND HEADER_FILES 
-    "${CMAKE_SOURCE_DIR}/Main/Math/IcicleMath.h"
-    "${CMAKE_SOURCE_DIR}/Main/Memory/Allocator.h"
-    "${CMAKE_SOURCE_DIR}/Main/Memory/StackAllocator.h"
-    "${CMAKE_SOURCE_DIR}/Main/Memory/MemoryManager.h"
-    "${CMAKE_SOURCE_DIR}/Main/Resources/Resource.h"
+    "${CMAKE_SOURCE_DIR}/Main/Include/IcicleMath.h"
+    "${CMAKE_SOURCE_DIR}/Main/Include/Allocator.h"
+    "${CMAKE_SOURCE_DIR}/Main/Include/StackAllocator.h"
+    "${CMAKE_SOURCE_DIR}/Main/Include/MemoryManager.h"
+    "${CMAKE_SOURCE_DIR}/Main/Include/Resource.h"
 )
+
+
 
 file(GLOB SOURCE_FILES "${CMAKE_SOURCE_DIR}/Main/src/*.cpp")
 list(APPEND SOURCE_FILES
-"${CMAKE_SOURCE_DIR}/Main/Math/IcicleMath.cpp"
-"${CMAKE_SOURCE_DIR}/Main/Memory/Allocator.cpp"
-"${CMAKE_SOURCE_DIR}/Main/Memory/StackAllocator.cpp"
-"${CMAKE_SOURCE_DIR}/Main/Memory/MemoryManager.cpp"
+"${CMAKE_SOURCE_DIR}/Main/src/IcicleMath.cpp"
+"${CMAKE_SOURCE_DIR}/Main/src/Allocator.cpp"
+"${CMAKE_SOURCE_DIR}/Main/src/StackAllocator.cpp"
+"${CMAKE_SOURCE_DIR}/Main/src/MemoryManager.cpp"
 )
 
 
 install(FILES ${HEADER_FILES} DESTINATION lib)
 
 
-add_library(IcicleMain SHARED ${HEADER_FILES} ${SOURCE_FILES})
-
+add_library(IcicleMain SHARED ${SOURCE_FILES} ${HEADER_FILES} )
 
 target_include_directories(IcicleMain PUBLIC
-"${CMAKE_CURRENT_SOURCE_DIR}/Main/src" 
-"${CMAKE_CURRENT_SOURCE_DIR}/Main/Math" 
-"${CMAKE_CURRENT_SOURCE_DIR}/Main/Memory" 
-"${CMAKE_CURRENT_SOURCE_DIR}/Main/Resources"
+"${CMAKE_CURRENT_SOURCE_DIR}/Main/Include"
 "${CMAKE_BINARY_DIR}/lib")
+
+target_link_directories(IcicleMain PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/Main/Include")
+
 
 
 add_executable(TestInstantiator Tests/Main/TestInstantiator.cpp )

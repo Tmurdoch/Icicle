@@ -1,9 +1,11 @@
 #include "StackAllocator.h"
 
 
+
+namespace Icicle {
 StackAllocator::StackAllocator(size_t size, void* start) : Allocator(size, start), _current_pos(start)
 {
-    ASSERT(size > 0);
+    assert(size > 0);
     // #if _DEBUG
     //     _prev_position = nullptr;
     // #endif
@@ -16,14 +18,12 @@ StackAllocator::~StackAllocator()
         _prev_position = nullptr;
     #endif
 
-    void* _current_pos = nullptr;
+    _current_pos = nullptr;
 }
 
 void* StackAllocator::allocate(size_t size, uint8_t alignment)
 {
-    ASSERT(size != 0);
-
-    ASSERT(type(alignment) == uint8_t);
+    assert(size != 0);
 
     
     uint8_t adjustment = Icicle::alignForwardAdjustmentWithHeader(_current_pos, alignment);
@@ -51,7 +51,7 @@ void* StackAllocator::allocate(size_t size, uint8_t alignment)
 
 void StackAllocator::deallocate(void* p)
 {
-    ASSERT( p == _prev_position );
+    assert( p == _prev_position );
 
     //Access the AllocationHeader in the bytes before p
     AllocationHeader* header = (AllocationHeader*)(Icicle::ptr_subtract(p, sizeof(AllocationHeader)));
@@ -63,4 +63,5 @@ void StackAllocator::deallocate(void* p)
     #endif
 
     _num_allocations--;
+}
 }
