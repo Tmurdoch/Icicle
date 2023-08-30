@@ -7,23 +7,23 @@
 namespace Icicle {
 
 
-    inline void* ptr_add(void* p, size_t x) {
+    void* ptr_add(void* p, size_t x) {
         return (void*)(reinterpret_cast<uintptr_t>(p)+x);
     }
 
-    inline const void* ptr_add(const void* p, size_t x) {
+    const void* ptr_add(const void* p, size_t x) {
 		return (const void*)(reinterpret_cast<uintptr_t>(p)+x);
 	}
 
-    inline void* ptr_subtract(void* p, size_t x) {
+    void* ptr_subtract(void* p, size_t x) {
         return (void*)(reinterpret_cast<uintptr_t>(p)-x);
     }
 
-    inline const void* ptr_subtract(const void* p, size_t x) {
+    const void* ptr_subtract(const void* p, size_t x) {
         return (const void*)(reinterpret_cast<uintptr_t>(p)-x);
     }
 
-    inline uint8_t alignForwardAdjustment(const void* address, uint8_t alignment) {
+    uint8_t alignForwardAdjustment(const void* address, uint8_t alignment) {
         uint8_t adjustment = alignment - (reinterpret_cast<uintptr_t>(address)& static_cast<uintptr_t>(alignment - 1));
 
         if (adjustment == alignment) 
@@ -33,7 +33,7 @@ namespace Icicle {
     }
 
     // template<typename T>
-    inline uint8_t alignForwardAdjustmentWithHeader(void* address, uint8_t alignment) {
+    uint8_t alignForwardAdjustmentWithHeader(void* address, uint8_t alignment) {
         // if (__alignof(T) > alignment)
         //     alignment = __alignof(T);
         

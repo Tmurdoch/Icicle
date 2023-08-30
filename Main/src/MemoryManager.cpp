@@ -3,7 +3,7 @@
 
 
 namespace Icicle {
-
+    MemoryManager* MemoryManager::MemInstancePtr = nullptr;
 
     MemoryManager::MemoryManager() 
     {

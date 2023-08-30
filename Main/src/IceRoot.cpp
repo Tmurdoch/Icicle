@@ -2,9 +2,11 @@
 
 namespace Icicle {
 
+    Root* Root::instancePtr = nullptr;
+
     Root::Root() {}
 
-    int startUp()
+    int Root::startUp()
     {
         
         std::cout<<"Starting up systems"<<std::endl;

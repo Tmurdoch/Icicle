@@ -19,7 +19,7 @@ namespace Icicle{
  * https://github.com/doctest/doctest/blob/master/doc/markdown/tutorial.md
 */
 
-int main(int argc, char** argv) {
+int main(int argc, char* argv[]) {
     doctest::Context ctx;
     ctx.setOption("abort-after", 5);  // default - stop after 5 failed asserts
     ctx.applyCommandLine(argc, argv); // apply command line - argc / argv
