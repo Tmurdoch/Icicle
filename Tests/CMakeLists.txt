@@ -1,44 +1,42 @@
-cmake_minimum_required(VERSION 3.9.1)
+# cmake_minimum_required(VERSION 3.9.1)
 
-project(Icicle_test)
+# project(Icicle_test)
 
-set(CMAKE_CXX_FLAGS "-Wall")
+# set(CMAKE_CXX_FLAGS "-Wall")
 
-# check OS
-# UNIX, WIN32, WINRT, CYGWIN, APPLE are environment variables as flags set by default system
-if(UNIX)
-    message("This is a ${CMAKE_SYSTEM_NAME} system")
-elseif(WIN32)
-    message("This is a Windows System")
-endif()
-
-
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/out)
-
-#Testing
-#see add_test command, CTest***
-
-#https://cmake.org/cmake/help/book/mastering-cmake/chapter/Testing%20With%20CMake%20and%20CTest.html
-
-if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND BUILD_TESTING)
-    add_subdirectory(tests)
-endif()
-
-option(ENABLE_DOCTESTS "Include tests in the library. Setting this to OFF will remove all doctest related code.
-                    Tests in tests/*.cpp will still be enabled." ON)
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
-include(Doctest.cmake)
+# # check OS
+# # UNIX, WIN32, WINRT, CYGWIN, APPLE are environment variables as flags set by default system
+# if(UNIX)
+#     message("This is a ${CMAKE_SYSTEM_NAME} system")
+# elseif(WIN32)
+#     message("This is a Windows System")
+# endif()
 
 
-#add_test(NAME TestName COMMAND ExecutableToRun arg1 arg2 ...)
+# set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/out)
+
+# #Testing
+# #see add_test command, CTest***
+
+# #https://cmake.org/cmake/help/book/mastering-cmake/chapter/Testing%20With%20CMake%20and%20CTest.html
+
+# if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND BUILD_TESTING)
+#     add_subdirectory(tests)
+# endif()
+
+# # option(ENABLE_DOCTESTS "Include tests in the library. Setting this to OFF will remove all doctest related code.
+# #                     Tests in tests/*.cpp will still be enabled." ON)
+# # set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
+# # include(Doctest.cmake)
 
 
+# #add_test(NAME TestName COMMAND ExecutableToRun arg1 arg2 ...)
 
-add_executable(TestInstantiator Main/TestInstantiator.cpp)
-# target_link_libraries(TestInstantiator vtkCommon)
-target_link_libraries(TestInstantiator PUBLIC doctest)
-add_test(NAME TestInstantiator
-         COMMAND TestInstantiator)
+# add_executable(TestInstantiator Main/TestInstantiator.cpp)
+# # target_link_libraries(TestInstantiator vtkCommon)
+# # target_link_libraries(TestInstantiator PUBLIC doctest)
+# add_test(NAME TestInstantiator
+#          COMMAND TestInstantiator)
 
 
 

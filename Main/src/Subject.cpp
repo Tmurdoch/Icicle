@@ -1,25 +1,26 @@
 #include "Observer.cpp"
 
+#define MAX_OBSERVERS 10
+
 class Subject
 {
 private:
   Observer* observers_[MAX_OBSERVERS];
   int numObservers_;
-};
-
-class Subject
-{
 
 public:
 
 void addObserver(Observer* observer)
   {
     // Add to array...
+    observers_[numObservers_] = observer;
+    numObservers_++;
   }
 
 void removeObserver(Observer* observer)
   {
-    // Remove from array...
+  //stub
+
   }
 
   // Other stuff...

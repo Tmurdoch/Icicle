@@ -1,27 +1,16 @@
+
+#include "Debug.h"
 #include <stdio.h>
 #include <stddef.h>
-#include <assert.h>
 #include <stdint.h>
+#include <assert.h>
 
-#if ASSERTIONS_ENABLED
-// define some inline assembly that causes a break
-// into the debugger -- this will be different on each
-// target CPU
-#define debugBreak() asm { int 3 }
-// check the expression and fail if it is false
-#define ASSERT(expr) \
-if (expr) { } \
-else \
-{ \
-reportAssertionFailure(#expr, \
-__FILE__, __LINE__); \
-debugBreak(); \
-}
-#else
-#define ASSERT(expr) // evaluates to nothing
-#endif
+#ifndef ALLOCATOR_H
+#define ALLOCATOR_H
 
-/**
+
+namespace Icicle {
+/*
  * compliant with std method allocators?
 */
 
@@ -40,8 +29,17 @@ Allocator myAllocator(sizeof(memoryBlock), memoryBlock);
 */
 
 {
+
+    protected:
+
+    void* _start;
+    size_t _size;
+    size_t _used_memory;
+    size_t _num_allocations;
     public:
 
+
+    public:
     Allocator(size_t size, void* start)
     {
         _start = start; //starting address of memory block
@@ -50,25 +48,17 @@ Allocator myAllocator(sizeof(memoryBlock), memoryBlock);
         _num_allocations = 0;
     }
 
-    virtual ~Allocator()
-    {
-        ASSERT(_num_allocations == 0 && _used_memory == 0);
-        _start = nullptr; _size = 0;
-    }
+    ~Allocator();
+    
 
     virtual void* allocate(size_t size, uint8_t alignment = 4) = 0;
     virtual void deallocate(void* p) = 0;
     void* getStart() const { return _start; }
-    size_t getSize() const { return _size; }
-    size_t getUsedMemory() const { return _used_memory; }
-    size_t getNumAllocations() const { return _num_allocations; }
+    size_t getSize() const;
+    size_t getUsedMemory() const;
+    size_t getNumAllocations() const;
 
-    protected:
-
-    void* _start;
-    size_t _size;
-    size_t _used_memory;
-    size_t _num_allocations;
+    
 
 };
 
@@ -91,6 +81,8 @@ namespace allocator
 
 
     /**
+     * @PREREQS: length != 0, check before calling
+     * 
      * this code snippet seems to mix C-style memory manipulation with C++ object construction, 
      * which can be error-prone. Using standard containers like std::vector or smart pointers
      *  like std::unique_ptr might be a more robust and safer way to manage dynamic arrays in 
@@ -98,7 +90,7 @@ namespace allocator
     */
     template <class T> T* allocateArray(Allocator& allocator, size_t length)
     {
-        ASSERT(length != 0);
+        // _assert(length != 0);
         uint8_t headerSize = sizeof(size_t)/sizeof(T);
 
         //Allocate extra space to store array length in the bytes before array
@@ -112,9 +104,13 @@ namespace allocator
         return p;
     }
 
+
+    /**
+    *  * @PREREQS: array != nullptr, check before calling
+    */
     template <class T> void deallocateArray(Allocator& allocator, T* array)
     {
-        ASSERT(array != nullptr);
+        // ASSERT(array != nullptr);
         size_t length = *( ((size_t*)array) - 1 );
 
         for (size_t i = 0; i < length; i++) array.~T();
@@ -126,3 +122,7 @@ namespace allocator
         allocator.deallocate(array - headerSize);
     }
 }
+}
+
+#endif
+

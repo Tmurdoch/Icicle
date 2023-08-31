@@ -1,3 +1,14 @@
+struct Entity 
+{
+  /* data */
+};
+
+struct Event
+{
+  /* data */
+};
+
+
 class Observer
 {
 public:

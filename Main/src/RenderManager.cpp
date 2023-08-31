@@ -1,5 +1,10 @@
 class RenderManager
 {
+    void updateCamera();
+    void updateSceneElements();
+    void renderScene();
+    void swapBuffers();
+    bool quit;
 public:
     RenderManager() 
     {
