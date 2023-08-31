@@ -12,7 +12,7 @@
 #include "Allocator.h"
 #include "IcicleMath.h"
 
-namespace Icicle{
+
 /**
  * USAGE: cmake -S . in tests directory, then make all, then executable will be out/TestInstantiator
  * 
@@ -35,6 +35,7 @@ int main(int argc, char* argv[]) {
     return res; // + your_program_res
 }
 
+namespace Icicle{
 TEST_CASE("Determine whether given pointer resides in stack") {
     Icicle::Root::getInstance()->startUp();
 }
