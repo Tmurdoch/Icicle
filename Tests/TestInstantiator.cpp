@@ -6,7 +6,7 @@
 // #include "../../Main/Memory/Allocator.h"
 // #include "../../Main/Math/IcicleMath.h"
 
-#include "../doctest.h"
+#include "doctest.h"
 #include "IceRoot.h"
 #include "StackAllocator.h"
 #include "Allocator.h"

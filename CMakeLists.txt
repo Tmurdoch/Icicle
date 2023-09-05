@@ -5,9 +5,9 @@
 #environment variables: https://cmake.org/cmake/help/latest/manual/cmake-env-variables.7.html
 
 # Have two builds minimum, debug and release
-
+cmake_minimum_required(VERSION 3.15)
 project(Icicle)
-cmake_minimum_required(VERSION 3.9.1)
+
 
 
 
@@ -58,24 +58,29 @@ list(APPEND HEADER_FILES
 
 
 
-install(FILES ${HEADER_FILES} DESTINATION lib)
+install(FILES ${HEADER_FILES} DESTINATION "${PROJECT_BINARY_DIR}/lib")
 
 
 add_library(IcicleMain SHARED ${SOURCE_FILES} ${HEADER_FILES} )
 
 target_include_directories(IcicleMain PUBLIC
 "${CMAKE_CURRENT_SOURCE_DIR}/Main/Include"
-"${CMAKE_BINARY_DIR}/lib")
+"${CMAKE_BINARY_DIR}/lib"
+"${CMAKE_BINARY_DIR}/bin")
 
 target_link_directories(IcicleMain PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/Main/Include")
 
 
 
-add_executable(TestInstantiator Tests/Main/TestInstantiator.cpp )
+add_executable(TestInstantiator "Tests/TestInstantiator.cpp" )
+target_include_directories(TestInstantiator PRIVATE "/Main/Include"
+)
 
-target_link_libraries(TestInstantiator IcicleMain)
-# target_link_libraries(TestInstantiator vtkCommon)
-
+if(UNIX)
+    target_link_libraries(TestInstantiator IcicleMain)
+elseif(WIN32)
+    target_link_libraries(TestInstantiator lib/IcicleMain)
+endif()
 
 target_compile_options(IcicleMain PRIVATE $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>,$<CXX_COMPILER_ID:GNU>>:"-Wextra -Wall -Wundef -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wcast-qual -Wswitch-default -Wswitch-enum -Wconversion -Wunreachable-code"> $<$<CXX_COMPILER_ID:MSVC>:/W4>)
 
