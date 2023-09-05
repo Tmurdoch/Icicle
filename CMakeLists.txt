@@ -6,11 +6,12 @@
 
 # Have two builds minimum, debug and release
 
+project(Icicle)
 cmake_minimum_required(VERSION 3.9.1)
 
-project(Icicle)
 
-set(CMAKE_CXX_FLAGS "-Wextra -Wall -Wundef -Wshadow -Wpointer-arith -Wcast-align -Wstrict-overflow=5 -Wwrite-strings -Waggregate-return -Wcast-qual -Wswitch-default -Wswitch-enum -Wconversion -Wunreachable-code")
+
+#set(CMAKE_CXX_FLAGS "-Wextra -Wall -Wundef -Wshadow -Wpointer-arith -Wcast-align -Wstrict-overflow=5 -Wwrite-strings -Waggregate-return -Wcast-qual -Wswitch-default -Wswitch-enum -Wconversion -Wunreachable-code")
 
 # check OS
 # UNIX, WIN32, WINRT, CYGWIN, APPLE are environment variables as flags set by default system
@@ -74,6 +75,9 @@ add_executable(TestInstantiator Tests/Main/TestInstantiator.cpp )
 
 target_link_libraries(TestInstantiator IcicleMain)
 # target_link_libraries(TestInstantiator vtkCommon)
+
+
+target_compile_options(IcicleMain PRIVATE $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>,$<CXX_COMPILER_ID:GNU>>:"-Wextra -Wall -Wundef -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wcast-qual -Wswitch-default -Wswitch-enum -Wconversion -Wunreachable-code"> $<$<CXX_COMPILER_ID:MSVC>:/W4>)
 
 
 add_test(NAME TestInstantiator

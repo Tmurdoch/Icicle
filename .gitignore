@@ -10,3 +10,4 @@ Achievements.cpp
 .vscode
 _deps
 out.exe
+.vs
