@@ -44,24 +44,23 @@ list(APPEND SOURCE_FILES
 "${CMAKE_SOURCE_DIR}/Main/src/MemoryManager.cpp"
 )
 
-file(GLOB HEADER_FILES "${CMAKE_SOURCE_DIR}/Main/src/*.h")
+file(GLOB HEADER_FILES "${CMAKE_SOURCE_DIR}/Main/Include/*.h")
 list(APPEND HEADER_FILES 
     "${CMAKE_SOURCE_DIR}/Main/Include/IcicleMath.h"
     "${CMAKE_SOURCE_DIR}/Main/Include/Allocator.h"
     "${CMAKE_SOURCE_DIR}/Main/Include/StackAllocator.h"
     "${CMAKE_SOURCE_DIR}/Main/Include/MemoryManager.h"
     "${CMAKE_SOURCE_DIR}/Main/Include/Resource.h"
+    "${CMAKE_SOURCE_DIR}/Main/Include/IceRoot.h"
 )
-
-
-
-
 
 
 install(FILES ${HEADER_FILES} DESTINATION "${PROJECT_BINARY_DIR}/lib")
 
 
 add_library(IcicleMain SHARED ${SOURCE_FILES} ${HEADER_FILES} )
+
+target_compile_definitions(IcicleMain PUBLIC IcicleMain)
 
 target_include_directories(IcicleMain PUBLIC
 "${CMAKE_CURRENT_SOURCE_DIR}/Main/Include"
@@ -73,22 +72,18 @@ target_link_directories(IcicleMain PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/Main/Incl
 
 
 add_executable(TestInstantiator "Tests/TestInstantiator.cpp" )
-target_include_directories(TestInstantiator PRIVATE "/Main/Include"
-)
 
-if(UNIX)
-    target_link_libraries(TestInstantiator IcicleMain)
-elseif(WIN32)
-    target_link_libraries(TestInstantiator lib/IcicleMain)
-endif()
+target_link_libraries(TestInstantiator PUBLIC "IcicleMain")
+target_link_directories(TestInstantiator PUBLIC "lib/IcicleMain.lib")
 
-target_compile_options(IcicleMain PRIVATE $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>,$<CXX_COMPILER_ID:GNU>>:"-Wextra -Wall -Wundef -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wcast-qual -Wswitch-default -Wswitch-enum -Wconversion -Wunreachable-code"> $<$<CXX_COMPILER_ID:MSVC>:/W4>)
+target_compile_options(IcicleMain PRIVATE $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>,$<CXX_COMPILER_ID:GNU>>:> $<$<CXX_COMPILER_ID:MSVC>:/W4>)
 
 
+
+#TODO: find comment hotkey
 add_test(NAME TestInstantiator
          COMMAND TestInstantiator)
 
-         
          set_source_files_properties(
             $(doctest.h)
             PROPERTIES
