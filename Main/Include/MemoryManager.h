@@ -42,12 +42,8 @@ class MemoryManager : public IMemoryManager
     static MemoryManager* MemInstancePtr;
     static void startUp();
     void shutDown();
-    void* operator new (size_t size);
-    void* operator new[] (size_t size);
     //delete should be called AFTER the destructor is called on object
     //this function does not call objects destructor
-    void operator delete (void* pointerToDelete);
-    void operator delete[ ] (void* arrayToDelete);
 
     void* allocate(size_t size);
     void free(void* address);
@@ -60,7 +56,8 @@ class MemoryManager : public IMemoryManager
      * TODO: implement a constructor function
     */
     static MemoryManager* getInstance() {
-        if (MemInstancePtr == NULL) {
+        if (MemInstancePtr == NULL) 
+        {
             MemInstancePtr = new MemoryManager();
         }
         return MemInstancePtr;
