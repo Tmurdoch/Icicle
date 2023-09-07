@@ -4,88 +4,16 @@
 
 #environment variables: https://cmake.org/cmake/help/latest/manual/cmake-env-variables.7.html
 
-# Have two builds minimum, debug and release
+cmake_minimum_required (VERSION 3.8)
 
-project(Icicle)
-cmake_minimum_required(VERSION 3.9.1)
-
-
-
-#set(CMAKE_CXX_FLAGS "-Wextra -Wall -Wundef -Wshadow -Wpointer-arith -Wcast-align -Wstrict-overflow=5 -Wwrite-strings -Waggregate-return -Wcast-qual -Wswitch-default -Wswitch-enum -Wconversion -Wunreachable-code")
-
-# check OS
-# UNIX, WIN32, WINRT, CYGWIN, APPLE are environment variables as flags set by default system
-if(UNIX)
-    message("This is a ${CMAKE_SYSTEM_NAME} system")
-elseif(WIN32)
-    message("This is a Windows System")
+# Enable Hot Reload for MSVC compilers if supported.
+if (POLICY CMP0141)
+  cmake_policy(SET CMP0141 NEW)
+  set(CMAKE_MSVC_DEBUG_INFORMATION_FORMAT "$<IF:$<AND:$<C_COMPILER_ID:MSVC>,$<CXX_COMPILER_ID:MSVC>>,$<$<CONFIG:Debug,RelWithDebInfo>:EditAndContinue>,$<$<CONFIG:Debug,RelWithDebInfo>:ProgramDatabase>>")
 endif()
 
+project ("Icicle")
 
-if (NOT CMAKE_BUILD_TYPE)
-  # CMake defaults to leaving CMAKE_BUILD_TYPE empty. This screws up
-  # differentiation between debug and release builds.
-  set(CMAKE_BUILD_TYPE "None" CACHE STRING "Choose the type of build, options are: None (CMAKE_CXX_FLAGS or CMAKE_C_FLAGS used) Debug Release" FORCE)
-endif ()
-
-
-# Specify build paths
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/lib")
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/lib")
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/bin")
-
-#cmake_policy(SET CMP0079 NEW)
-
-file(GLOB SOURCE_FILES "${CMAKE_SOURCE_DIR}/Main/src/*.cpp")
-list(APPEND SOURCE_FILES
-"${CMAKE_SOURCE_DIR}/Main/src/IcicleMath.cpp"
-"${CMAKE_SOURCE_DIR}/Main/src/Allocator.cpp"
-"${CMAKE_SOURCE_DIR}/Main/src/StackAllocator.cpp"
-"${CMAKE_SOURCE_DIR}/Main/src/MemoryManager.cpp"
-)
-
-file(GLOB HEADER_FILES "${CMAKE_SOURCE_DIR}/Main/src/*.h")
-list(APPEND HEADER_FILES 
-    "${CMAKE_SOURCE_DIR}/Main/Include/IcicleMath.h"
-    "${CMAKE_SOURCE_DIR}/Main/Include/Allocator.h"
-    "${CMAKE_SOURCE_DIR}/Main/Include/StackAllocator.h"
-    "${CMAKE_SOURCE_DIR}/Main/Include/MemoryManager.h"
-    "${CMAKE_SOURCE_DIR}/Main/Include/Resource.h"
-)
-
-
-
-
-
-
-install(FILES ${HEADER_FILES} DESTINATION lib)
-
-
-add_library(IcicleMain SHARED ${SOURCE_FILES} ${HEADER_FILES} )
-
-target_include_directories(IcicleMain PUBLIC
-"${CMAKE_CURRENT_SOURCE_DIR}/Main/Include"
-"${CMAKE_BINARY_DIR}/lib")
-
-target_link_directories(IcicleMain PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/Main/Include")
-
-
-
-add_executable(TestInstantiator Tests/Main/TestInstantiator.cpp )
-
-target_link_libraries(TestInstantiator IcicleMain)
-# target_link_libraries(TestInstantiator vtkCommon)
-
-
-target_compile_options(IcicleMain PRIVATE $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>,$<CXX_COMPILER_ID:GNU>>:"-Wextra -Wall -Wundef -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wcast-qual -Wswitch-default -Wswitch-enum -Wconversion -Wunreachable-code"> $<$<CXX_COMPILER_ID:MSVC>:/W4>)
-
-
-add_test(NAME TestInstantiator
-         COMMAND TestInstantiator)
-
-         
-         set_source_files_properties(
-            $(doctest.h)
-            PROPERTIES
-            COMPILE_FLAGS " "
-        )
+# Include sub-projects.
+add_subdirectory ("Main")
+add_subdirectory ("Tests")

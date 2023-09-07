@@ -27,6 +27,9 @@ namespace Icicle {
         //TODO: setup listeners
     }
 
+
+    //TODO: shutdown function, make sure destroy memory before destructor called 
+
     void* MemoryManager::allocate(size_t size) {
         printf("allocation called succesfully");
         return 0;
@@ -35,24 +38,6 @@ namespace Icicle {
         printf("free called succesfully");
     }
 
-    void *MemoryManager::operator new(size_t size)
-    {
-        return MemoryManager::getInstance()->allocate(size);
-    }
-
-    void *MemoryManager::operator new[](size_t size)
-    {
-        return MemoryManager::getInstance()->allocate(size);
-    }
-
-    void MemoryManager::operator delete (void* pointerToDelete)
-    {
-        MemoryManager::getInstance()->free(pointerToDelete);
-    }
-
-    void MemoryManager::operator delete[ ] (void* arrayToDelete)
-    {
-        MemoryManager::getInstance()->free(arrayToDelete);
-    }
-
 }
+
+
