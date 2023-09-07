@@ -74,7 +74,6 @@ target_link_directories(IcicleMain PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/Main/Incl
 add_executable(TestInstantiator "Tests/TestInstantiator.cpp" )
 
 target_link_libraries(TestInstantiator PUBLIC "IcicleMain")
-target_link_directories(TestInstantiator PUBLIC "lib/IcicleMain.lib")
 
 target_compile_options(IcicleMain PRIVATE $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>,$<CXX_COMPILER_ID:GNU>>:> $<$<CXX_COMPILER_ID:MSVC>:/W4>)
 
