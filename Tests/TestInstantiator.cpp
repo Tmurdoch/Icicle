@@ -12,11 +12,13 @@
 #include "Allocator.h"
 #include "IcicleMath.h"
 
+#include <catch2/catch_test_macros.hpp>
+
 
 /**
  * USAGE: cmake -S . in tests directory, then make all, then executable will be out/TestInstantiator
  * 
- * https://github.com/doctest/doctest/blob/master/doc/markdown/tutorial.md
+ * https://github.com/catchorg/Catch2/blob/devel/docs/tutorial.md#top
 */
 
 int main(int argc, char* argv[]) {
@@ -28,9 +30,9 @@ int main(int argc, char* argv[]) {
 }
 
 //namespace Icicle{
-//TEST_CASE("Determine whether given pointer resides in stack") {
-//    Icicle::Root::getInstance()->startUp();
-//}
+TEST_CASE("Determine whether given pointer resides in stack") {
+   Icicle::Root::getInstance()->startUp();
+}
 //
 //TEST_CASE("Stack Allocator") {
 //
