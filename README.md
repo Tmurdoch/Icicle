@@ -8,7 +8,7 @@ As of now Icicle works on both Windows and Linux (Ubuntu 22).
 
 Icicle leverages the following technologies and libraries to ensure a robust development environment:
 - [MINGW-64](https://code.visualstudio.com/docs/cpp/config-mingw "MINGW-64") for VScode, using gcc, gdb, g++ version 13.1
-- [catch2]((https://github.com/catchorg/Catch2/blob/devel/docs/tutorial.md#top)) for testing, 
+- [catch2](https://github.com/catchorg/Catch2/blob/devel/docs/tutorial.md#top) for testing, 
 
 
 
