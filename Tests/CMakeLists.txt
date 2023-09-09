@@ -1,6 +1,6 @@
 include_directories(${PROJECT_SOURCE_DIR}/Main/Include)
 
-add_executable(TestInt TestInstantiator.cpp)
+add_executable(testinstantiator TestInstantiator.cpp)
 
 #target_link_libraries(Test IcicleMain)
 
@@ -16,16 +16,16 @@ GIT_TAG		   v3.0.1
 
 FetchContent_MakeAvailable(Catch2)
 
-target_link_libraries(TestInt PRIVATE IcicleMain Catch2::Catch2)
+target_link_libraries(testinstantiator PRIVATE IcicleMain Catch2::Catch2)
 
 
 list(APPEND CMAKE_MODULE_PATH ${catch2_SOURCE_DIR}/extras)
 include(Catch)
-catch_discover_tests(TestInt)
+catch_discover_tests(testinstantiator)
 
 enable_testing()
 
 add_test(
 	NAME IceTest
-	COMMAND $<TARGET_FILE:TestInt> --sucess
+	COMMAND $<TARGET_FILE:testinstantiator> --success
 )
