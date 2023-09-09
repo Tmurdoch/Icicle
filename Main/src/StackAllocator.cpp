@@ -6,9 +6,9 @@ namespace Icicle {
 StackAllocator::StackAllocator(size_t size, void* start) : Allocator(size, start), _current_pos(start)
 {
     assert(size > 0);
-    // #if _DEBUG
-    //     _prev_position = nullptr;
-    // #endif
+     #if _DEBUG
+         _prev_position = nullptr;
+     #endif
 
 }
 
@@ -21,6 +21,12 @@ StackAllocator::~StackAllocator()
     _current_pos = nullptr;
 }
 
+
+/**
+Primitive data is said to be aligned if the memory address where it is stored
+is a multiple of the size of the primitive. A data aggregate is said to be
+aligned if each primitive element in the aggregate is aligned.
+**/
 uint8_t alignForwardAdjustment(const void* address, uint8_t alignment) {
     uint8_t adjustment = alignment - (reinterpret_cast<uintptr_t>(address)& static_cast<uintptr_t>(alignment - 1));
     if (adjustment == alignment) 
@@ -28,12 +34,27 @@ uint8_t alignForwardAdjustment(const void* address, uint8_t alignment) {
     
     return adjustment;
 }
-// template<typename T>
+
+/**
+* Non-template version
+**/
 uint8_t alignForwardAdjustmentWithHeader(void* address, uint8_t alignment) {
-    // if (__alignof(T) > alignment)
-    //     alignment = __alignof(T);
-    
-    // uint8_t adjustment = sizeof(T) + alignForwardAdjustment(Math::ptr_add(address, sizeof(T)), alignment);
+    uint8_t adjustment = alignForwardAdjustment(address, alignment);
+    return adjustment;
+}
+
+
+/**
+* Template version
+* TODO: find out if this is necessary?
+* see: https://www.gamedev.net/tutorials/programming/general-and-gameplay-programming/c-custom-memory-allocation-r3010/
+**/
+template<typename T>
+uint8_t alignForwardAdjustmentWithHeader(void* address, uint8_t alignment) {
+    if (__alignof(T) > alignment)
+         alignment = __alignof(T);
+
+    uint8_t adjustment = sizeof(T) + alignForwardAdjustment(Icicle::ptr_add(address, sizeof(T)), alignment);
     uint8_t adjustment = alignForwardAdjustment(address, alignment);
     return adjustment;
 }

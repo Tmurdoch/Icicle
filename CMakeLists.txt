@@ -17,3 +17,5 @@ project ("Icicle")
 # Include sub-projects.
 add_subdirectory ("Main")
 add_subdirectory ("Tests")
+
+enable_testing()

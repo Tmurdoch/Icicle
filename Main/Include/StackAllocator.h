@@ -6,10 +6,8 @@
 #include "Allocator.h"
 
 #include <stddef.h>
-//#include "../Math/IcicleMath.h"
 #include "IcicleMath.h"
 #include <string>
-#include "Debug.h"
 #include <cstddef>
 
 
@@ -50,20 +48,19 @@ class StackAllocator : public Allocator
     //prevent copies
     StackAllocator& operator=(const StackAllocator&);
 
+    #if _DEBUG
+        void* _prev_position;
+    #endif
 
     struct AllocationHeader
-    {
+        {
         #if _DEBUG
             void* prev_address;
         #endif
 
         uint8_t alignment;
         uint8_t adjustment;
-    };
-
-    #if _DEBUG
-        void* _prev_position;
-    #endif
+        };
 
     
 

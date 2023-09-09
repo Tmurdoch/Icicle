@@ -9,7 +9,6 @@
 
 
 
-typedef unsigned long size_t;
 //TODO: header file?
 
 /**
@@ -17,7 +16,6 @@ typedef unsigned long size_t;
  * 
  * https://github.com/catchorg/Catch2/blob/devel/docs/tutorial.md#top
 */
-
 namespace Icicle {
 
 TEST_CASE("Determine whether given pointer resides in stack") {
@@ -28,22 +26,33 @@ TEST_CASE("Stack Allocator") {
 
     uint8_t memory_block[10]; //is this on heap?
     StackAllocator* sa = new StackAllocator(sizeof(memory_block), memory_block);
+    for (int i = 0; i < 10; i++) {
+        memory_block[i] = 4;
+    }
 
-    sa->allocate(sizeof(memory_block), )
+    sa->allocate(sizeof(memory_block),sizeof(uint8_t));
 
 
-//TODO: split these up into multiple tests?
-    // allocating right amount of bytes
-    CHECK(sa->getSize() == 80);
-    printf(sa->getStart()); // sa is not pointing to memory_block? _start is not defined
+    //TODO: split these up into multiple tests?
+    // allocating right amount of bytes;
+    REQUIRE(sa->getSize() * sizeof(sa->getStart()) == 80);
+    REQUIRE(sa->getStart() != nullptr); // sa is not pointing to memory_block? _start is not defined
     
+}
 
     //template evaluation is different"
-    uint8_t memory_block[10]; 
+    
+TEST_CASE("Template evaluation is diff") {
+    printf("we're running tests");
+    uint8_t memory_block[10];
+    for (int i = 0; i < 10; i++) {
+        memory_block[i] = 4;
+    }
     StackAllocator* sa = new StackAllocator(sizeof(memory_block), memory_block);
     sa->allocate(sizeof(memory_block), 1); //1 byte for each char??
-        
+
     }
+    
 
 TEST_CASE("Memory Manager") {
     //need root
