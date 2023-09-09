@@ -1,79 +1,82 @@
-#define DOCTEST_CONFIG_IMPLEMENT
-
-// #include "../doctest.h"
-// #include "../../Main/src/IceRoot.h" 
-// #include "../../Main/Memory/StackAllocator.h"
-// #include "../../Main/Memory/Allocator.h"
-// #include "../../Main/Math/IcicleMath.h"
-
+#define CONFIG_CATCH_MAIN
 
 #include "IceRoot.h"
 #include "StackAllocator.h"
 #include "Allocator.h"
 #include "IcicleMath.h"
 
+#include <catch2/catch_test_macros.hpp>
+
+
+
+//TODO: header file?
 
 /**
  * USAGE: cmake -S . in tests directory, then make all, then executable will be out/TestInstantiator
  * 
- * https://github.com/doctest/doctest/blob/master/doc/markdown/tutorial.md
+ * https://github.com/catchorg/Catch2/blob/devel/docs/tutorial.md#top
 */
+namespace Icicle {
 
-int main(int argc, char* argv[]) {
+TEST_CASE("Determine whether given pointer resides in stack") {
+   Icicle::Root::getInstance()->startUp();
+    }
+
+TEST_CASE("Stack Allocator") {
+
+    uint8_t memory_block[10]; //is this on heap?
+    StackAllocator* sa = new StackAllocator(sizeof(memory_block), memory_block);
+    for (int i = 0; i < 10; i++) {
+        memory_block[i] = 4;
+    }
+
+    sa->allocate(sizeof(memory_block),sizeof(uint8_t));
+
+
+    //TODO: split these up into multiple tests?
+    // allocating right amount of bytes;
+    REQUIRE(sa->getSize() * sizeof(sa->getStart()) == 80);
+    REQUIRE(sa->getStart() != nullptr); // sa is not pointing to memory_block? _start is not defined
     
-    Icicle::Root::getInstance()->startUp();
-
-
-    return 0; // + your_program_res
 }
 
-//namespace Icicle{
-//TEST_CASE("Determine whether given pointer resides in stack") {
-//    Icicle::Root::getInstance()->startUp();
-//}
-//
-//TEST_CASE("Stack Allocator") {
-//
-//    uint8_t memory_block[10]; 
-//    StackAllocator* sa = new StackAllocator(sizeof(memory_block), memory_block);
-//
-//    SUBCASE("allocating right amount of bytes") {
-//    
-//    // sa->allocate(16, 4); //not the way to do this
-//    // CHECK(sa->getSize() == 16);
-//    //printf(sa->getStart());
-//    }
-//
-//    SUBCASE("template evaluation is different") {
-//        uint8_t memory_block[10]; 
-//        StackAllocator* sa = new StackAllocator(sizeof(memory_block), memory_block);
-//        sa->allocate(sizeof(memory_block), 1); //1 byte for each char??
-//        
-//    }
-//}
-//TEST_CASE("Memory Manager") {
-//    //need root
-//    
-//
-//    SUBCASE("allocate and free are called correctly from memorymanager") {
-//        //should be two print statements if this works
-//    }
-//
-//}
-//
-//TEST_CASE("Math Lib") {
-//    int a = 10;
-//    int* ptr = &a;
-//    Icicle::ptr_add(ptr, 10);
-//
-//}
-//TEST_CASE("Memory from stack allocator is freed correctly") {
-//    
-//}
-//
-//TEST_CASE("Both top and bottom of stack initialized and freed correctly") {
-//
-//}
-//
-//
-//}
+    //template evaluation is different"
+    
+TEST_CASE("Template evaluation is diff") {
+    printf("we're running tests");
+    uint8_t memory_block[10];
+    for (int i = 0; i < 10; i++) {
+        memory_block[i] = 4;
+    }
+    StackAllocator* sa = new StackAllocator(sizeof(memory_block), memory_block);
+    sa->allocate(sizeof(memory_block), 1); //1 byte for each char??
+
+    }
+    
+
+TEST_CASE("Memory Manager") {
+    //need root
+    
+
+    // allocate and free are called correctly from memorymanager") {
+        //should be two print statements if this works
+    
+
+}
+
+TEST_CASE("Math Lib") {
+    int a = 10;
+    int* ptr = &a;
+    Icicle::ptr_add(ptr, 10);
+
+}
+TEST_CASE("Memory from stack allocator is freed correctly") {
+    
+}
+
+TEST_CASE("Both top and bottom of stack initialized and freed correctly") {
+
+}
+
+
+}

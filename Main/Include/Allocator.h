@@ -1,5 +1,4 @@
 
-#include "Debug.h"
 #include <stdio.h>
 #include <stddef.h>
 #include <stdint.h>
@@ -19,13 +18,13 @@ class Allocator
  * USAGE: 
  * 
  * 
-// Pre-allocate a memory block of size 1024 bytes
-char memoryBlock[1024];
+ * Pre-allocate a memory block of size x bytes
+ * char memoryBlock[x];
 
-// Create an allocator instance using the pre-allocated memory block
-Allocator myAllocator(sizeof(memoryBlock), memoryBlock);
+ * Create an allocator instance using the pre-allocated memory block
+ * Allocator myAllocator(sizeof(memoryBlock), memoryBlock);
 
-// Now you can use myAllocator to manage memory within the provided memoryBlock.
+ * Now you can use myAllocator to manage memory within the provided memoryBlock.
 */
 
 {

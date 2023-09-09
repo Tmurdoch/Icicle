@@ -11,3 +11,4 @@ Achievements.cpp
 _deps
 out.exe
 .vs
+CMakeSettings.json
