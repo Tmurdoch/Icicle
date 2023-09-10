@@ -26,3 +26,7 @@ Make sure delete CmakeCache and CmakeFiles directory before building
 
 
 The decision not to employ game engines like Unity or Unreal was driven by the need to have greater autonomy in optimizing performance, particularly in the face of challenging real-time strategy (RTS) elements.
+
+
+## Rendering Library
+https://bkaradzic.github.io/bgfx/overview.html
