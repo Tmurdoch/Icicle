@@ -1,5 +1,11 @@
+#include "RenderManager.h"
+
+
+
+
 class RenderManager
 {
+    //TODO: Separate channel this classes debug info
     void updateCamera();
     void updateSceneElements();
     void renderScene();
@@ -24,6 +30,7 @@ public:
     
 
     int Renderloop() {
+    https://github.com/bkaradzic/bgfx/blob/master/examples/00-helloworld/helloworld.cpp
     while (!quit)
         {
         // Update the camera transform based on interactive

@@ -12,15 +12,18 @@
 //TODO: header file?
 
 /**
- * USAGE: cmake -S . in tests directory, then make all, then executable will be out/TestInstantiator
+********************TESTS***************
+* 
+ *  cmake -S . in tests directory, then make all, then executable will be out/TestInstantiator
  * 
  * https://github.com/catchorg/Catch2/blob/devel/docs/tutorial.md#top
 */
-namespace Icicle {
 
-TEST_CASE("Determine whether given pointer resides in stack") {
-   Icicle::Root::getInstance()->startUp();
-    }
+
+
+//Icicle Namespace specific/white box?
+
+namespace Icicle {
 
 TEST_CASE("Stack Allocator") {
 
@@ -52,17 +55,6 @@ TEST_CASE("Template evaluation is diff") {
     sa->allocate(sizeof(memory_block), 1); //1 byte for each char??
 
     }
-    
-
-TEST_CASE("Memory Manager") {
-    //need root
-    
-
-    // allocate and free are called correctly from memorymanager") {
-        //should be two print statements if this works
-    
-
-}
 
 TEST_CASE("Math Lib") {
     int a = 10;
@@ -77,6 +69,20 @@ TEST_CASE("Memory from stack allocator is freed correctly") {
 TEST_CASE("Both top and bottom of stack initialized and freed correctly") {
 
 }
+
+
+}
+
+
+
+//Black box tests, no namespace
+
+TEST_CASE("Determine whether given pointer resides in stack") {
+    Icicle::Root::getInstance()->startUp();
+}
+
+TEST_CASE("Render triangle where triangle is in memory manager") {
+    Icicle::Root::getInstance()->startUp();
 
 
 }
