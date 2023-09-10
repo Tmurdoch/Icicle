@@ -21,7 +21,7 @@ Icicle leverages the following technologies and libraries to ensure a robust dev
 #### Linux (Make)
 Make sure delete CmakeCache and CmakeFiles directory before building
 - CMake for build: 
-    1. use 'cmake -S . -B build' -G "Unix Makefiles" #builds into build/ diretory
+    1. use 'cmake -S . -B [build directory] -G "Unix Makefiles" #builds into build/ diretory
     2. then cd into build and make all
 
 
