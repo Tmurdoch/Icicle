@@ -3,33 +3,25 @@
 
 
 
-class RenderManager
-{
-    //TODO: Separate channel this classes debug info
-    void updateCamera();
-    void updateSceneElements();
-    void renderScene();
-    void swapBuffers();
-    bool quit;
-public:
-    RenderManager() 
+
+    RenderManager::RenderManager() 
     {
         // do nothing, see http://ce.eng.usc.ac.ir/files/1511334027376.pdf pg.261
         // use startUp() instead to make sure order is preserved
     }
-    ~RenderManager() 
+    RenderManager::~RenderManager()
     {
         // do nothing
     }
 
-    void startUp()
+    void RenderManager::startUp()
     {
         // start up manager...
     }
 
     
 
-    int Renderloop() {
+    int RenderManager::render_loop() {
     https://github.com/bkaradzic/bgfx/blob/master/examples/00-helloworld/helloworld.cpp
     while (!quit)
         {
@@ -50,8 +42,8 @@ public:
         swapBuffers();
         }
     }
-
-void shutDown()
+    
+    void RenderManager::shutDown()
     {
         //shut down manager...
     }
