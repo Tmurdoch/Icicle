@@ -55,7 +55,6 @@ uint8_t alignForwardAdjustmentWithHeader(void* address, uint8_t alignment) {
          alignment = __alignof(T);
 
     uint8_t adjustment = sizeof(T) + alignForwardAdjustment(Icicle::ptr_add(address, sizeof(T)), alignment);
-    uint8_t adjustment = alignForwardAdjustment(address, alignment);
     return adjustment;
 }
 
@@ -89,7 +88,9 @@ void* StackAllocator::allocate(size_t size, uint8_t alignment)
 
 void StackAllocator::deallocate(void* p)
 {
-    assert( p == _prev_position );
+    #if _DEBUG
+        assert( p == _prev_position );
+    #endif
 
     //Access the AllocationHeader in the bytes before p
     AllocationHeader* header = (AllocationHeader*)(Icicle::ptr_subtract(p, sizeof(AllocationHeader)));

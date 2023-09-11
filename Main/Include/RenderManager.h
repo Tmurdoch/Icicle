@@ -16,15 +16,21 @@ memory class (object will be rendered from memory), Game logic class?
 *   - What's the first thing we're going to render? --> think of MVP (Minimum viable product)
 */
 
-
+namespace Icicle {
 class RenderManager
 {
+    RenderManager();
+    ~RenderManager();
     //TODO: Separate channel this classes debug info
     void updateCamera();
     void updateSceneElements();
     void renderScene();
     void swapBuffers();
+    void startUp();
+    void shutDown();
     bool quit;
-public:
+
+    public:
     int render_loop();
+};
 }

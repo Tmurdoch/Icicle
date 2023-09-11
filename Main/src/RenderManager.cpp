@@ -2,27 +2,29 @@
 
 
 
+namespace Icicle {
 
 
-    RenderManager::RenderManager() 
-    {
+
+RenderManager::RenderManager() {
         // do nothing, see http://ce.eng.usc.ac.ir/files/1511334027376.pdf pg.261
         // use startUp() instead to make sure order is preserved
-    }
-    RenderManager::~RenderManager()
-    {
-        // do nothing
-    }
+}
 
-    void RenderManager::startUp()
-    {
+
+
+RenderManager::~RenderManager() {
+        // do nothing
+}
+
+void RenderManager::startUp() {
         // start up manager...
-    }
+}
 
     
 
-    int RenderManager::render_loop() {
-    https://github.com/bkaradzic/bgfx/blob/master/examples/00-helloworld/helloworld.cpp
+int RenderManager::render_loop() {
+// https://github.com/bkaradzic/bgfx/blob/master/examples/00-helloworld/helloworld.cpp
     while (!quit)
         {
         // Update the camera transform based on interactive
@@ -41,10 +43,11 @@
         // back buffer's contents to the front buffer.
         swapBuffers();
         }
-    }
+
+    return 1;
+}
     
-    void RenderManager::shutDown()
-    {
+void RenderManager::shutDown() {
         //shut down manager...
     }
-};
+}
