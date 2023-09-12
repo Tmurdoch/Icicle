@@ -9,7 +9,7 @@ As of now Icicle works on both Windows and Linux (Ubuntu 22).
 Icicle leverages the following technologies and libraries to ensure a robust development environment:
 - [CMake](https://cmake.org/) - and generator of some sort. Visual Studio should handle this automatically using ninja. Other options are MinGW, Msvc, these will need to be specified with -G option when first building the project
 - [catch2](https://github.com/catchorg/Catch2/blob/devel/docs/tutorial.md#top) for testing, 
-- [Visual Studio](https://visualstudio.microsoft.com/) 
+- [Visual Studio](https://visualstudio.microsoft.com/) - Nice because it integrates with CMake very well and theres no need to specify a generator, VS should handle this automatically
 
 
 ## Building the project examples
