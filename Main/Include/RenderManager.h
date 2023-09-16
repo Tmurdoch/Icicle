@@ -27,6 +27,8 @@ memory class (object will be rendered from memory), Game logic class?
 *       - how are we going to set up the scene (what will be loaded first)
 *   - coordinate system?
 *   - What's the first thing we're going to render? --> think of MVP (Minimum viable product)
+
+Note: can setup message callbacks to handle certain errors, VK_EXT_debug_utils extension
 */
 
 namespace Icicle {
