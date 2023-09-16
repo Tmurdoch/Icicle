@@ -2,6 +2,7 @@ include_directories(${PROJECT_SOURCE_DIR}/Main/Include)
 
 add_executable(testinstantiator TestInstantiator.cpp)
 
+
 #target_link_libraries(Test IcicleMain)
 
 #setup testing framework ------ https://github.com/catchorg/Catch2/blob/devel/docs/cmake-integration.md#top
@@ -24,7 +25,7 @@ include(Catch)
 include(CTest)
 catch_discover_tests(testinstantiator)
 
-
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/block_game/")
 
 #add_test(
 #	NAME IceTest

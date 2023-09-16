@@ -1,53 +1,56 @@
 #include "RenderManager.h"
+#include <stdexcept>
+#include <vector>
 
+
+const std::vector<const char*> validationLayers = {
+        "VK_LAYER_KHRONOS_validation"
+};
+
+#ifdef NDEBUG
+        const bool enableValidationLayers = false;
+#else
+        const bool enableValidationLayers = true;
+#endif
 
 
 namespace Icicle {
+RenderManager* RenderManager::RenderManagerInstancePtr = nullptr;
 
+void RenderManager::create_VK_instance() {
+        VkApplicationInfo appInfo{};
+        appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
+        appInfo.pApplicationName = "Block Game";
+        appInfo.applicationVersion = VK_MAKE_VERSION(1, 0, 0);
+        appInfo.pEngineName = "Icicle";
+        appInfo.engineVersion = VK_MAKE_VERSION(1, 0, 0);
+        appInfo.apiVersion = VK_API_VERSION_1_0;
 
+        VkInstanceCreateInfo createInfo{};
+        createInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
+        createInfo.pApplicationInfo = &appInfo;
 
-RenderManager::RenderManager() {
-        // do nothing, see http://ce.eng.usc.ac.ir/files/1511334027376.pdf pg.261
-        // use startUp() instead to make sure order is preserved
-}
+        uint32_t glfwExtensionCount = 0;
+        const char** glfwExtensions;
 
+        glfwExtensions = glfwGetRequiredInstanceExtensions(&glfwExtensionCount);
 
+        createInfo.enabledExtensionCount = glfwExtensionCount;
+        createInfo.ppEnabledExtensionNames = glfwExtensions;
 
-RenderManager::~RenderManager() {
-        // do nothing
-}
+        createInfo.enabledLayerCount = 0; //global validation layers
 
-void RenderManager::startUp() {
-        // start up manager...
-}
-
-    
-
-int RenderManager::render_loop() {
-// https://github.com/bkaradzic/bgfx/blob/master/examples/00-helloworld/helloworld.cpp
-    while (!quit)
-        {
-        // Update the camera transform based on interactive
-        // inputs or by following a predefined path.
-        updateCamera();
-        // Update positions, orientations and any other
-        // relevant visual state of any dynamic elements
-        // in the scene.
-        updateSceneElements();
-        // Render a still frame into an off-screen frame
-        // buffer known as the "back buffer".
-        renderScene();
-        // Swap the back buffer with the front buffer, making
-        // the most recently rendered image visible
-        // on-screen. (Or, in windowed mode, copy (blit) the
-        // back buffer's contents to the front buffer.
-        swapBuffers();
+        if (vkCreateInstance(&createInfo, nullptr, &instance) != VK_SUCCESS) {
+                throw std::runtime_error("failed to create instance");
         }
 
-    return 1;
 }
-    
-void RenderManager::shutDown() {
-        //shut down manager...
-    }
+
+void RenderManager::initVulkan() {
+        RenderManager::create_VK_instance();
+}
+
+void RenderManager::destroyVK() {
+        vkDestroyInstance(instance, nullptr);
+}
 }
