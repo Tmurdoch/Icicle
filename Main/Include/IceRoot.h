@@ -5,7 +5,8 @@
 
 #include <iostream>
 #define GLFW_INCLUDE_VULKAN
-#include <glfw/glfw3.h>
+//windows version #include <glfw/glfw3.h> //maybe rename windows folder to GLFW so we don't have to comment this out
+#include <GLFW/glfw3.h>
 
 #define GLM_FORCE_RADIANS
 #define GLM_FORCE_DEPTH_ZERO_TO_ONE
@@ -58,7 +59,7 @@ class Root
 
 // FileSystemManager       zFileSystemManager;
     
-
+    int testWindow();
     
     int startUp();
 };

@@ -16,9 +16,19 @@ project ("Icicle")
 
 find_package(Vulkan REQUIRED)
 
+if (WIN32)
+message("building for windows")
 add_subdirectory(lib/glfw)
 SET(GLM_TEST_ENABLE OFF CACHE BOOL "GLM build unit tests")
 add_subdirectory(lib/glm EXCLUDE_FROM_ALL)
+endif (WIN32)
+
+if (UNIX)
+message("building for unix")
+find_package(glfw3 REQUIRED)
+SET(GLM_TEST_ENABLE OFF CACHE BOOL "GLM build unit tests")
+add_subdirectory(lib/glm EXCLUDE_FROM_ALL)
+endif (UNIX)
 
 # Include sub-projects.
 add_subdirectory ("Main")
