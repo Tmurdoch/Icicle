@@ -14,6 +14,12 @@ endif()
 
 project ("Icicle")
 
+find_package(Vulkan REQUIRED)
+
+add_subdirectory(lib/glfw)
+SET(GLM_TEST_ENABLE OFF CACHE BOOL "GLM build unit tests")
+add_subdirectory(lib/glm EXCLUDE_FROM_ALL)
+
 # Include sub-projects.
 add_subdirectory ("Main")
 add_subdirectory ("Tests")

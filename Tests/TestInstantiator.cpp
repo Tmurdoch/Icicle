@@ -21,11 +21,14 @@
 
 
 
+
 //Icicle Namespace specific/white box?
 
 namespace Icicle {
 
 TEST_CASE("Stack Allocator") {
+
+    std::cout << " testing things\n";
 
     uint8_t memory_block[10]; //is this on heap?
     StackAllocator* sa = new StackAllocator(sizeof(memory_block), memory_block);
