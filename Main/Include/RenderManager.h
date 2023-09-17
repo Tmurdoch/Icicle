@@ -37,6 +37,7 @@ class RenderManager
 {
     private:
         VkInstance instance;
+        VkDebugUtilsMessengerEXT debugMessenger; //handle for debug callbacks
     
     public:
         void initVulkan();
