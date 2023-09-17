@@ -1,5 +1,9 @@
 #include "block_test.h"
 
+
+
+
+
 void Icicle::BlockGameApp::run() {
     initWindow();
     RenderManager::getInstance()->create_VK_instance();
@@ -13,10 +17,6 @@ void Icicle::BlockGameApp::initWindow() {
     glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
     window = glfwCreateWindow(WIDTH, HEIGHT, "BlockGame", nullptr, nullptr);
-}
-
-void Icicle::BlockGameApp::initVulkan() {
-
 }
 
 void Icicle::BlockGameApp::mainLoop() {
@@ -42,11 +42,12 @@ void Icicle::BlockGameApp::cleanup() {
  * what actions to take and what the world looks like
 **/
 int main(int argc, char* argv[]) {
-    Icicle::BlockGameApp app;
+    
 
     std::cout << "starting app" << std::endl;
 
     try {
+        Icicle::BlockGameApp app;
         app.run();
     } catch (const std::exception& e) {
         std::cerr << e.what() << std::endl;
