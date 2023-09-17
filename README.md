@@ -11,6 +11,10 @@ Icicle leverages the following technologies and libraries to ensure a robust dev
 - [catch2](https://github.com/catchorg/Catch2/blob/devel/docs/tutorial.md#top) for testing, 
 - [Visual Studio](https://visualstudio.microsoft.com/) - Nice because it integrates with CMake very well and theres no need to specify a generator, VS should handle this automatically
 
+## Goals
+- Performant
+- Fast development for use in game jams (this will require editors probably - TBD)
+
 
 ## Building the project examples
 
