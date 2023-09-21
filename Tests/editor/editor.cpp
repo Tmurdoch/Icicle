@@ -812,6 +812,7 @@ private:
         VkDeviceSize imageSize = texWidth * texHeight * 4;
 
         if (!pixels) {
+            
             throw std::runtime_error("failed to load texture image!");
         }
 
@@ -1578,6 +1579,7 @@ int main() {
         app.run();
     }
     catch (const std::exception& e) {
+        std::cout << stbi_failure_reason() << std::endl;
         std::cerr << e.what() << std::endl;
         return EXIT_FAILURE;
     }
