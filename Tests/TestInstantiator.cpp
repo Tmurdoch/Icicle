@@ -65,10 +65,49 @@ TEST_CASE("Math Lib") {
     Icicle::ptr_add(ptr, 10);
 
 }
-TEST_CASE("Memory from stack allocator is freed correctly") {
-    
+TEST_CASE("Check fopen") {
+    const char* filename = "editor/textures/texture.png";
+    FILE* fp = fopen(filename, "rb");
+    REQUIRE(fp != NULL);
+    fclose(fp);
+
+
 }
 
+#ifdef WIN32
+
+TEST_CASE("Check fopen_s") {
+    int err;
+    FILE* stream;
+    const char* filename = "editor/textures/texture.png";
+    err = fopen_s(&stream, filename, "rb");
+    if (err == 0)
+    {
+        printf("The file %s was opened\n", filename);
+    }
+    else
+    {
+        printf("The file %s was not opened\n", filename);
+    }
+    
+    REQUIRE(err == 0);
+    
+
+
+    if (stream)
+    {
+        err = fclose(stream);
+        if (err == 0)
+        {
+            printf("The file %s was closed\n", filename);
+        }
+        else
+        {
+            printf("The file %s was not closed\n", filename);
+        }
+    }
+}
+#endif // WIN32
 TEST_CASE("Both top and bottom of stack initialized and freed correctly") {
 
 }

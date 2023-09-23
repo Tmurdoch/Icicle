@@ -7,7 +7,10 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #define STB_IMAGE_IMPLEMENTATION
-#include "stb/stb_image.h"
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include "stb_image.h"
+#include "stb_image_resize.h"
+#include "stb_image_write.h"
 
 #include <iostream>
 #include <fstream>
@@ -22,6 +25,15 @@
 #include <array>
 #include <optional>
 #include <set>
+
+#include <stdio.h>
+#include <stdlib.h>
+
+#ifdef WIN32
+#define _WIN32 1
+#define STBI_WINDOWS_UTF8 1
+#endif // WIN32
+
 
 const uint32_t WIDTH = 800;
 const uint32_t HEIGHT = 600;
@@ -808,7 +820,12 @@ private:
 
     void createTextureImage() {
         int texWidth, texHeight, texChannels;
-        stbi_uc* pixels = stbi_load("textures/texture.jpg", &texWidth, &texHeight, &texChannels, STBI_rgb_alpha);
+        #ifdef WIN32
+        //requires absolute path if not in same directory as file
+        unsigned char* pixels = stbi_load("D:\\Projects\\VSIcicle\\Tests\\editor\\textures\\texture.png", &texWidth, &texHeight, &texChannels, STBI_rgb_alpha);
+        #else       
+        unsigned char* pixels = stbi_load("textures/texture.png", &texWidth, &texHeight, &texChannels, STBI_rgb_alpha);
+        #endif
         VkDeviceSize imageSize = texWidth * texHeight * 4;
 
         if (!pixels) {
