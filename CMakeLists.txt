@@ -5,7 +5,7 @@
 #environment variables: https://cmake.org/cmake/help/latest/manual/cmake-env-variables.7.html
 
 cmake_minimum_required (VERSION 3.8)
-
+set(CMAKE_CXX_STANDARD 17)
 # Enable Hot Reload for MSVC compilers if supported.
 if (POLICY CMP0141)
   cmake_policy(SET CMP0141 NEW)

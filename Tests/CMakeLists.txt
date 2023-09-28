@@ -26,6 +26,7 @@ include(CTest)
 catch_discover_tests(testinstantiator)
 
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/block_game/")
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/editor/")
 
 #add_test(
 #	NAME IceTest

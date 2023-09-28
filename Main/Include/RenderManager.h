@@ -40,6 +40,7 @@ class RenderManager
         VkDebugUtilsMessengerEXT debugMessenger; //handle for debug callbacks
     
     public:
+        void setupDebugMessenger();
         void initVulkan();
         void create_VK_instance();
         void destroyVK();

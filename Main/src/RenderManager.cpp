@@ -3,6 +3,7 @@
 #include <vector>
 #include <cstring>
 #include <iostream>
+#include <cstdlib>
 
 
 const std::vector<const char*> validationLayers = {
@@ -15,14 +16,64 @@ const std::vector<const char*> validationLayers = {
         const bool enableValidationLayers = true;
 #endif
 
-static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(
-        VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
-        VkDebugUtilsMessageTypeFlagsEXT messageType,
-        const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData,
-        void* pUserData) {
-            std::cerr << "validation layer: " << pCallbackData->pMessage << std::endl;
+/**
+* This struct should be passed to the vkCreateDebugUtilsMessengerEXT function
+to create the VkDebugUtilsMessengerEXT object. Unfortunately, because this
+function is an extension function, it is not automatically loaded. We have
+to look up its address ourselves using vkGetInstanceProcAddr. We're going to
+create our own proxy function that handles this in the background.
+**/
+VkResult CreateDebugUtilsMessengerEXT(VkInstance instance, const VkDebugUtilsMessengerCreateInfoEXT* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkDebugUtilsMessengerEXT* pDebugMessenger) {
+    auto func = (PFN_vkCreateDebugUtilsMessengerEXT)vkGetInstanceProcAddr(instance, "vkCreateDebugUtilsMessengerEXT");
+    if (func != nullptr) {
+        return func(instance, pCreateInfo, pAllocator, pDebugMessenger);
+    }
+    else {
+        return VK_ERROR_EXTENSION_NOT_PRESENT;
+    }
+}
 
- }
+void DestroyDebugUtilsMessengerEXT(VkInstance instance, VkDebugUtilsMessengerEXT debugMessenger, const VkAllocationCallbacks* pAllocator) {
+    auto func = (PFN_vkDestroyDebugUtilsMessengerEXT)vkGetInstanceProcAddr(instance, "vkDestroyDebugUtilsMessengerEXT");
+    if (func != nullptr) {
+        func(instance, debugMessenger, pAllocator);
+    }
+}
+
+namespace Icicle {
+
+
+RenderManager* RenderManager::RenderManagerInstancePtr = nullptr;
+
+VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(
+    VkDebugReportFlagsEXT       flags,
+    VkDebugReportObjectTypeEXT  objectType,
+    uint64_t                    object,
+    size_t                      location,
+    int32_t                     messageCode,
+    const char*                 pLayerPrefix,
+    const char*                 pMessage,
+    void*                       pUserData)
+{
+    std::cerr << pMessage << std::endl;
+    return VK_FALSE;
+}
+
+
+/**
+* PROBLEM: No validation layers displayed, missing destruction error (see DestroyVK commented out section) 
+* read this: https://www.lunarg.com/wp-content/uploads/2016/09/LunarG-Layers-Webinar-Sept-2016.pdf
+* 
+* then try this one: 
+* https://gpuopen.com/learn/using-the-vulkan-validation-layers/
+**/
+// void populateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT& createInfo) {
+//     createInfo = {};
+//     createInfo.sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
+//     createInfo.messageSeverity = VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT;
+//     createInfo.messageType = VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT;
+//     createInfo.pfnCallback = &debugCallback;
+// }
 
 bool checkValidationLayerSupport() {
         uint32_t layerCount;
@@ -37,6 +88,7 @@ bool checkValidationLayerSupport() {
                 for (const auto& layerProperties : availableLayers) {
                         if (strcmp(layerName, layerProperties.layerName) == 0) {
                                 layerFound = true;
+                                std::cout << "found one" << std::endl;
                                 break;
                         }
                 }
@@ -50,59 +102,60 @@ bool checkValidationLayerSupport() {
 }
 
 std::vector<const char*> getRequiredExtensions() {
-        uint32_t glfwExtensionCount = 0;
-        const char** glfwExtensions;
-        glfwExtensions = glfwGetRequiredInstanceExtensions(&glfwExtensionCount);
+    uint32_t glfwExtensionCount = 0;
+    const char** glfwExtensions;
+    glfwExtensions = glfwGetRequiredInstanceExtensions(&glfwExtensionCount);
 
-        std::vector<const char*> extensions(glfwExtensions, glfwExtensions + glfwExtensionCount);
+    std::vector<const char*> extensions(glfwExtensions, glfwExtensions + glfwExtensionCount);
 
-        if (enableValidationLayers) {
-                extensions.push_back(VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
-        }
+    if (enableValidationLayers) {
+        extensions.push_back(VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
+    }
 
-        return extensions;
+    return extensions;
 }
 
-namespace Icicle {
-RenderManager* RenderManager::RenderManagerInstancePtr = nullptr;
+
+
 
 void RenderManager::create_VK_instance() {
-        if (enableValidationLayers && !checkValidationLayerSupport()) {
-                throw std::runtime_error("validation layers requested, but not available!");
-        }
-        VkApplicationInfo appInfo{};
-        appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
-        appInfo.pApplicationName = "Block Game";
-        appInfo.applicationVersion = VK_MAKE_VERSION(1, 0, 0);
-        appInfo.pEngineName = "Icicle";
-        appInfo.engineVersion = VK_MAKE_VERSION(1, 0, 0);
-        appInfo.apiVersion = VK_API_VERSION_1_0;
+    if (enableValidationLayers && !checkValidationLayerSupport()) {
+        throw std::runtime_error("validation layers requested, but not available!");
+    }
 
-        VkInstanceCreateInfo createInfo{};
-        createInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
-        createInfo.pApplicationInfo = &appInfo;
+    VkApplicationInfo appInfo{};
+    appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
+    appInfo.pApplicationName = "Hello Triangle";
+    appInfo.applicationVersion = VK_MAKE_VERSION(1, 0, 0);
+    appInfo.pEngineName = "No Engine";
+    appInfo.engineVersion = VK_MAKE_VERSION(1, 0, 0);
+    appInfo.apiVersion = VK_API_VERSION_1_0;
 
-        uint32_t glfwExtensionCount = 0;
-        const char** glfwExtensions;
+    VkInstanceCreateInfo createInfo{};
+    createInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
+    createInfo.pApplicationInfo = &appInfo;
 
-        glfwExtensions = glfwGetRequiredInstanceExtensions(&glfwExtensionCount);
+    auto extensions = getRequiredExtensions();
+    createInfo.enabledExtensionCount = static_cast<uint32_t>(extensions.size());
+    createInfo.ppEnabledExtensionNames = extensions.data();
 
-        auto extensions = getRequiredExtensions();
-        createInfo.enabledExtensionCount = static_cast<uint32_t>(extensions.size());
-        createInfo.ppEnabledExtensionNames = extensions.data();
+    VkDebugUtilsMessengerCreateInfoEXT debugCreateInfo{};
+    if (enableValidationLayers) {
+        createInfo.enabledLayerCount = static_cast<uint32_t>(validationLayers.size());
+        createInfo.ppEnabledLayerNames = validationLayers.data();
 
-        //global validation layers
-        if (enableValidationLayers) {
-                createInfo.enabledLayerCount = static_cast<uint32_t>(validationLayers.size());
-                createInfo.ppEnabledLayerNames = validationLayers.data();
-        } else {
-                createInfo.enabledLayerCount = 0; 
-        }
+        //populateDebugMessengerCreateInfo(debugCreateInfo);
+        createInfo.pNext = (VkDebugUtilsMessengerCreateInfoEXT*)&debugCreateInfo;
+    }
+    else {
+        createInfo.enabledLayerCount = 0;
 
-        if (vkCreateInstance(&createInfo, nullptr, &instance) != VK_SUCCESS) {
-                throw std::runtime_error("failed to create instance");
-        }
+        createInfo.pNext = nullptr;
+    }
 
+    if (vkCreateInstance(&createInfo, nullptr, &instance) != VK_SUCCESS) {
+        throw std::runtime_error("failed to create instance!");
+    }
 }
 
 void RenderManager::initVulkan() {
@@ -112,15 +165,21 @@ void RenderManager::initVulkan() {
 
 void RenderManager::setupDebugMessenger() {
     if (!enableValidationLayers) return;
-    VkDebugUtilsMessengerInfoEXT createInfo{};
-    createInfo.sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
-    createInfo.messageSeverity = VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT;
-    createInfo.messageType = VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT;
-    createInfo.pfnUserCallback = debugCallback;
-    createInfo.pUserData = nullptr;
+
+    VkDebugUtilsMessengerCreateInfoEXT createInfo;
+    //populateDebugMessengerCreateInfo(createInfo);
+
+    if (CreateDebugUtilsMessengerEXT(instance, &createInfo, nullptr, &debugMessenger) != VK_SUCCESS) {
+        throw std::runtime_error("failed to set up debug messenger!");
+    }
 }
 
+
+
 void RenderManager::destroyVK() {
-        vkDestroyInstance(instance, nullptr);
+    /*if (enableValidationLayers) {
+        DestroyDebugUtilsMessengerEXT(instance, debugMessenger, nullptr);
+    }*/
+    vkDestroyInstance(instance, nullptr);
 }
 }
