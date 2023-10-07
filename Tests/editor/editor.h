@@ -145,16 +145,31 @@ class Editor {
 private:
     GLFWwindow* window;
 
+    //Vulkan API structure, query for supported hardware and other device properties
     VkInstance instance;
     VkDebugUtilsMessengerEXT debugMessenger;
+
+    //Window surface, instantiated by providing a reference to the native window handle
     VkSurfaceKHR surface;
 
+    //represents the physical device to which the extension properties will be queried.
     VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
+    //Logical device, represents the application view of the actual device
     VkDevice device;
 
     VkQueue graphicsQueue;
     VkQueue presentQueue;
 
+    /*
+    The swap chain is a collection of render targets. Its basic purpose is to ensure that
+    the image that we're currently rendering to is different from the one that is 
+    currently on the screen. This is important to make sure that only complete images are
+    shown. Every time we want to draw a frame we have to ask the swap chain to provide us 
+    with an image to render to. When we've finished drawing a frame, the image is 
+    returned to the swap chain for it to be presented to the screen at some point. The 
+    number of render targets and conditions for presenting finished images to the screen
+    depends on the present mode. Common present modes are double buffering (vsync) and
+    triple buffering. */
     VkSwapchainKHR swapChain;
     std::vector<VkImage> swapChainImages;
     VkFormat swapChainImageFormat;
