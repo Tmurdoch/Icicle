@@ -1,4 +1,3 @@
-
 #include "editor.h"
 
 void Editor::run() {
@@ -11,6 +10,7 @@ void Editor::run() {
     void Editor::initWindow() {
         glfwInit();
 
+        //don't create opengl context
         glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
 
         window = glfwCreateWindow(WIDTH, HEIGHT, "Vulkan", nullptr, nullptr);
@@ -46,6 +46,7 @@ void Editor::run() {
         Editor::createSyncObjects();
     }
 
+    
     void Editor::mainLoop() {
         while (!glfwWindowShouldClose(Editor::window)) {
             glfwPollEvents();
@@ -144,6 +145,7 @@ void Editor::run() {
             throw std::runtime_error("validation layers requested, but not available!");
         }
 
+        //info for driver
         VkApplicationInfo appInfo{};
         appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
         appInfo.pApplicationName = "Hello Triangle";
@@ -152,6 +154,7 @@ void Editor::run() {
         appInfo.engineVersion = VK_MAKE_VERSION(1, 0, 0);
         appInfo.apiVersion = VK_API_VERSION_1_0;
 
+        //setup validation layers and global extensions
         VkInstanceCreateInfo createInfo{};
         createInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
         createInfo.pApplicationInfo = &appInfo;
@@ -1102,7 +1105,7 @@ void Editor::run() {
         float time = std::chrono::duration<float, std::chrono::seconds::period>(currentTime - startTime).count();
 
         UniformBufferObject ubo{};
-        ubo.model = glm::rotate(glm::mat4(1.0f), time * glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+        ubo.model = glm::rotate(glm::mat4(1.0f), time * glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
         ubo.view = glm::lookAt(glm::vec3(2.0f, 2.0f, 2.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f));
         ubo.proj = glm::perspective(glm::radians(45.0f), swapChainExtent.width / (float)swapChainExtent.height, 0.1f, 10.0f);
         ubo.proj[1][1] *= -1;
@@ -1114,6 +1117,7 @@ void Editor::run() {
         vkWaitForFences(device, 1, &inFlightFences[currentFrame], VK_TRUE, UINT64_MAX);
 
         uint32_t imageIndex;
+        //acquire image from swap chain
         VkResult result = vkAcquireNextImageKHR(device, swapChain, UINT64_MAX, imageAvailableSemaphores[currentFrame], VK_NULL_HANDLE, &imageIndex);
 
         if (result == VK_ERROR_OUT_OF_DATE_KHR) {
@@ -1163,6 +1167,7 @@ void Editor::run() {
 
         presentInfo.pImageIndices = &imageIndex;
 
+        //return the image to the swap chain for presentation to the screen
         result = vkQueuePresentKHR(presentQueue, &presentInfo);
 
         if (result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR || framebufferResized) {
@@ -1328,7 +1333,7 @@ void Editor::run() {
 
         if (enableValidationLayers) {
             extensions.push_back(VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
-        }
+        } 
 
         return extensions;
     }

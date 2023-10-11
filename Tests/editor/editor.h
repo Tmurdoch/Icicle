@@ -1,5 +1,12 @@
+/**
+ * 
+ * For general confusion: 
+ * https://vulkan-tutorial.com/en/Overview
+*/
+
+
 #define GLFW_INCLUDE_VULKAN
-#include <GLFW/glfw3.h>
+#include <GLFW/glfw3.h> //includes vulkan.h 
 
 #define GLM_FORCE_RADIANS
 #define GLM_FORCE_DEPTH_ZERO_TO_ONE
@@ -19,7 +26,7 @@
 #include <chrono>
 #include <vector>
 #include <cstring>
-#include <cstdlib>
+#include <cstdlib> ///provides the EXIT_SUCCESS and EXIT_FAILURE macros.
 #include <cstdint>
 #include <limits>
 #include <array>
@@ -162,11 +169,26 @@ private:
     std::vector<VkImageView> swapChainImageViews;
     std::vector<VkFramebuffer> swapChainFramebuffers;
 
+    /*
+    describe the type of images that are used during rendering
+    operations, how they will be used, and how their contents 
+    should be treated*/
     VkRenderPass renderPass;
     VkDescriptorSetLayout descriptorSetLayout;
+
+    /*
+    see graphics pipeline*/
     VkPipelineLayout pipelineLayout;
+
+    /*
+    describes the configurable state of the graphics card, 
+    like the viewport size and depth buffer operation and 
+    the programmable state using VkShaderModule objects.
+    */
     VkPipeline graphicsPipeline;
 
+    /*
+    Command buffers are allocated from here*/
     VkCommandPool commandPool;
 
     VkImage depthImage;
@@ -190,6 +212,8 @@ private:
     VkDescriptorPool descriptorPool;
     std::vector<VkDescriptorSet> descriptorSets;
 
+    /*
+    */
     std::vector<VkCommandBuffer> commandBuffers;
 
     std::vector<VkSemaphore> imageAvailableSemaphores;
@@ -207,9 +231,17 @@ public:
     
     
     void run();
+    /*
+     * initializes glfw library
+    */
     void initWindow();
+    /*
+    Window loop
+    */
     void mainLoop();
     void cleanup();
+    /*
+    */
     void drawFrame();
     void cleanupSwapChain();
     void recreateSwapChain();
@@ -220,6 +252,8 @@ public:
 
     //Vulkan init
     void initVulkan();
+    /*
+    initialize vulkan library*/
     void createInstance();
     void setupDebugMessenger();
     void createSurface();
@@ -229,6 +263,13 @@ public:
     void createImageViews();
     void createRenderPass();
     void createDescriptorSetLayout();
+    /*
+    almost all configuration of gp must be set in advance, 
+    That means that if you want to switch to a different
+     shader or slightly change your vertex layout, then you 
+     need to entirely recreate the graphics pipeline.
+    also means we need to create many of these for each combination
+    */
     void createGraphicsPipeline();
     void createCommandPool();
     void createDepthResources();
@@ -251,6 +292,8 @@ public:
 
     bool checkValidationLayerSupport();
     bool hasStencilComponent(VkFormat format);
+    /*need an extension to interface with the window system
+    */
     std::vector<const char*> getRequiredExtensions();
     bool isDeviceSuitable(VkPhysicalDevice device);
     QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device);
