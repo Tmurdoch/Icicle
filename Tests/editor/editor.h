@@ -329,6 +329,16 @@ public:
         return buffer;
     }
 
+
+    /*
+    * messageSeverity: could be one of four flags (verbose, info, warning or error), see vulkan validation layer docs
+    * messageType: can be one of 3 flags (general, validation, performance)
+    * pCallbackData: refers to a VkDebugUtilsMessengerCallbackDataEXT struct containing details of the message
+    * pUserData: allows for passing of data
+    * 
+    * Returns: bool indicating if the vulkan call that triggered the validation layer message should be aborted,
+    * usually only used to test validation layers themselves
+    */
     static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity, VkDebugUtilsMessageTypeFlagsEXT messageType, const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData, void* pUserData) {
         std::cerr << "validation layer: " << pCallbackData->pMessage << std::endl;
 
