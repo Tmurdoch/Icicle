@@ -32,6 +32,7 @@
 #include <array>
 #include <optional>
 #include <set>
+#include <map>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -160,6 +161,7 @@ private:
     VkDebugUtilsMessengerEXT debugMessenger;
     VkSurfaceKHR surface;
 
+    //graphics card, implicitly destroyed when VkInstance is destroyed
     VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
     VkDevice device;
 
@@ -313,7 +315,11 @@ public:
     VkExtent2D chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities);
     bool checkDeviceExtensionSupport(VkPhysicalDevice device);
     void copyBufferToImage(VkBuffer buffer, VkImage image, uint32_t width, uint32_t height);
-
+    /*
+    * give each device a score, favouring dedicated graphcis card and higher
+    * maximum possible texture size
+    */
+    int rateDeviceSuitability(VkPhysicalDevice device);
 
     static std::vector<char> readFile(const std::string& filename) {
         std::ifstream file(filename, std::ios::ate | std::ios::binary);
