@@ -89,7 +89,9 @@ struct QueueFamilyIndices {
 
 struct SwapChainSupportDetails {
     VkSurfaceCapabilitiesKHR capabilities;
+    //specifies the color channels and types
     std::vector<VkSurfaceFormatKHR> formats;
+    //represents conditions for showing images to the screen, four possible modes
     std::vector<VkPresentModeKHR> presentModes;
 };
 
@@ -159,18 +161,25 @@ private:
 
     VkInstance instance;
     VkDebugUtilsMessengerEXT debugMessenger;
+    //abstract surface to present images to
     VkSurfaceKHR surface;
 
     //graphics card, implicitly destroyed when VkInstance is destroyed
     VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
+    // logical device
     VkDevice device;
 
+    //implicitly cleaned when device is destroyed
     VkQueue graphicsQueue;
+    //implicitly cleaned when device is destroyed
     VkQueue presentQueue;
 
+    //synchronize presentation of images with the refresh rate of the screen
     VkSwapchainKHR swapChain;
+    //queue of image handles waiting to be presented to screen
     std::vector<VkImage> swapChainImages;
     VkFormat swapChainImageFormat;
+    //resolution of the swap chain images, almost always exactly equal to the resolution of the window in pixel
     VkExtent2D swapChainExtent;
     std::vector<VkImageView> swapChainImageViews;
     std::vector<VkFramebuffer> swapChainFramebuffers;
@@ -256,12 +265,20 @@ public:
     VkFormat findDepthFormat();
 
 
-    //Vulkan init
+    /*
+    * create swap chain
+    * 
+    */
     void initVulkan();
     /*
     initialize vulkan library*/
     void createInstance();
     void setupDebugMessenger();
+    /*
+    * window: GLFW window pointer
+    * vkDestroySurfaceKHR must be called on cleanup
+    * 
+    */
     void createSurface();
     void pickPhysicalDevice();
     void createLogicalDevice();
@@ -275,6 +292,8 @@ public:
      shader or slightly change your vertex layout, then you 
      need to entirely recreate the graphics pipeline.
     also means we need to create many of these for each combination
+    * loads shaders
+    * assigns shaders
     */
     void createGraphicsPipeline();
     void createCommandPool();
@@ -298,19 +317,44 @@ public:
 
     bool checkValidationLayerSupport();
     bool hasStencilComponent(VkFormat format);
-    /*need an extension to interface with the window system
+    /*
+    need an extension to interface with the window system, also 
+    provides abstract surface extension (instance level)
     */
     std::vector<const char*> getRequiredExtensions();
     bool isDeviceSuitable(VkPhysicalDevice device);
+    /*
+    * find which queue families are supported by physical device
+    * returns a struct that contains the queue families
+    */
     QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device);
+    /*
+    * check if swap chain is compatible with window surface
+    * (basic compatibilities, surface formats, and available presentation modes)
+    */
     SwapChainSupportDetails querySwapChainSupport(VkPhysicalDevice device);
     VkCommandBuffer beginSingleTimeCommands();
     void endSingleTimeCommands(VkCommandBuffer commandBuffer);
     void copyBuffer(VkBuffer srcBuffer, VkBuffer dstBuffer, VkDeviceSize size);
     uint32_t findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties);
     void updateUniformBuffer(uint32_t currentImage);
+    /*
+    * code: buffer containing bytecode
+    * 
+    */
     VkShaderModule createShaderModule(const std::vector<char>& code);
+    /*
+    * VkSurfaceFormatKHR entry contains a format and colorSpace member
+    * format specifies color channels and types
+    * colorspace indicates if the SRGB color space is supported or not
+    * 
+    * if available format is not supported will choose the next found one
+    */
     VkSurfaceFormatKHR chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats);
+    /*
+    * only FIFO mode is guaranteed, but looks for mailbox and returns FIFO
+    * if not found
+    */
     VkPresentModeKHR chooseSwapPresentMode(const std::vector<VkPresentModeKHR>& availablePresentModes);
     VkExtent2D chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities);
     bool checkDeviceExtensionSupport(VkPhysicalDevice device);
@@ -321,7 +365,11 @@ public:
     */
     int rateDeviceSuitability(VkPhysicalDevice device);
 
+    /*
+    * returns std::vector<char> buffer of bytecode
+    */
     static std::vector<char> readFile(const std::string& filename) {
+        //"ate" : start reading at end of file so that we can use the read position to determine the size of the file and allocate a buffer
         std::ifstream file(filename, std::ios::ate | std::ios::binary);
 
         if (!file.is_open()) {
@@ -331,6 +379,7 @@ public:
         size_t fileSize = (size_t)file.tellg();
         std::vector<char> buffer(fileSize);
 
+        //seek back to beginning and start read
         file.seekg(0);
         file.read(buffer.data(), fileSize);
 
