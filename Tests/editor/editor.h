@@ -1,12 +1,6 @@
-/**
- * 
- * For general confusion: 
- * https://vulkan-tutorial.com/en/Overview
-*/
 
-
-#define GLFW_INCLUDE_VULKAN
-#include <GLFW/glfw3.h> //includes vulkan.h 
+#define GLFW_INCLUDE_VULKAN //tells glfw to include vulkan.h 
+#include <GLFW/glfw3.h> 
 
 #define GLM_FORCE_RADIANS
 #define GLM_FORCE_DEPTH_ZERO_TO_ONE
@@ -26,7 +20,7 @@
 #include <chrono>
 #include <vector>
 #include <cstring>
-#include <cstdlib> ///provides the EXIT_SUCCESS and EXIT_FAILURE macros.
+#include <cstdlib> ///provides EXIT_SUCCESS and EXIT_FAILURE macros.
 #include <cstdint>
 #include <limits>
 #include <array>
@@ -89,10 +83,8 @@ struct QueueFamilyIndices {
 
 struct SwapChainSupportDetails {
     VkSurfaceCapabilitiesKHR capabilities;
-    //specifies the color channels and types
-    std::vector<VkSurfaceFormatKHR> formats;
-    //represents conditions for showing images to the screen, four possible modes
-    std::vector<VkPresentModeKHR> presentModes;
+    std::vector<VkSurfaceFormatKHR> formats; //specifies the color channels and types
+    std::vector<VkPresentModeKHR> presentModes; //represents conditions for showing images to the screen, four possible modes
 };
 
 struct Vertex {
@@ -158,32 +150,19 @@ const std::vector<uint16_t> indices = {
 class Editor {
 private:
     GLFWwindow* window;
-
     VkInstance instance;
     VkDebugUtilsMessengerEXT debugMessenger;
-    //abstract surface to present images to
-    VkSurfaceKHR surface;
-
-    //graphics card, implicitly destroyed when VkInstance is destroyed
-    VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
-    // logical device
+    VkSurfaceKHR surface; //abstract surface to present images to
+    VkPhysicalDevice physicalDevice = VK_NULL_HANDLE; //graphics card, implicitly destroyed when VkInstance is destroyed
     VkDevice device;
-
-    //implicitly cleaned when device is destroyed
-    VkQueue graphicsQueue;
-    //implicitly cleaned when device is destroyed
-    VkQueue presentQueue;
-
-    //synchronize presentation of images with the refresh rate of the screen
-    VkSwapchainKHR swapChain;
-    //queue of image handles waiting to be presented to screen
-    std::vector<VkImage> swapChainImages;
+    VkQueue graphicsQueue; //implicitly cleaned when device is destroyed
+    VkQueue presentQueue; //implicitly cleaned when device is destroyed
+    VkSwapchainKHR swapChain; //synchronize presentation of images with the refresh rate of the screen
+    std::vector<VkImage> swapChainImages; //queue of image handles waiting to be presented to screen
     VkFormat swapChainImageFormat;
-    //resolution of the swap chain images, almost always exactly equal to the resolution of the window in pixel
-    VkExtent2D swapChainExtent;
+    VkExtent2D swapChainExtent; //resolution of the swap chain images, almost always exactly equal to the resolution of the window in pixel
     std::vector<VkImageView> swapChainImageViews;
-    //references all VkImageView objects that represent the attachments
-    std::vector<VkFramebuffer> swapChainFramebuffers;
+    std::vector<VkFramebuffer> swapChainFramebuffers; //references all VkImageView objects that represent the attachments
 
     /*
     describe the type of images that are used during rendering
@@ -237,9 +216,10 @@ private:
 
     std::vector<VkSemaphore> imageAvailableSemaphores;
     std::vector<VkSemaphore> renderFinishedSemaphores;
-    //used to synchronize execution, if host needs to know when the GPU has finished something, we use a fence
-    //e.g - to make sure only one frame is rendering at a time
-    //signalled when a frame has finished rendering
+    /*
+    used to synchronize execution, if host needs to know when the GPU has finished something, we use a fence
+    e.g - to make sure only one frame is rendering at a time
+    signalled when a frame has finished rendering*/
     std::vector<VkFence> inFlightFences;
     uint32_t currentFrame = 0;
 
@@ -268,15 +248,13 @@ public:
     void populateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT& createInfo);
     VkFormat findSupportedFormat(const std::vector<VkFormat>& candidates, VkImageTiling tiling, VkFormatFeatureFlags features);
     VkFormat findDepthFormat();
-    /*
-    create swap chain 
-    */
     void initVulkan();
-    /*
-    initialize vulkan library*/
+    /**
+    initialize vulkan library
+    */
     void createInstance();
     void setupDebugMessenger();
-    /*
+    /**
     * window: GLFW window pointer
     * vkDestroySurfaceKHR must be called on cleanup
     */
