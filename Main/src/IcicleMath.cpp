@@ -1,4 +1,4 @@
-#include "IcicleMath.h"
+#include "IcicleMath.hpp"
 
 //inline definitions
 

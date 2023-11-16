@@ -6,7 +6,7 @@
 add_subdirectory(src)
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
-  set_property(TARGET IcicleMain PROPERTY CXX_STANDARD 20)
+  set_property(TARGET Icicle PROPERTY CXX_STANDARD 20)
 endif()
 
 # TODO: Add tests and install targets if needed.

@@ -1,5 +1,6 @@
-#define GLFW_INCLUDE_VULKAN
-#include <GLFW/glfw3.h>
+
+#define GLFW_INCLUDE_VULKAN //tells glfw to include vulkan.h 
+#include <GLFW/glfw3.h> 
 
 #define GLM_FORCE_RADIANS
 #define GLM_FORCE_DEPTH_ZERO_TO_ONE
@@ -19,12 +20,13 @@
 #include <chrono>
 #include <vector>
 #include <cstring>
-#include <cstdlib>
+#include <cstdlib> ///provides EXIT_SUCCESS and EXIT_FAILURE macros.
 #include <cstdint>
 #include <limits>
 #include <array>
 #include <optional>
 #include <set>
+#include <map>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -59,6 +61,10 @@ VkResult CreateDebugUtilsMessengerEXT(VkInstance instance, const VkDebugUtilsMes
     }
 }
 
+
+/*
+* Must be called before vulkan instance is destroyed
+*/
 void DestroyDebugUtilsMessengerEXT(VkInstance instance, VkDebugUtilsMessengerEXT debugMessenger, const VkAllocationCallbacks* pAllocator) {
     auto func = (PFN_vkDestroyDebugUtilsMessengerEXT)vkGetInstanceProcAddr(instance, "vkDestroyDebugUtilsMessengerEXT");
     if (func != nullptr) {
@@ -77,8 +83,8 @@ struct QueueFamilyIndices {
 
 struct SwapChainSupportDetails {
     VkSurfaceCapabilitiesKHR capabilities;
-    std::vector<VkSurfaceFormatKHR> formats;
-    std::vector<VkPresentModeKHR> presentModes;
+    std::vector<VkSurfaceFormatKHR> formats; //specifies the color channels and types
+    std::vector<VkPresentModeKHR> presentModes; //represents conditions for showing images to the screen, four possible modes
 };
 
 struct Vertex {
@@ -144,44 +150,38 @@ const std::vector<uint16_t> indices = {
 class Editor {
 private:
     GLFWwindow* window;
-
-    //Vulkan API structure, query for supported hardware and other device properties
     VkInstance instance;
     VkDebugUtilsMessengerEXT debugMessenger;
-
-    //Window surface, instantiated by providing a reference to the native window handle
-    VkSurfaceKHR surface;
-
-    //represents the physical device to which the extension properties will be queried.
-    VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
-    //Logical device, represents the application view of the actual device
+    VkSurfaceKHR surface; //abstract surface to present images to
+    VkPhysicalDevice physicalDevice = VK_NULL_HANDLE; //graphics card, implicitly destroyed when VkInstance is destroyed
     VkDevice device;
-
-    VkQueue graphicsQueue;
-    VkQueue presentQueue;
-
-    /*
-    The swap chain is a collection of render targets. Its basic purpose is to ensure that
-    the image that we're currently rendering to is different from the one that is 
-    currently on the screen. This is important to make sure that only complete images are
-    shown. Every time we want to draw a frame we have to ask the swap chain to provide us 
-    with an image to render to. When we've finished drawing a frame, the image is 
-    returned to the swap chain for it to be presented to the screen at some point. The 
-    number of render targets and conditions for presenting finished images to the screen
-    depends on the present mode. Common present modes are double buffering (vsync) and
-    triple buffering. */
-    VkSwapchainKHR swapChain;
-    std::vector<VkImage> swapChainImages;
+    VkQueue graphicsQueue; //implicitly cleaned when device is destroyed
+    VkQueue presentQueue; //implicitly cleaned when device is destroyed
+    VkSwapchainKHR swapChain; //synchronize presentation of images with the refresh rate of the screen
+    std::vector<VkImage> swapChainImages; //queue of image handles waiting to be presented to screen
     VkFormat swapChainImageFormat;
-    VkExtent2D swapChainExtent;
+    VkExtent2D swapChainExtent; //resolution of the swap chain images, almost always exactly equal to the resolution of the window in pixel
     std::vector<VkImageView> swapChainImageViews;
-    std::vector<VkFramebuffer> swapChainFramebuffers;
+    std::vector<VkFramebuffer> swapChainFramebuffers; //references all VkImageView objects that represent the attachments
 
     VkRenderPass renderPass;
     VkDescriptorSetLayout descriptorSetLayout;
+
+    /*
+    used to specify uniform values in shaders, globals similar to dynamic state variables,
+    can be changes at drawing time*/
     VkPipelineLayout pipelineLayout;
+
+    /*
+    describes the configurable state of the graphics card, 
+    like the viewport size and depth buffer operation and 
+    the programmable state using VkShaderModule objects.
+    */
     VkPipeline graphicsPipeline;
 
+    /*
+    Command buffers are allocated from here, manages the memory that
+    is used to store the buffers*/
     VkCommandPool commandPool;
 
     VkImage depthImage;
@@ -209,6 +209,10 @@ private:
 
     std::vector<VkSemaphore> imageAvailableSemaphores;
     std::vector<VkSemaphore> renderFinishedSemaphores;
+    /*
+    used to synchronize execution, if host needs to know when the GPU has finished something, we use a fence
+    e.g - to make sure only one frame is rendering at a time
+    signalled when a frame has finished rendering*/
     std::vector<VkFence> inFlightFences;
     uint32_t currentFrame = 0;
 
@@ -222,7 +226,13 @@ public:
     
     
     void run();
+    /*
+    initializes glfw library
+    */
     void initWindow();
+    /*
+    Window loop
+    */
     void mainLoop();
     void cleanup();
     void drawFrame();
@@ -231,59 +241,129 @@ public:
     void populateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT& createInfo);
     VkFormat findSupportedFormat(const std::vector<VkFormat>& candidates, VkImageTiling tiling, VkFormatFeatureFlags features);
     VkFormat findDepthFormat();
-
-
-    //Vulkan init
     void initVulkan();
+    /**
+    initialize vulkan library
+    */
     void createInstance();
     void setupDebugMessenger();
+    /**
+    * window: GLFW window pointer
+    * vkDestroySurfaceKHR must be called on cleanup
+    */
     void createSurface();
     void pickPhysicalDevice();
     void createLogicalDevice();
     void createSwapChain();
     void createImageViews();
+    /*
+    see renderPass member
+    */
     void createRenderPass();
     void createDescriptorSetLayout();
+    /*
+    - almost all configuration of gp must be set in advance, 
+    That means that if you want to switch to a different
+    shader or slightly change your vertex layout, then you 
+    need to entirely recreate the graphics pipeline.
+    also means we need to create many of these for each combination
+    - loads shaders
+    - assigns shaders
+    */
     void createGraphicsPipeline();
+    /*
+    * submits commandPool member on the graphics queue family
+    */
     void createCommandPool();
     void createDepthResources();
+    /*
+    * populates swapChainFramebuffers
+    */
     void createFramebuffers();
     void createTextureImage();
     void createTextureImageView();
     void createTextureSampler();
     void createVertexBuffer();
+    /*
+    * allocates a single command buffer from the command pool
+    * these objects are automatically freed when their command pool is destroyed
+    */
     void createIndexBuffer();
     void createUniformBuffers();
     void createDescriptorPool();
     void createDescriptorSets();
     void createCommandBuffers();
+    /*
+    Create GPU semaphores and Fences
+    fences created in signalled state so as not to block when calling
+    drawFrame
+    */
     void createSyncObjects();
     VkImageView createImageView(VkImage image, VkFormat format, VkImageAspectFlags aspectFlags);
     void createImage(uint32_t width, uint32_t height, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, VkMemoryPropertyFlags properties, VkImage& image, VkDeviceMemory& imageMemory);
     void transitionImageLayout(VkImage image, VkFormat format, VkImageLayout oldLayout, VkImageLayout newLayout);
+    /*
+    * writes commands to be executed on commandBuffer
+    * imageIndex: index of the current swapchain image to write to
+    */
     void recordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t imageIndex);
     void createBuffer(VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties, VkBuffer& buffer, VkDeviceMemory& bufferMemory);
 
     bool checkValidationLayerSupport();
     bool hasStencilComponent(VkFormat format);
+    /*
+    need an extension to interface with the window system, also 
+    provides abstract surface extension (instance level)
+    */
     std::vector<const char*> getRequiredExtensions();
     bool isDeviceSuitable(VkPhysicalDevice device);
+    /*
+    * find which queue families are supported by physical device
+    * returns a struct that contains the queue families
+    */
     QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device);
+    /*
+    * check if swap chain is compatible with window surface
+    * (basic compatibilities, surface formats, and available presentation modes)
+    */
     SwapChainSupportDetails querySwapChainSupport(VkPhysicalDevice device);
     VkCommandBuffer beginSingleTimeCommands();
     void endSingleTimeCommands(VkCommandBuffer commandBuffer);
     void copyBuffer(VkBuffer srcBuffer, VkBuffer dstBuffer, VkDeviceSize size);
     uint32_t findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties);
     void updateUniformBuffer(uint32_t currentImage);
+    /*
+    * code: buffer containing bytecode
+    * 
+    */
     VkShaderModule createShaderModule(const std::vector<char>& code);
+    /*
+    * VkSurfaceFormatKHR entry contains a format and colorSpace member
+    * format specifies color channels and types
+    * colorspace indicates if the SRGB color space is supported or not
+    * 
+    * if available format is not supported will choose the next found one
+    */
     VkSurfaceFormatKHR chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats);
+    /*
+    * only FIFO mode is guaranteed, but looks for mailbox and returns FIFO
+    * if not found
+    */
     VkPresentModeKHR chooseSwapPresentMode(const std::vector<VkPresentModeKHR>& availablePresentModes);
     VkExtent2D chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities);
     bool checkDeviceExtensionSupport(VkPhysicalDevice device);
     void copyBufferToImage(VkBuffer buffer, VkImage image, uint32_t width, uint32_t height);
+    /*
+    * give each device a score, favouring dedicated graphcis card and higher
+    * maximum possible texture size
+    */
+    int rateDeviceSuitability(VkPhysicalDevice device);
 
-
+    /*
+    * returns std::vector<char> buffer of bytecode
+    */
     static std::vector<char> readFile(const std::string& filename) {
+        //"ate" : start reading at end of file so that we can use the read position to determine the size of the file and allocate a buffer
         std::ifstream file(filename, std::ios::ate | std::ios::binary);
 
         if (!file.is_open()) {
@@ -293,6 +373,7 @@ public:
         size_t fileSize = (size_t)file.tellg();
         std::vector<char> buffer(fileSize);
 
+        //seek back to beginning and start read
         file.seekg(0);
         file.read(buffer.data(), fileSize);
 
@@ -301,6 +382,16 @@ public:
         return buffer;
     }
 
+
+    /*
+    * messageSeverity: could be one of four flags (verbose, info, warning or error), see vulkan validation layer docs
+    * messageType: can be one of 3 flags (general, validation, performance)
+    * pCallbackData: refers to a VkDebugUtilsMessengerCallbackDataEXT struct containing details of the message
+    * pUserData: allows for passing of data
+    * 
+    * Returns: bool indicating if the vulkan call that triggered the validation layer message should be aborted,
+    * usually only used to test validation layers themselves
+    */
     static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity, VkDebugUtilsMessageTypeFlagsEXT messageType, const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData, void* pUserData) {
         std::cerr << "validation layer: " << pCallbackData->pMessage << std::endl;
 
