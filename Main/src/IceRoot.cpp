@@ -1,4 +1,4 @@
-#include "IceRoot.h"
+#include "IceRoot.hpp"
 
 namespace Icicle {
 

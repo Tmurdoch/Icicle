@@ -17,7 +17,7 @@ GIT_TAG		   v3.0.1
 
 FetchContent_MakeAvailable(Catch2)
 
-target_link_libraries(testinstantiator PRIVATE IcicleMain Catch2::Catch2WithMain)
+target_link_libraries(testinstantiator PRIVATE Icicle Catch2::Catch2WithMain)
 
 
 list(APPEND CMAKE_MODULE_PATH ${catch2_SOURCE_DIR}/extras)

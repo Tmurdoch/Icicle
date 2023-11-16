@@ -3,10 +3,10 @@
 #define STACKALLOCATOR_H
 
 
-#include "Allocator.h"
+#include "Allocator.hpp"
 
 #include <stddef.h>
-#include "IcicleMath.h"
+#include "IcicleMath.hpp"
 #include <string>
 #include <cstddef>
 

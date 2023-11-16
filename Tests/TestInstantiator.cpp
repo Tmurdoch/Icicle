@@ -1,9 +1,9 @@
 #define CONFIG_CATCH_MAIN
 
-#include "IceRoot.h"
-#include "StackAllocator.h"
-#include "Allocator.h"
-#include "IcicleMath.h"
+#include "IceRoot.hpp"
+#include "StackAllocator.hpp"
+#include "Allocator.hpp"
+#include "IcicleMath.hpp"
 
 #include <catch2/catch_test_macros.hpp>
 

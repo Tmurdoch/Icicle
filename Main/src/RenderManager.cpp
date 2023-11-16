@@ -1,4 +1,4 @@
-#include "RenderManager.h"
+#include "RenderManager.hpp"
 #include <stdexcept>
 #include <vector>
 #include <cstring>
