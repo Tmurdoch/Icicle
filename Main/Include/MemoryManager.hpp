@@ -1,6 +1,6 @@
 #include <iostream>
-#include "StackAllocator.h"
-#include "Resource.h"
+#include "StackAllocator.hpp"
+#include "Resource.hpp"
 
 #ifndef MEM_MANAGER_H
 #define MEM_MANAGER_H

@@ -1,8 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <iostream>
-#include "MemoryManager.h"
-#include "RenderManager.h"
+#include "MemoryManager.hpp"
+#include "RenderManager.hpp"
 #include <iostream>
 
 
