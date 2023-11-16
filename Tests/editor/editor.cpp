@@ -370,8 +370,8 @@ void Editor::run() {
         VkAttachmentDescription colorAttachment{};
         colorAttachment.format = swapChainImageFormat;
         colorAttachment.samples = VK_SAMPLE_COUNT_1_BIT;
-        colorAttachment.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
-        colorAttachment.storeOp = VK_ATTACHMENT_STORE_OP_STORE;
+        colorAttachment.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR; //clear values to a constant at the start
+        colorAttachment.storeOp = VK_ATTACHMENT_STORE_OP_STORE; //Rendered contents will be stored in memory and can be read later
         colorAttachment.stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
         colorAttachment.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
         colorAttachment.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
@@ -488,7 +488,7 @@ void Editor::run() {
         //describe geometry from vertices and if primitive restart should be enabled
         VkPipelineInputAssemblyStateCreateInfo inputAssembly{};
         inputAssembly.sType = VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO;
-        inputAssembly.topology = VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST;
+        inputAssembly.topology = VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST; //every 3 vertices is a triangle
         inputAssembly.primitiveRestartEnable = VK_FALSE;
 
         //setup viewports and scissor rectangles
@@ -504,6 +504,7 @@ void Editor::run() {
         rasterizer.rasterizerDiscardEnable = VK_FALSE;
         rasterizer.polygonMode = VK_POLYGON_MODE_FILL;
         rasterizer.lineWidth = 1.0f;
+        //TODO: cull back faces of sprites and bottom of buildings?
         rasterizer.cullMode = VK_CULL_MODE_NONE;
         rasterizer.frontFace = VK_FRONT_FACE_COUNTER_CLOCKWISE;
         rasterizer.depthBiasEnable = VK_FALSE;
@@ -582,6 +583,7 @@ void Editor::run() {
     void Editor::createFramebuffers() {
         swapChainFramebuffers.resize(swapChainImageViews.size());
 
+        //create framebuffers for each image view
         for (size_t i = 0; i < swapChainImageViews.size(); i++) {
             std::array<VkImageView, 2> attachments = {
                 swapChainImageViews[i],

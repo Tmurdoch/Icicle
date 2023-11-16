@@ -182,17 +182,22 @@ private:
     //resolution of the swap chain images, almost always exactly equal to the resolution of the window in pixel
     VkExtent2D swapChainExtent;
     std::vector<VkImageView> swapChainImageViews;
+    //references all VkImageView objects that represent the attachments
     std::vector<VkFramebuffer> swapChainFramebuffers;
 
     /*
     describe the type of images that are used during rendering
     operations, how they will be used, and how their contents 
-    should be treated*/
+    should be treated
+    * framebuffer attachements
+    * how many color and depth buffers there will be
+    * how many samples to use for each*/
     VkRenderPass renderPass;
     VkDescriptorSetLayout descriptorSetLayout;
 
     /*
-    see graphics pipeline*/
+    used to specify uniform values in shaders, globals similar to dynamic state variables,
+    can be changes at drawing time*/
     VkPipelineLayout pipelineLayout;
 
     /*
@@ -203,7 +208,8 @@ private:
     VkPipeline graphicsPipeline;
 
     /*
-    Command buffers are allocated from here*/
+    Command buffers are allocated from here, manages the memory that
+    is used to store the buffers*/
     VkCommandPool commandPool;
 
     VkImage depthImage;
@@ -227,12 +233,13 @@ private:
     VkDescriptorPool descriptorPool;
     std::vector<VkDescriptorSet> descriptorSets;
 
-    /*
-    */
     std::vector<VkCommandBuffer> commandBuffers;
 
     std::vector<VkSemaphore> imageAvailableSemaphores;
     std::vector<VkSemaphore> renderFinishedSemaphores;
+    //used to synchronize execution, if host needs to know when the GPU has finished something, we use a fence
+    //e.g - to make sure only one frame is rendering at a time
+    //signalled when a frame has finished rendering
     std::vector<VkFence> inFlightFences;
     uint32_t currentFrame = 0;
 
@@ -247,7 +254,7 @@ public:
     
     void run();
     /*
-     * initializes glfw library
+    initializes glfw library
     */
     void initWindow();
     /*
@@ -255,19 +262,14 @@ public:
     */
     void mainLoop();
     void cleanup();
-    /*
-    */
     void drawFrame();
     void cleanupSwapChain();
     void recreateSwapChain();
     void populateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT& createInfo);
     VkFormat findSupportedFormat(const std::vector<VkFormat>& candidates, VkImageTiling tiling, VkFormatFeatureFlags features);
     VkFormat findDepthFormat();
-
-
     /*
-    * create swap chain
-    * 
+    create swap chain 
     */
     void initVulkan();
     /*
@@ -277,41 +279,62 @@ public:
     /*
     * window: GLFW window pointer
     * vkDestroySurfaceKHR must be called on cleanup
-    * 
     */
     void createSurface();
     void pickPhysicalDevice();
     void createLogicalDevice();
     void createSwapChain();
     void createImageViews();
+    /*
+    see renderPass member
+    */
     void createRenderPass();
     void createDescriptorSetLayout();
     /*
-    almost all configuration of gp must be set in advance, 
+    - almost all configuration of gp must be set in advance, 
     That means that if you want to switch to a different
-     shader or slightly change your vertex layout, then you 
-     need to entirely recreate the graphics pipeline.
+    shader or slightly change your vertex layout, then you 
+    need to entirely recreate the graphics pipeline.
     also means we need to create many of these for each combination
-    * loads shaders
-    * assigns shaders
+    - loads shaders
+    - assigns shaders
     */
     void createGraphicsPipeline();
+    /*
+    * submits commandPool member on the graphics queue family
+    */
     void createCommandPool();
     void createDepthResources();
+    /*
+    * populates swapChainFramebuffers
+    */
     void createFramebuffers();
     void createTextureImage();
     void createTextureImageView();
     void createTextureSampler();
     void createVertexBuffer();
+    /*
+    * allocates a single command buffer from the command pool
+    * these objects are automatically freed when their command pool is destroyed
+    */
     void createIndexBuffer();
     void createUniformBuffers();
     void createDescriptorPool();
     void createDescriptorSets();
     void createCommandBuffers();
+    /*
+    Create GPU semaphores and Fences
+    fences created in signalled state so as not to block when calling
+    drawFrame
+    */
     void createSyncObjects();
     VkImageView createImageView(VkImage image, VkFormat format, VkImageAspectFlags aspectFlags);
     void createImage(uint32_t width, uint32_t height, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, VkMemoryPropertyFlags properties, VkImage& image, VkDeviceMemory& imageMemory);
     void transitionImageLayout(VkImage image, VkFormat format, VkImageLayout oldLayout, VkImageLayout newLayout);
+    /*
+    * writes commands to be executed on commandBuffer
+    * imageIndex: index of the current swapchain image to write to
+    */
     void recordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t imageIndex);
     void createBuffer(VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties, VkBuffer& buffer, VkDeviceMemory& bufferMemory);
 
