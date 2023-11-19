@@ -1,4 +1,5 @@
 #include "IceRoot.hpp"
+#include "RenderManager.hpp"
 
 namespace Icicle {
 
@@ -39,9 +40,15 @@ namespace Icicle {
         std::cout<<"Starting up systems"<<std::endl;
         MemoryManager::startUp();
 
+        RenderManager& renderManager = RenderManager::getInstance();
+        renderManager.startUp();
+        
+        
 
 
         return 0;
     }
 
 }
+
+
