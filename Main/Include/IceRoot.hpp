@@ -1,25 +1,11 @@
+#pragma once
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <iostream>
 #include "MemoryManager.hpp"
-#include "RenderManager.hpp"
 #include <iostream>
 
-
-#ifndef VULKAN_DEPS
-#define VULKAN_DEPS
-
-#define GLFW_INCLUDE_VULKAN
-//windows version #include <glfw/glfw3.h> //maybe rename windows folder to GLFW so we don't have to comment this out
-#include <GLFW/glfw3.h>
-
-#define GLM_FORCE_RADIANS
-#define GLM_FORCE_DEPTH_ZERO_TO_ONE
-#include <glm/vec4.hpp>
-#include <glm/mat4x4.hpp>
-#endif
-
-#define TEST_RETURN 0;
 
 
 namespace Icicle {
@@ -58,7 +44,7 @@ class Root
     void operator=(const Root &) = delete;
 
     //singletons
-// RenderManager           zRenderManager;
+   // RenderManager           renderManager;
 // PhysicsManager          zPhysicsManager;
 // AnimationManager        zAnimationManager;
 // TextureManager          zTextureManager;

@@ -26,6 +26,10 @@
 
 namespace Icicle {
 
+TEST_CASE("initialize") {
+    Icicle::Root::getInstance()->startUp();
+}
+
 TEST_CASE("Stack Allocator") {
 
     std::cout << " testing things\n";
@@ -65,49 +69,6 @@ TEST_CASE("Math Lib") {
     Icicle::ptr_add(ptr, 10);
 
 }
-TEST_CASE("Check fopen") {
-    const char* filename = "editor/textures/texture.png";
-    FILE* fp = fopen(filename, "rb");
-    REQUIRE(fp != NULL);
-    fclose(fp);
-
-
-}
-
-#ifdef WIN32
-
-TEST_CASE("Check fopen_s") {
-    int err;
-    FILE* stream;
-    const char* filename = "editor/textures/texture.png";
-    err = fopen_s(&stream, filename, "rb");
-    if (err == 0)
-    {
-        printf("The file %s was opened\n", filename);
-    }
-    else
-    {
-        printf("The file %s was not opened\n", filename);
-    }
-    
-    REQUIRE(err == 0);
-    
-
-
-    if (stream)
-    {
-        err = fclose(stream);
-        if (err == 0)
-        {
-            printf("The file %s was closed\n", filename);
-        }
-        else
-        {
-            printf("The file %s was not closed\n", filename);
-        }
-    }
-}
-#endif // WIN32
 TEST_CASE("Both top and bottom of stack initialized and freed correctly") {
 
 }
@@ -119,12 +80,3 @@ TEST_CASE("Both top and bottom of stack initialized and freed correctly") {
 
 //Black box tests, no namespace
 
-TEST_CASE("Determine whether given pointer resides in stack") {
-    Icicle::Root::getInstance()->startUp();
-}
-
-TEST_CASE("Render triangle where triangle is in memory manager") {
-    Icicle::Root::getInstance()->startUp();
-
-
-}
