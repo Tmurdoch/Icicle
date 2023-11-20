@@ -1,3 +1,5 @@
+#pragma once
+
 #include <iostream>
 #include "StackAllocator.hpp"
 #include "Resource.hpp"

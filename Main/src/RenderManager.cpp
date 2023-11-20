@@ -4,37 +4,8 @@
 
 namespace Icicle {
 
-    VkResult CreateDebugUtilsMessengerEXT(
-        VkInstance instance,
-        const VkDebugUtilsMessengerCreateInfoEXT* pCreateInfo,
-        const VkAllocationCallbacks* pAllocator,
-        VkDebugUtilsMessengerEXT* pDebugMessenger
-    ) {
-        auto func = (PFN_vkCreateDebugUtilsMessengerEXT)vkGetInstanceProcAddr(instance, "vkCreateDebugUtilsMessengerEXT");
-        if (func != nullptr) {
-            return func(instance, pCreateInfo, pAllocator, pDebugMessenger);
-        }
-        else {
-            return VK_ERROR_EXTENSION_NOT_PRESENT;
-        }
-    }
-
-
-    /*
-    * Must be called before vulkan instance is destroyed
-    */
-    void DestroyDebugUtilsMessengerEXT(
-        VkInstance instance,
-        VkDebugUtilsMessengerEXT debugMessenger,
-        const VkAllocationCallbacks* pAllocator
-    ) {
-        auto func = (PFN_vkDestroyDebugUtilsMessengerEXT)vkGetInstanceProcAddr(instance, "vkDestroyDebugUtilsMessengerEXT");
-        if (func != nullptr) {
-            func(instance, debugMessenger, pAllocator);
-        }
-    }
-
 RenderManager* RenderManager::instancePtr;
+
 RenderManager& RenderManager::getInstance() {
         if (instancePtr == NULL)
         {
@@ -42,6 +13,8 @@ RenderManager& RenderManager::getInstance() {
         }
         return *instancePtr;
     }
+
+
 void RenderManager::run() {
     RenderManager::initWindow();
     RenderManager::initVulkan();
@@ -1452,7 +1425,7 @@ bool RenderManager::checkValidationLayerSupport() {
 
 int RenderManager::startUp() {
     try {
-        run();
+        RenderManager::run();
     }
     catch (const std::exception& e) {
         //std::cout << stbi_failure_reason() << std::endl;
