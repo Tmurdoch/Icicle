@@ -176,24 +176,10 @@ namespace Icicle {
         void recordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t imageIndex);
         void createBuffer(VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties, VkBuffer& buffer, VkDeviceMemory& bufferMemory);
 
-        bool checkValidationLayerSupport();
         bool hasStencilComponent(VkFormat format);
-        /*
-        need an extension to interface with the window system, also
-        provides abstract surface extension (instance level)
-        */
-        std::vector<const char*> getRequiredExtensions();
-        bool isDeviceSuitable(VkPhysicalDevice device);
-        /*
-        * find which queue families are supported by physical device
-        * returns a struct that contains the queue families
-        */
-        QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device);
-        /*
-        * check if swap chain is compatible with window surface
-        * (basic compatibilities, surface formats, and available presentation modes)
-        */
-        SwapChainSupportDetails querySwapChainSupport(VkPhysicalDevice device);
+        
+        
+        
         VkCommandBuffer beginSingleTimeCommands();
         void endSingleTimeCommands(VkCommandBuffer commandBuffer);
         void copyBuffer(VkBuffer srcBuffer, VkBuffer dstBuffer, VkDeviceSize size);
@@ -218,13 +204,7 @@ namespace Icicle {
         */
         VkPresentModeKHR chooseSwapPresentMode(const std::vector<VkPresentModeKHR>& availablePresentModes);
         VkExtent2D chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities);
-        bool checkDeviceExtensionSupport(VkPhysicalDevice device);
         void copyBufferToImage(VkBuffer buffer, VkImage image, uint32_t width, uint32_t height);
-        /*
-        * give each device a score, favouring dedicated graphcis card and higher
-        * maximum possible texture size
-        */
-        int rateDeviceSuitability(VkPhysicalDevice device);
 
         /*
         * returns std::vector<char> buffer of bytecode

@@ -139,3 +139,33 @@ void DestroyDebugUtilsMessengerEXT(
     VkDebugUtilsMessengerEXT debugMessenger,
     const VkAllocationCallbacks* pAllocator
 );
+
+std::vector<const char*> getRequiredExtensions();
+
+/*
+need an extension to interface with the window system, also
+provides abstract surface extension (instance level)
+*/
+bool checkValidationLayerSupport();
+
+bool isDeviceSuitable(VkPhysicalDevice device, VkSurfaceKHR surface);
+
+bool checkDeviceExtensionSupport(VkPhysicalDevice device);
+
+/*
+* give each device a score, favouring dedicated graphcis card and higher
+* maximum possible texture size
+*/
+int rateDeviceSuitability(VkPhysicalDevice device);
+
+/*
+        * check if swap chain is compatible with window surface
+        * (basic compatibilities, surface formats, and available presentation modes)
+        */
+SwapChainSupportDetails querySwapChainSupport(VkPhysicalDevice device, VkSurfaceKHR surface);
+
+/*
+        * find which queue families are supported by physical device
+        * returns a struct that contains the queue families
+        */
+QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device, VkSurfaceKHR surface);
