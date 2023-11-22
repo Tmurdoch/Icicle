@@ -11,7 +11,7 @@ namespace Icicle {
         VkDebugUtilsMessengerEXT debugMessenger;
         VkSurfaceKHR surface; //abstract surface to present images to
         VkPhysicalDevice physicalDevice = VK_NULL_HANDLE; //graphics card, implicitly destroyed when VkInstance is destroyed
-        VkDevice device;
+        VkDevice device;//logical device, interfaces with physical device, exposes queue families
         VkQueue graphicsQueue; //implicitly cleaned when device is destroyed
         VkQueue presentQueue; //implicitly cleaned when device is destroyed
         VkSwapchainKHR swapChain; //synchronize presentation of images with the refresh rate of the screen
@@ -26,7 +26,8 @@ namespace Icicle {
 
         /*
         used to specify uniform values in shaders, globals similar to dynamic state variables,
-        can be changes at drawing time*/
+        can be changes at drawing time
+        contains a list of descriptor set layouts*/
         VkPipelineLayout pipelineLayout;
 
         /*
@@ -60,7 +61,9 @@ namespace Icicle {
         std::vector<void*> uniformBuffersMapped;
 
         VkDescriptorPool descriptorPool;
-        std::vector<VkDescriptorSet> descriptorSets;
+        //sets can refer to an array of homogenous resources that can be described with the same layout binding
+        //e.g - a set could refer to a texture, making it available to the shader
+        std::vector<VkDescriptorSet> descriptorSets; 
 
         std::vector<VkCommandBuffer> commandBuffers;
 
@@ -106,8 +109,7 @@ namespace Icicle {
         void cleanupSwapChain();
         void recreateSwapChain();
         void populateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT& createInfo);
-        VkFormat findSupportedFormat(const std::vector<VkFormat>& candidates, VkImageTiling tiling, VkFormatFeatureFlags features);
-        VkFormat findDepthFormat();
+        
         void initVulkan();
         /**
         initialize vulkan library
@@ -176,14 +178,10 @@ namespace Icicle {
         void recordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t imageIndex);
         void createBuffer(VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties, VkBuffer& buffer, VkDeviceMemory& bufferMemory);
 
-        bool hasStencilComponent(VkFormat format);
-        
-        
-        
         VkCommandBuffer beginSingleTimeCommands();
         void endSingleTimeCommands(VkCommandBuffer commandBuffer);
         void copyBuffer(VkBuffer srcBuffer, VkBuffer dstBuffer, VkDeviceSize size);
-        uint32_t findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties);
+        
         void updateUniformBuffer(uint32_t currentImage);
         /*
         * code: buffer containing bytecode
@@ -206,44 +204,6 @@ namespace Icicle {
         VkExtent2D chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities);
         void copyBufferToImage(VkBuffer buffer, VkImage image, uint32_t width, uint32_t height);
 
-        /*
-        * returns std::vector<char> buffer of bytecode
-        */
-        static std::vector<char> readFile(const std::string& filename) {
-            //"ate" : start reading at end of file so that we can use the read position to determine the size of the file and allocate a buffer
-            std::ifstream file(filename, std::ios::ate | std::ios::binary);
-
-            if (!file.is_open()) {
-                throw std::runtime_error("failed to open file!");
-            }
-
-            size_t fileSize = (size_t)file.tellg();
-            std::vector<char> buffer(fileSize);
-
-            //seek back to beginning and start read
-            file.seekg(0);
-            file.read(buffer.data(), fileSize);
-
-            file.close();
-
-            return buffer;
-        }
-
-
-        /*
-        * messageSeverity: could be one of four flags (verbose, info, warning or error), see vulkan validation layer docs
-        * messageType: can be one of 3 flags (general, validation, performance)
-        * pCallbackData: refers to a VkDebugUtilsMessengerCallbackDataEXT struct containing details of the message
-        * pUserData: allows for passing of data
-        *
-        * Returns: bool indicating if the vulkan call that triggered the validation layer message should be aborted,
-        * usually only used to test validation layers themselves
-        */
-        static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity, VkDebugUtilsMessageTypeFlagsEXT messageType, const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData, void* pUserData) {
-            std::cerr << "validation layer: " << pCallbackData->pMessage << std::endl;
-
-            return VK_FALSE;
-        }
 
     };
 

@@ -1,12 +1,8 @@
 #pragma once
-
-
-
 #define GLFW_INCLUDE_VULKAN //tells glfw to include vulkan.h 
 #include <GLFW/glfw3.h> 
 
 #include <vector>
-
 
 const std::vector<const char*> validationLayers = {
     "VK_LAYER_KHRONOS_validation"
@@ -32,7 +28,6 @@ const bool enableValidationLayers = true;
 #include <stdexcept>
 #include <algorithm>
 #include <chrono>
-
 #include <cstring>
 #include <cstdlib> ///provides EXIT_SUCCESS and EXIT_FAILURE macros.
 #include <cstdint>
@@ -41,9 +36,9 @@ const bool enableValidationLayers = true;
 #include <optional>
 #include <set>
 #include <map>
-
 #include <stdio.h>
 #include <stdlib.h>
+
 const uint32_t WIDTH = 800;
 const uint32_t HEIGHT = 600;
 
@@ -159,13 +154,62 @@ bool checkDeviceExtensionSupport(VkPhysicalDevice device);
 int rateDeviceSuitability(VkPhysicalDevice device);
 
 /*
-        * check if swap chain is compatible with window surface
-        * (basic compatibilities, surface formats, and available presentation modes)
-        */
+* check if swap chain is compatible with window surface
+* (basic compatibilities, surface formats, and available presentation modes)
+*/
 SwapChainSupportDetails querySwapChainSupport(VkPhysicalDevice device, VkSurfaceKHR surface);
 
 /*
-        * find which queue families are supported by physical device
-        * returns a struct that contains the queue families
-        */
+* find which queue families are supported by physical device
+* returns a struct that contains the queue families
+*/
 QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device, VkSurfaceKHR surface);
+
+VkFormat findSupportedFormat(VkPhysicalDevice physicalDevice, const std::vector<VkFormat>& candidates, VkImageTiling tiling, VkFormatFeatureFlags features);
+VkFormat findDepthFormat(VkPhysicalDevice physicalDevice);
+bool hasStencilComponent(VkFormat format);
+
+
+/*
+* returns std::vector<char> buffer of bytecode
+*/
+static std::vector<char> loadShader(const std::string& filename) {
+    //"ate" : start reading at end of file so that we can use the read position to determine the size of the file and allocate a buffer
+    std::ifstream file(filename, std::ios::ate | std::ios::binary);
+
+    if (!file.is_open()) {
+        throw std::runtime_error("failed to open file!");
+    }
+
+    size_t fileSize = (size_t)file.tellg();
+    std::vector<char> buffer(fileSize);
+
+    //seek back to beginning and start read
+    file.seekg(0);
+    file.read(buffer.data(), fileSize);
+
+    file.close();
+
+    return buffer;
+}
+
+/*
+* messageSeverity: could be one of four flags (verbose, info, warning or error), see vulkan validation layer docs
+* messageType: can be one of 3 flags (general, validation, performance)
+* pCallbackData: refers to a VkDebugUtilsMessengerCallbackDataEXT struct containing details of the message
+* pUserData: allows for passing of data
+*
+* Returns: bool indicating if the vulkan call that triggered the validation layer message should be aborted,
+* usually only used to test validation layers themselves
+*/
+static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(
+    VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity, 
+    VkDebugUtilsMessageTypeFlagsEXT messageType, 
+    const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData, 
+    void* pUserData) {
+    std::cerr << "validation layer: " << pCallbackData->pMessage << std::endl;
+
+    return VK_FALSE;
+}
+
+uint32_t findMemoryType(VkPhysicalDevice physicalDevice, uint32_t typeFilter, VkMemoryPropertyFlags properties);
