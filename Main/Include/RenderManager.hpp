@@ -14,6 +14,13 @@ namespace Icicle {
         VkDevice device;//logical device, interfaces with physical device, exposes queue families
         VkQueue graphicsQueue; //implicitly cleaned when device is destroyed
         VkQueue presentQueue; //implicitly cleaned when device is destroyed
+        /*
+        * series of images (buffers) used for rendering
+        * associated with the surface
+        * holds queue family indices to be able to synchronize images to the screen and
+        * between graphics queue and presentation queue families
+        * 
+        */
         VkSwapchainKHR swapChain; //synchronize presentation of images with the refresh rate of the screen
         std::vector<VkImage> swapChainImages; //queue of image handles waiting to be presented to screen
         VkFormat swapChainImageFormat;
@@ -21,6 +28,13 @@ namespace Icicle {
         std::vector<VkImageView> swapChainImageViews;
         std::vector<VkFramebuffer> swapChainFramebuffers; //references all VkImageView objects that represent the attachments
 
+        /*
+        * render pass stage produces a set of framebuffers, encapsulates both graphics and compute
+        * operations. While the graphics pipeline handles low-level operations, render pass defines
+        * overall structure of the rendering process, including dependencies and framebuffers. 
+        * render pass specifices the pipelines that will be used in each subpass.
+        * 
+        */
         VkRenderPass renderPass;
         VkDescriptorSetLayout descriptorSetLayout;
 
@@ -123,10 +137,17 @@ namespace Icicle {
         void createSurface();
         void pickPhysicalDevice();
         void createLogicalDevice();
+        /*
+        * 
+        */
         void createSwapChain();
         void createImageViews();
         /*
         see renderPass member
+
+        create color and depth attachments,
+        create subpasses
+        specify dependencies
         */
         void createRenderPass();
         void createDescriptorSetLayout();
