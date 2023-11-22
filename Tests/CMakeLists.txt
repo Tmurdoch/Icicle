@@ -25,7 +25,10 @@ include(Catch)
 include(CTest)
 catch_discover_tests(testinstantiator)
 
-add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/editor/")
+option(BUILD_EDITOR "Build editor" OFF)
+if (BUILD_EDITOR)
+	add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/editor/")
+endif()
 
 #add_test(
 #	NAME IceTest

@@ -1,4 +1,4 @@
-
+#pragma once
 #ifndef STACKALLOCATOR_H
 #define STACKALLOCATOR_H
 
