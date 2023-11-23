@@ -15,9 +15,6 @@ namespace Icicle {
 
         RenderManager& renderManager = RenderManager::getInstance();
         renderManager.startUp();
-        
-        
-
 
         return 0;
     }
