@@ -122,14 +122,11 @@ namespace Icicle {
         void drawFrame();
         void cleanupSwapChain();
         void recreateSwapChain();
-        void populateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT& createInfo);
-        
         void initVulkan();
         /**
         initialize vulkan library
         */
         void createInstance();
-        void setupDebugMessenger();
         /**
         * window: GLFW window pointer
         * vkDestroySurfaceKHR must be called on cleanup
