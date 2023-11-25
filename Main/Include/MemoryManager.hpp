@@ -28,6 +28,21 @@ class IMemoryManager
  * make sure limit dynamic memory allocation where possible
  * 
  * 
+ * TODO: A typical pattern of working with Vulkan involves 
+ * performing large (e.g. 16 MB – 256 MB depending on how 
+ * dynamic the memory requirements are) allocations using 
+ * vkAllocateMemory, and performing suballocation of objects
+ *  within this memory, effectively managing it yourself.
+ *  Critically, the application needs to handle alignment
+ *  of memory requests correctly, as well as 
+ * bufferImageGranularity limit that restricts valid 
+ * configurations of buffers and images.
+ * 
+ * track resource type, adding padding if necessary for
+ * image resources that require it
+ * 
+ * see https://zeux.io/2020/02/27/writing-an-efficient-vulkan-renderer/
+ * 
  * https://developer.ibm.com/tutorials/au-memorymanager/
  * based off this, hook up to allocator
 */

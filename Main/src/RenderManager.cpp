@@ -642,7 +642,16 @@ VkImageView RenderManager::createImageView(VkImage image, VkFormat format, VkIma
     return imageView;
 }
 
-void RenderManager::createImage(uint32_t width, uint32_t height, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, VkMemoryPropertyFlags properties, VkImage& image, VkDeviceMemory& imageMemory) {
+void RenderManager::createImage(
+            uint32_t width, 
+            uint32_t height, 
+            VkFormat format, 
+            VkImageTiling tiling, 
+            VkImageUsageFlags usage, 
+            VkMemoryPropertyFlags properties,       
+            VkImage& image, 
+            VkDeviceMemory& imageMemory) 
+    {
     VkImageCreateInfo imageInfo{};
     imageInfo.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
     imageInfo.imageType = VK_IMAGE_TYPE_2D;
@@ -673,11 +682,17 @@ void RenderManager::createImage(uint32_t width, uint32_t height, VkFormat format
     if (vkAllocateMemory(device, &allocInfo, nullptr, &imageMemory) != VK_SUCCESS) {
         throw std::runtime_error("failed to allocate image memory!");
     }
-
+    
+    //vkBindImageMemory associates device memory (memory) with an image (image) starting from the specified offset (memoryOffset).
     vkBindImageMemory(device, image, imageMemory, 0);
 }
 
-void RenderManager::transitionImageLayout(VkImage image, VkFormat format, VkImageLayout oldLayout, VkImageLayout newLayout) {
+void RenderManager::transitionImageLayout(
+                VkImage image, 
+                VkFormat format, 
+                VkImageLayout oldLayout, 
+                VkImageLayout newLayout)
+    {
     VkCommandBuffer commandBuffer = beginSingleTimeCommands();
 
     VkImageMemoryBarrier barrier{};
@@ -1167,8 +1182,14 @@ VkExtent2D RenderManager::chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capab
             static_cast<uint32_t>(height)
         };
 
-        actualExtent.width = std::clamp(actualExtent.width, capabilities.minImageExtent.width, capabilities.maxImageExtent.width);
-        actualExtent.height = std::clamp(actualExtent.height, capabilities.minImageExtent.height, capabilities.maxImageExtent.height);
+        actualExtent.width = std::clamp(
+            actualExtent.width, 
+            capabilities.minImageExtent.width, 
+            capabilities.maxImageExtent.width);
+        actualExtent.height = std::clamp(
+            actualExtent.height, 
+            capabilities.minImageExtent.height, 
+            capabilities.maxImageExtent.height);
 
         return actualExtent;
     }
