@@ -1,4 +1,5 @@
 include_directories(${PROJECT_SOURCE_DIR}/Main/Include)
+include_directories(${PROJECT_SOURCE_DIR}/lib/stb)
 
 
 #TODO: switch this to listing them becuause cmake cannot track dependency changes if use this
