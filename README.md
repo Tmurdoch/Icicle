@@ -26,7 +26,7 @@ cmake -S [source_dir] -B [build_dir] -G "MSYS Makefiles"
 - then make all
 
 #### Linux (Make)
-Make sure to delete CmakeCache and CmakeFiles directory before building if you have previously used a different Generator. 
+CD into project source directory. Make sure to delete CmakeCache and CmakeFiles directory before building if you have previously used a different Generator. 
 - CMake for build: 
     1. use
 ```'cmake -S . -B [build directory] -G "Unix Makefiles"``` #builds into build/ diretory
