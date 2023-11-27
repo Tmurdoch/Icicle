@@ -149,6 +149,7 @@ namespace Icicle {
         void createRenderPass();
         void createDescriptorSetLayout();
         /*
+        * createGraphicsPipeLine function
         - almost all configuration of gp must be set in advance,
         That means that if you want to switch to a different
         shader or slightly change your vertex layout, then you
@@ -167,6 +168,10 @@ namespace Icicle {
         * populates swapChainFramebuffers
         */
         void createFramebuffers();
+        /*
+        * createTextureImage function
+        * loads texture image
+        */
         void createTextureImage();
         void createTextureImageView();
         void createTextureSampler();
