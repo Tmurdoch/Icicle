@@ -1,16 +1,36 @@
-//#define GLFW_INCLUDE_VULKAN //tells glfw to include vulkan.h 
-//#include <GLFW/glfw3.h> 
+#pragma once
 
-//const uint32_t WIDTH = 800;
-//const uint32_t HEIGHT = 600;
+#define GLFW_INCLUDE_VULKAN
+#include <GLFW/glfw3.h>
+
+#include <string>
+namespace Icicle {
 
 class Window {
+ public:
+  Window(int w, int h, std::string name);
+  ~Window();
 
-	//GLFWwindow* window;
+  Window(const Window &) = delete;
+  Window &operator=(const Window &) = delete;
 
-public:
-	bool framebufferResized = false;
+  bool shouldClose() { return glfwWindowShouldClose(window); }
+  VkExtent2D getExtent() { return {static_cast<uint32_t>(width), static_cast<uint32_t>(height)}; }
+  bool wasWindowResized() { return framebufferResized; }
+  void resetWindowResizedFlag() { framebufferResized = false; }
+  GLFWwindow *getGLFWwindow() const { return window; }
 
+  void createWindowSurface(VkInstance instance, VkSurfaceKHR *surface);
 
-	void initWindow();
+ private:
+  static void framebufferResizeCallback(GLFWwindow *window, int width, int height);
+  void initWindow();
+
+  int width;
+  int height;
+  bool framebufferResized = false;
+
+  std::string windowName;
+  GLFWwindow *window;
 };
+}  // namespace Icicle
