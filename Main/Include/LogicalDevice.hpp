@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Window.hpp"
+#include "IcicleWindow.hpp"
 
 // std lib headers
 #include <string>
@@ -30,7 +30,7 @@ class LogicalDevice {
   const bool enableValidationLayers = true;
 #endif
 
-  LogicalDevice(Icicle::Window &window);
+  LogicalDevice(Icicle::IcicleWindow &window);
   ~LogicalDevice();
 
   // Not copyable or movable
@@ -93,7 +93,7 @@ class LogicalDevice {
   VkInstance instance;
   VkDebugUtilsMessengerEXT debugMessenger;
   VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
-  Icicle::Window &window;
+  Icicle::IcicleWindow &window;
   VkCommandPool commandPool;
 
   VkDevice device_;

@@ -47,7 +47,7 @@ void DestroyDebugUtilsMessengerEXT(
 }
 
 // class member functions
-LogicalDevice::LogicalDevice(Window &window) : window{window} {
+LogicalDevice::LogicalDevice(IcicleWindow &window) : window{window} {
   createInstance();
   setupDebugMessenger();
   createSurface();

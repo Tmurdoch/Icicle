@@ -1,6 +1,7 @@
 #include "Model.hpp"
 
 #include "VulkanUtils.hpp"
+#include "IcicleMath.hpp"
 
 // libs
 #define TINYOBJLOADER_IMPLEMENTATION
@@ -12,21 +13,24 @@
 #include <cassert>
 #include <cstring>
 #include <unordered_map>
+#include <functional>
+
 
 namespace std {
-template <>
-struct hash<Icicle::Model::Vertex> {
-  size_t operator()(Icicle::Model::Vertex const &vertex) const {
-    size_t seed = 0;
-    Icicle::hashCombine(seed, vertex.position, vertex.color, vertex.normal, vertex.uv);
-    return seed;
-  }
-};
+    template <>
+    struct hash<Icicle::Model::Vertex> {
+        size_t operator()(Icicle::Model::Vertex const& vertex) const {
+            size_t seed = 0;
+            Icicle::hashCombine(seed, vertex.position, vertex.color, vertex.normal, vertex.uv);
+            return seed;
+        }
+    };
 }  // namespace std
 
 namespace Icicle {
 
-Model(LogicalDevice &device, const Model::Builder &builder) : LogicalDevice{device} {
+
+Model::Model(LogicalDevice &device, const Model::Builder &builder) : logicalDevice{device} {
   createVertexBuffers(builder.vertices);
   createIndexBuffers(builder.indices);
 }

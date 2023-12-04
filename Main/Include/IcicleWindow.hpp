@@ -6,13 +6,13 @@
 #include <string>
 namespace Icicle {
 
-class Window {
+class IcicleWindow {
  public:
-  Window(int w, int h, std::string name);
-  ~Window();
+  IcicleWindow(int w, int h, std::string name);
+  ~IcicleWindow();
 
-  Window(const Window &) = delete;
-  Window &operator=(const Window &) = delete;
+  IcicleWindow(const IcicleWindow &) = delete;
+  IcicleWindow &operator=(const IcicleWindow &) = delete;
 
   bool shouldClose() { return glfwWindowShouldClose(window); }
   VkExtent2D getExtent() { return {static_cast<uint32_t>(width), static_cast<uint32_t>(height)}; }
