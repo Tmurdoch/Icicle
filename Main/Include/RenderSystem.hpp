@@ -27,7 +27,7 @@ namespace Icicle {
         void createPipelineLayout();
         void createPipeline(VkRenderPass renderPass);
 
-        LogicalDevice& device;
+        LogicalDevice& logicalDevice;
 
         std::unique_ptr<IciclePipeline> pipeline;
         VkPipelineLayout pipelineLayout;

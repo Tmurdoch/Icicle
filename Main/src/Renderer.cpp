@@ -54,8 +54,8 @@ namespace Icicle {
 
     void Renderer::freeCommandBuffers() {
         vkFreeCommandBuffers(
-            device.getCommandPool(),
             device.device(),
+            device.getCommandPool(),
             static_cast<uint32_t>(commandBuffers.size()),
             commandBuffers.data());
         commandBuffers.clear();
@@ -93,7 +93,7 @@ namespace Icicle {
             throw std::runtime_error("failed to record command buffer!");
         }
 
-        auto result = lveSwapChain->submitCommandBuffers(&commandBuffer, &currentImageIndex);
+        auto result = swapChain->submitCommandBuffers(&commandBuffer, &currentImageIndex);
         if (result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR ||
             window.wasWindowResized()) {
             window.resetWindowResizedFlag();

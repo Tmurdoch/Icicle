@@ -9,7 +9,7 @@
 #include <set>
 #include <stdexcept>
 
-namespace lve {
+namespace Icicle {
 
     SwapChain::SwapChain(LogicalDevice& deviceRef, VkExtent2D extent)
         : device{ deviceRef }, windowExtent{ extent } {

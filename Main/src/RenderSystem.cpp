@@ -18,14 +18,14 @@ namespace Icicle {
         alignas(16) glm::vec3 color{};
     };
 
-    RenderSystem::RenderSystem(LveDevice& device, VkRenderPass renderPass)
-        : lveDevice{ device } {
+    RenderSystem::RenderSystem(LogicalDevice& device, VkRenderPass renderPass)
+        : logicalDevice{ device } {
         createPipelineLayout();
         createPipeline(renderPass);
     }
 
     RenderSystem::~RenderSystem() {
-        vkDestroyPipelineLayout(lveDevice.device(), pipelineLayout, nullptr);
+        vkDestroyPipelineLayout(logicalDevice.device(), pipelineLayout, nullptr);
     }
 
     void RenderSystem::createPipelineLayout() {
@@ -40,7 +40,7 @@ namespace Icicle {
         pipelineLayoutInfo.pSetLayouts = nullptr;
         pipelineLayoutInfo.pushConstantRangeCount = 1;
         pipelineLayoutInfo.pPushConstantRanges = &pushConstantRange;
-        if (vkCreatePipelineLayout(lveDevice.device(), &pipelineLayoutInfo, nullptr, &pipelineLayout) !=
+        if (vkCreatePipelineLayout(logicalDevice.device(), &pipelineLayoutInfo, nullptr, &pipelineLayout) !=
             VK_SUCCESS) {
             throw std::runtime_error("failed to create pipeline layout!");
         }
@@ -53,8 +53,8 @@ namespace Icicle {
         IciclePipeline::defaultPipelineConfigInfo(pipelineConfig);
         pipelineConfig.renderPass = renderPass;
         pipelineConfig.pipelineLayout = pipelineLayout;
-        lvePipeline = std::make_unique<IciclePipeline>(
-            lveDevice,
+        pipeline = std::make_unique<IciclePipeline>(
+            logicalDevice,
             "shaders/simple_shader.vert.spv",
             "shaders/simple_shader.frag.spv",
             pipelineConfig);
@@ -64,7 +64,7 @@ namespace Icicle {
         VkCommandBuffer commandBuffer,
         std::vector<GameObject>& gameObjects,
         const Camera& camera) {
-        lvePipeline->bind(commandBuffer);
+        pipeline->bind(commandBuffer);
 
         auto projectionView = camera.getProjection() * camera.getView();
 
