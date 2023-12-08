@@ -8,6 +8,7 @@
 
 #include <stddef.h>
 #include <cstdint>
+#include <functional>
 
 namespace Icicle {
 

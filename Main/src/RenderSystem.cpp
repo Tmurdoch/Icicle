@@ -6,8 +6,6 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/constants.hpp>
 
-
-#include <windows.h>
 #include <iostream>
 // std
 #include <array>
@@ -56,10 +54,6 @@ namespace Icicle {
         IciclePipeline::defaultPipelineConfigInfo(pipelineConfig);
         pipelineConfig.renderPass = renderPass;
         pipelineConfig.pipelineLayout = pipelineLayout;
-
-        char buf[256];
-        GetCurrentDirectoryA(256, buf);
-        std::cout << buf << std::endl;
 
         pipeline = std::make_unique<IciclePipeline>(
             logicalDevice,
