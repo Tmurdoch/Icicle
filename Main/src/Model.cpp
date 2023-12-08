@@ -168,7 +168,7 @@ void Model::Builder::loadModel(const std::string &filepath) {
   std::string warn, err;
 
   if (!tinyobj::LoadObj(&attrib, &shapes, &materials, &warn, &err, filepath.c_str())) {
-    throw std::runtime_error(warn + err);
+    throw std::runtime_error("Failed to load model from " + filepath + "\n" + warn + err);
   }
 
   vertices.clear();
@@ -194,7 +194,7 @@ void Model::Builder::loadModel(const std::string &filepath) {
               attrib.colors[colorIndex - 0],
           };
         } else {
-          vertex.color = {1.f, 1.f, 1.f};  // set default color
+          vertex.color = {0.f, 1.f, 0.f};  // set default color
         }
       }
 
@@ -220,6 +220,10 @@ void Model::Builder::loadModel(const std::string &filepath) {
       indices.push_back(uniqueVertices[vertex]);
     }
   }
+  if (shapes.empty()) {
+      throw std::runtime_error("No shapes found in the loaded model from " + filepath);
+  }
+
 }
 
 }  // namespace Icicle

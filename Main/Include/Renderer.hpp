@@ -10,6 +10,9 @@
 #include <vector>
 
 namespace Icicle {
+    /*
+    * Double buffering is used, see SwapChain::MAX_FRAMES_IN_FLIGHT
+    */
     class Renderer {
     public:
         Renderer(IcicleWindow& window, LogicalDevice& device);

@@ -11,8 +11,8 @@ namespace Icicle {
 
     Root::Root() {}
 
-
-    void Root::startUp() {
+    //TODO: rename this to run
+    void Root::run() {
 
 
         
@@ -34,7 +34,7 @@ namespace Icicle {
             camera.setViewYXZ(viewerObject.transform.translation, viewerObject.transform.rotation);
 
             float aspect = renderer.getAspectRatio();
-            camera.setPerspectiveProjection(glm::radians(50.f), aspect, 0.1f, 10.f);
+            camera.setPerspectiveProjection(glm::radians(50.0f), aspect, 0.1f, 10.f);
 
             if (auto commandBuffer = renderer.beginFrame()) {
                 renderer.beginSwapChainRenderPass(commandBuffer);
@@ -51,11 +51,11 @@ namespace Icicle {
 
     void Root::loadGameObjects() {
         std::shared_ptr<Model> model =
-            Model::createModelFromFile(logicalDevice, "models/smooth_vase.obj");
+            Model::createModelFromFile(logicalDevice, "../Resources/Models/character1.obj");
         auto gameObj = GameObject::createGameObject();
         gameObj.model = model;
-        gameObj.transform.translation = { .0f, .0f, 2.5f };
-        gameObj.transform.scale = glm::vec3(3.f);
+        gameObj.transform.translation = { 0.0f, 0.0f, 2.5f };
+        gameObj.transform.scale = glm::vec3(3.0f);
         gameObjects.push_back(std::move(gameObj));
     }
 

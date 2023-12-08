@@ -4,6 +4,7 @@
 
 # Add source to this project's executable.
 add_subdirectory(src)
+add_subdirectory(Resources)
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET Icicle PROPERTY CXX_STANDARD 20)

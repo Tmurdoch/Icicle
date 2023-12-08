@@ -22,7 +22,7 @@ namespace Icicle {
         void moveInPlaneXZ(GLFWwindow* window, float dt, GameObject& gameObject);
 
         KeyMappings keys{};
-        float moveSpeed{ 3.f };
+        float moveSpeed{ 6.f };
         float lookSpeed{ 1.5f };
     };
 }  // namespace Icicle

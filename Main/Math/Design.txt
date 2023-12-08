@@ -1,8 +1,0 @@
-this should be a library, how to declare it as such?
-
-most functions can be labelled static
-
-consider using inline functions, removes the need for a source file
-and potentially dependency scramble
-
-see https://github.com/tiagovcosta/aquaengine/blob/aea6de9f47ba0243b90c144dee4422efb2389cc7/AquaEngine/Utilities/PointerMath.h#L4

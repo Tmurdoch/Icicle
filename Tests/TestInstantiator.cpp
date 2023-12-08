@@ -27,7 +27,7 @@
 namespace Icicle {
 
 TEST_CASE("initialize") {
-    Icicle::Root::getInstance()->startUp();
+    Icicle::Root::getInstance()->run();
 }
 
 TEST_CASE("Stack Allocator") {

@@ -6,6 +6,9 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/constants.hpp>
 
+
+#include <windows.h>
+#include <iostream>
 // std
 #include <array>
 #include <cassert>
@@ -53,10 +56,15 @@ namespace Icicle {
         IciclePipeline::defaultPipelineConfigInfo(pipelineConfig);
         pipelineConfig.renderPass = renderPass;
         pipelineConfig.pipelineLayout = pipelineLayout;
+
+        char buf[256];
+        GetCurrentDirectoryA(256, buf);
+        std::cout << buf << std::endl;
+
         pipeline = std::make_unique<IciclePipeline>(
             logicalDevice,
-            "shaders/simple_shader.vert.spv",
-            "shaders/simple_shader.frag.spv",
+            "../Resources/Shaders/nodescvert.spv",
+            "../Resources/Shaders/nodescfrag.spv",
             pipelineConfig);
     }
 
