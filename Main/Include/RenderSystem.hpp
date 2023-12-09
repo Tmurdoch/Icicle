@@ -12,8 +12,10 @@
 namespace Icicle {
     class RenderSystem {
     public:
-        RenderSystem(LogicalDevice& device, VkRenderPass renderPass);
+        RenderSystem();
         ~RenderSystem();
+
+        void startUp(LogicalDevice& device, VkRenderPass renderPass);
 
         RenderSystem(const RenderSystem&) = delete;
         RenderSystem& operator=(const RenderSystem&) = delete;

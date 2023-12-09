@@ -5,11 +5,14 @@
 
 namespace Icicle {
 
-IcicleWindow::IcicleWindow(int w, int h, std::string name) : width{w}, height{h}, windowName{name} {
+IcicleWindow::IcicleWindow() {}
+IcicleWindow::~IcicleWindow() {}
+
+void IcicleWindow::startUp(int w, int h, std::string name) {
   initWindow();
 }
 
-IcicleWindow::~IcicleWindow() {
+void IcicleWindow::cleanUp() {
   glfwDestroyWindow(window);
   glfwTerminate();
 }

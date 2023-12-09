@@ -14,19 +14,22 @@
 
 namespace Icicle {
 
+    RenderSystem::RenderSystem(); // do nothing
+    RenderSystem::~RenderSystem() {cleanUp();};
+
     struct SimplePushConstantData {
         glm::mat4 transform{ 1.f };
         alignas(16) glm::vec3 color{};
     };
 
-    RenderSystem::RenderSystem(LogicalDevice& device, VkRenderPass renderPass)
+    RenderSystem::startUp(LogicalDevice& device, VkRenderPass renderPass)
         : logicalDevice{ device } {
         createPipelineLayout();
         createPipeline(renderPass);
     }
 
-    RenderSystem::~RenderSystem() {
-        vkDestroyPipelineLayout(logicalDevice.device(), pipelineLayout, nullptr);
+    RenderSystem::cleanUp() {
+        vkDestroyPipelineLayout(logicalDevice.device(), pipelineLayout, nullptr)
     }
 
     void RenderSystem::createPipelineLayout() {

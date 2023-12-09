@@ -33,11 +33,11 @@ class Root
 
     std::vector<GameObject> gameObjects;
 
-    IcicleWindow window{ WIDTH, HEIGHT, "Icicle" };
-    LogicalDevice logicalDevice{ window };
+    IcicleWindow window;
+    LogicalDevice logicalDevice;
 
-    Renderer renderer{ window, logicalDevice };
-    RenderSystem renderSystem{ logicalDevice, renderer.getSwapChainRenderPass() };
+    Renderer renderer;
+    RenderSystem renderSystem;
 
 
     Root();
@@ -66,6 +66,7 @@ class Root
 
 // FileSystemManager       zFileSystemManager;
     
+    void startUp();
     void run();
 };
 

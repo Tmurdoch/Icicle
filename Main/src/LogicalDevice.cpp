@@ -10,7 +10,14 @@
 namespace Icicle {
 
 // class member functions
-LogicalDevice::LogicalDevice(IcicleWindow &window) : window{window} {
+LogicalDevice::LogicalDevice() {}
+
+LogicalDevice::~LogicalDevice() {}
+
+//problem: I deleted assignment operator so i cant do this->window(window), and initializer
+//lists only work on constructors but it's bad practice to use the default constructors
+//because I want to control my components lifetimes
+void LogicalDevice::startUp(IcicleWindow &window) : window{window} {
   createInstance();
   setupDebugMessenger();
   createSurface();
@@ -19,8 +26,8 @@ LogicalDevice::LogicalDevice(IcicleWindow &window) : window{window} {
   createCommandPool();
 }
 
-LogicalDevice::~LogicalDevice() {
-  vkDestroyCommandPool(device_, commandPool, nullptr);
+void LogicalDevice::cleanUp() { 
+ vkDestroyCommandPool(device_, commandPool, nullptr);
   vkDestroyDevice(device_, nullptr);
 
   if (enableValidationLayers) {

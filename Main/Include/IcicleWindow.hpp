@@ -8,8 +8,11 @@ namespace Icicle {
 
 class IcicleWindow {
  public:
-  IcicleWindow(int w, int h, std::string name);
+  IcicleWindow(); //do nothing
   ~IcicleWindow();
+
+  void startUp(int w, int h, std::string name);
+  void cleanUp();
 
   IcicleWindow(const IcicleWindow &) = delete;
   IcicleWindow &operator=(const IcicleWindow &) = delete;

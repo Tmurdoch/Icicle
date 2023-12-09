@@ -11,6 +11,21 @@ namespace Icicle {
 
     Root::Root() {}
 
+    void Root::startUp() {
+
+        //window
+        window.startUp(WIDTH, HEIGHT, "Icicle");
+        //device
+        logicalDevice.startUp(window);
+        //renderer
+        renderer.startUp(window, logicalDevice );
+        
+        //renderSystem
+        renderSystem.startUp(logicalDevice, renderer.getSwapChainRenderPass());
+
+
+    }
+
     //TODO: rename this to run
     void Root::run() {
 
