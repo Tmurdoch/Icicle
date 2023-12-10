@@ -11,7 +11,7 @@
 namespace Icicle {
 
     IciclePipeline::IciclePipeline(
-        LogicalDevice& device,
+        LogicalDevice* device,
         const std::string& vertFilepath,
         const std::string& fragFilepath,
         const PipelineConfigInfo& configInfo)
@@ -20,9 +20,9 @@ namespace Icicle {
     }
 
     IciclePipeline::~IciclePipeline() {
-        vkDestroyShaderModule(logicalDevice.device(), vertShaderModule, nullptr);
-        vkDestroyShaderModule(logicalDevice.device(), fragShaderModule, nullptr);
-        vkDestroyPipeline(logicalDevice.device(), graphicsPipeline, nullptr);
+        vkDestroyShaderModule(logicalDevice->device(), vertShaderModule, nullptr);
+        vkDestroyShaderModule(logicalDevice->device(), fragShaderModule, nullptr);
+        vkDestroyPipeline(logicalDevice->device(), graphicsPipeline, nullptr);
     }
 
     std::vector<char> IciclePipeline::readFile(const std::string& filepath) {
@@ -106,7 +106,7 @@ namespace Icicle {
         pipelineInfo.basePipelineHandle = VK_NULL_HANDLE;
 
         if (vkCreateGraphicsPipelines(
-            logicalDevice.device(),
+            logicalDevice->device(),
             VK_NULL_HANDLE,
             1,
             &pipelineInfo,
@@ -122,7 +122,7 @@ namespace Icicle {
         createInfo.codeSize = code.size();
         createInfo.pCode = reinterpret_cast<const uint32_t*>(code.data());
 
-        if (vkCreateShaderModule(logicalDevice.device(), &createInfo, nullptr, shaderModule) != VK_SUCCESS) {
+        if (vkCreateShaderModule(logicalDevice->device(), &createInfo, nullptr, shaderModule) != VK_SUCCESS) {
             throw std::runtime_error("failed to create shader module");
         }
     }

@@ -8,21 +8,24 @@
 
 namespace Icicle {
 
-    Renderer::Renderer(IcicleWindow& window, LogicalDevice& device)
-        : window{ window }, device{ device } {
+    void Renderer::startUp(IcicleWindow* windowPtr, LogicalDevice* devicePtr) {
+        this->window = windowPtr;
+        this->device = devicePtr;
         recreateSwapChain();
         createCommandBuffers();
     }
 
-    Renderer::~Renderer() { freeCommandBuffers(); }
+    void Renderer::cleanUp() {
+        freeCommandBuffers();
+    }
 
     void Renderer::recreateSwapChain() {
-        auto extent = window.getExtent();
+        auto extent = window->getExtent();
         while (extent.width == 0 || extent.height == 0) {
-            extent = window.getExtent();
+            extent = window->getExtent();
             glfwWaitEvents();
         }
-        vkDeviceWaitIdle(device.device());
+        vkDeviceWaitIdle(device->device());
 
         if (swapChain == nullptr) {
             swapChain = std::make_unique<SwapChain>(device, extent);
@@ -43,10 +46,10 @@ namespace Icicle {
         VkCommandBufferAllocateInfo allocInfo{};
         allocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
         allocInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
-        allocInfo.commandPool = device.getCommandPool();
+        allocInfo.commandPool = device->getCommandPool();
         allocInfo.commandBufferCount = static_cast<uint32_t>(commandBuffers.size());
 
-        if (vkAllocateCommandBuffers(device.device(), &allocInfo, commandBuffers.data()) !=
+        if (vkAllocateCommandBuffers(device->device(), &allocInfo, commandBuffers.data()) !=
             VK_SUCCESS) {
             throw std::runtime_error("failed to allocate command buffers!");
         }
@@ -54,8 +57,8 @@ namespace Icicle {
 
     void Renderer::freeCommandBuffers() {
         vkFreeCommandBuffers(
-            device.device(),
-            device.getCommandPool(),
+            device->device(),
+            device->getCommandPool(),
             static_cast<uint32_t>(commandBuffers.size()),
             commandBuffers.data());
         commandBuffers.clear();
@@ -95,8 +98,8 @@ namespace Icicle {
 
         auto result = swapChain->submitCommandBuffers(&commandBuffer, &currentImageIndex);
         if (result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR ||
-            window.wasWindowResized()) {
-            window.resetWindowResizedFlag();
+            window->wasWindowResized()) {
+            window->resetWindowResizedFlag();
             recreateSwapChain();
         }
         else if (result != VK_SUCCESS) {

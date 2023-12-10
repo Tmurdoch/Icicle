@@ -12,11 +12,18 @@
 namespace Icicle {
     class RenderSystem {
     public:
-        RenderSystem();
-        ~RenderSystem();
+        
+        static RenderSystem* getInstance() {
+            if (instancePtr == nullptr) {
+                instancePtr = new RenderSystem();
+            }
 
-        void startUp(LogicalDevice& device, VkRenderPass renderPass);
+            return instancePtr;
+        }
 
+        //devicePtr is pointer to singleton class
+        void startUp(LogicalDevice* devicePtr, VkRenderPass renderPass);
+        void cleanUp();
         RenderSystem(const RenderSystem&) = delete;
         RenderSystem& operator=(const RenderSystem&) = delete;
 
@@ -25,11 +32,15 @@ namespace Icicle {
             std::vector<GameObject>& gameObjects,
             const Camera& camera);
 
+
     private:
+        static RenderSystem* instancePtr;
+        RenderSystem();
+        ~RenderSystem();
         void createPipelineLayout();
         void createPipeline(VkRenderPass renderPass);
 
-        LogicalDevice& logicalDevice;
+        LogicalDevice* logicalDevice;
 
         std::unique_ptr<IciclePipeline> pipeline;
         VkPipelineLayout pipelineLayout;

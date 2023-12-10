@@ -30,23 +30,23 @@ namespace std {
 namespace Icicle {
 
 
-Model::Model(LogicalDevice &device, const Model::Builder &builder) : logicalDevice{device} {
+Model::Model(LogicalDevice *device, const Model::Builder &builder) : logicalDevice{device} {
   createVertexBuffers(builder.vertices);
   createIndexBuffers(builder.indices);
 }
 
 Model::~Model() {
-  vkDestroyBuffer(logicalDevice.device(), vertexBuffer, nullptr);
-  vkFreeMemory(logicalDevice.device(), vertexBufferMemory, nullptr);
+  vkDestroyBuffer(logicalDevice->device(), vertexBuffer, nullptr);
+  vkFreeMemory(logicalDevice->device(), vertexBufferMemory, nullptr);
 
   if (hasIndexBuffer) {
-    vkDestroyBuffer(logicalDevice.device(), indexBuffer, nullptr);
-    vkFreeMemory(logicalDevice.device(), indexBufferMemory, nullptr);
+    vkDestroyBuffer(logicalDevice->device(), indexBuffer, nullptr);
+    vkFreeMemory(logicalDevice->device(), indexBufferMemory, nullptr);
   }
 }
 
 std::unique_ptr<Model> Model::createModelFromFile(
-    LogicalDevice &device, const std::string &filepath) {
+    LogicalDevice *device, const std::string &filepath) {
   Builder builder{};
   builder.loadModel(filepath);
   return std::make_unique<Model>(device, builder);
@@ -59,7 +59,7 @@ void Model::createVertexBuffers(const std::vector<Vertex> &vertices) {
 
   VkBuffer stagingBuffer;
   VkDeviceMemory stagingBufferMemory;
-  logicalDevice.createBuffer(
+  logicalDevice->createBuffer(
       bufferSize,
       VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
       VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
@@ -67,21 +67,21 @@ void Model::createVertexBuffers(const std::vector<Vertex> &vertices) {
       stagingBufferMemory);
 
   void *data;
-  vkMapMemory(logicalDevice.device(), stagingBufferMemory, 0, bufferSize, 0, &data);
+  vkMapMemory(logicalDevice->device(), stagingBufferMemory, 0, bufferSize, 0, &data);
   memcpy(data, vertices.data(), static_cast<size_t>(bufferSize));
-  vkUnmapMemory(logicalDevice.device(), stagingBufferMemory);
+  vkUnmapMemory(logicalDevice->device(), stagingBufferMemory);
 
-  logicalDevice.createBuffer(
+  logicalDevice->createBuffer(
       bufferSize,
       VK_BUFFER_USAGE_VERTEX_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT,
       VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
       vertexBuffer,
       vertexBufferMemory);
 
-  logicalDevice.copyBuffer(stagingBuffer, vertexBuffer, bufferSize);
+  logicalDevice->copyBuffer(stagingBuffer, vertexBuffer, bufferSize);
 
-  vkDestroyBuffer(logicalDevice.device(), stagingBuffer, nullptr);
-  vkFreeMemory(logicalDevice.device(), stagingBufferMemory, nullptr);
+  vkDestroyBuffer(logicalDevice->device(), stagingBuffer, nullptr);
+  vkFreeMemory(logicalDevice->device(), stagingBufferMemory, nullptr);
 }
 
 void Model::createIndexBuffers(const std::vector<uint32_t> &indices) {
@@ -96,7 +96,7 @@ void Model::createIndexBuffers(const std::vector<uint32_t> &indices) {
 
   VkBuffer stagingBuffer;
   VkDeviceMemory stagingBufferMemory;
-  logicalDevice.createBuffer(
+  logicalDevice->createBuffer(
       bufferSize,
       VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
       VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
@@ -104,21 +104,21 @@ void Model::createIndexBuffers(const std::vector<uint32_t> &indices) {
       stagingBufferMemory);
 
   void *data;
-  vkMapMemory(logicalDevice.device(), stagingBufferMemory, 0, bufferSize, 0, &data);
+  vkMapMemory(logicalDevice->device(), stagingBufferMemory, 0, bufferSize, 0, &data);
   memcpy(data, indices.data(), static_cast<size_t>(bufferSize));
-  vkUnmapMemory(logicalDevice.device(), stagingBufferMemory);
+  vkUnmapMemory(logicalDevice->device(), stagingBufferMemory);
 
-  logicalDevice.createBuffer(
+  logicalDevice->createBuffer(
       bufferSize,
       VK_BUFFER_USAGE_INDEX_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT,
       VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
       indexBuffer,
       indexBufferMemory);
 
-  logicalDevice.copyBuffer(stagingBuffer, indexBuffer, bufferSize);
+  logicalDevice->copyBuffer(stagingBuffer, indexBuffer, bufferSize);
 
-  vkDestroyBuffer(logicalDevice.device(), stagingBuffer, nullptr);
-  vkFreeMemory(logicalDevice.device(), stagingBufferMemory, nullptr);
+  vkDestroyBuffer(logicalDevice->device(), stagingBuffer, nullptr);
+  vkFreeMemory(logicalDevice->device(), stagingBufferMemory, nullptr);
 }
 
 void Model::draw(VkCommandBuffer commandBuffer) {

@@ -7,9 +7,16 @@
 namespace Icicle {
 
 class IcicleWindow {
+
  public:
-  IcicleWindow(); //do nothing
-  ~IcicleWindow();
+
+	 static IcicleWindow* getInstance() {
+		 if (instancePtr == nullptr)
+		 {
+			 instancePtr = new IcicleWindow();
+		 }
+		 return instancePtr;
+	 }
 
   void startUp(int w, int h, std::string name);
   void cleanUp();
@@ -25,15 +32,18 @@ class IcicleWindow {
 
   void createWindowSurface(VkInstance instance, VkSurfaceKHR *surface);
 
- private:
-  static void framebufferResizeCallback(GLFWwindow *window, int width, int height);
-  void initWindow();
+private:
+	static IcicleWindow* instancePtr;
+	IcicleWindow(); //do nothing
+	~IcicleWindow();
+	static void framebufferResizeCallback(GLFWwindow* window, int width, int height);
+	void initWindow();
 
-  int width;
-  int height;
-  bool framebufferResized = false;
+	int width;
+	int height;
+	bool framebufferResized = false;
 
-  std::string windowName;
-  GLFWwindow *window;
+	std::string windowName;
+	GLFWwindow* window;
 };
 }  // namespace Icicle

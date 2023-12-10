@@ -33,11 +33,11 @@ class Root
 
     std::vector<GameObject> gameObjects;
 
-    IcicleWindow window;
-    LogicalDevice logicalDevice;
+    IcicleWindow *window;
+    LogicalDevice *logicalDevice;
 
-    Renderer renderer;
-    RenderSystem renderSystem;
+    Renderer *renderer;
+    RenderSystem *renderSystem;
 
 
     Root();

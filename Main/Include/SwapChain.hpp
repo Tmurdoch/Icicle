@@ -16,9 +16,9 @@ namespace Icicle {
     public:
         static constexpr int MAX_FRAMES_IN_FLIGHT = 2;
 
-        SwapChain(LogicalDevice& deviceRef, VkExtent2D windowExtent);
+        SwapChain(LogicalDevice* deviceRef, VkExtent2D windowExtent);
         SwapChain(
-            LogicalDevice& deviceRef, VkExtent2D windowExtent, std::shared_ptr<SwapChain> previous);
+            LogicalDevice* deviceRef, VkExtent2D windowExtent, std::shared_ptr<SwapChain> previous);
 
         ~SwapChain();
 
@@ -76,7 +76,7 @@ namespace Icicle {
         std::vector<VkImage> swapChainImages;
         std::vector<VkImageView> swapChainImageViews;
 
-        LogicalDevice& device;
+        LogicalDevice* device;
         VkExtent2D windowExtent;
 
         VkSwapchainKHR swapChain;

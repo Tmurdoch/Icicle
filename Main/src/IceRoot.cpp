@@ -14,14 +14,14 @@ namespace Icicle {
     void Root::startUp() {
 
         //window
-        window.startUp(WIDTH, HEIGHT, "Icicle");
+        window->startUp(WIDTH, HEIGHT, "Icicle");
         //device
-        logicalDevice.startUp(window);
+        logicalDevice->startUp(window);
         //renderer
-        renderer.startUp(window, logicalDevice );
+        renderer->startUp(window, logicalDevice );
         
         //renderSystem
-        renderSystem.startUp(logicalDevice, renderer.getSwapChainRenderPass());
+        renderSystem->startUp(logicalDevice, renderer->getSwapChainRenderPass());
 
 
     }
@@ -37,7 +37,7 @@ namespace Icicle {
         KeyboardMovementController cameraController{};
 
         auto currentTime = std::chrono::high_resolution_clock::now();
-        while (!window.shouldClose()) {
+        while (!window->shouldClose()) {
             glfwPollEvents();
 
             auto newTime = std::chrono::high_resolution_clock::now();
@@ -45,23 +45,23 @@ namespace Icicle {
                 std::chrono::duration<float, std::chrono::seconds::period>(newTime - currentTime).count();
             currentTime = newTime;
 
-            cameraController.moveInPlaneXZ(window.getGLFWwindow(), frameTime, viewerObject);
+            cameraController.moveInPlaneXZ(window->getGLFWwindow(), frameTime, viewerObject);
             camera.setViewYXZ(viewerObject.transform.translation, viewerObject.transform.rotation);
 
-            float aspect = renderer.getAspectRatio();
+            float aspect = renderer->getAspectRatio();
             camera.setPerspectiveProjection(glm::radians(50.0f), aspect, 0.1f, 10.f);
 
-            if (auto commandBuffer = renderer.beginFrame()) {
-                renderer.beginSwapChainRenderPass(commandBuffer);
+            if (auto commandBuffer = renderer->beginFrame()) {
+                renderer->beginSwapChainRenderPass(commandBuffer);
 
-                renderSystem.renderGameObjects(commandBuffer, gameObjects, camera);
+                renderSystem->renderGameObjects(commandBuffer, gameObjects, camera);
 
-                renderer.endSwapChainRenderPass(commandBuffer);
-                renderer.endFrame();
+                renderer->endSwapChainRenderPass(commandBuffer);
+                renderer->endFrame();
             }
         }
 
-        vkDeviceWaitIdle(logicalDevice.device());
+        vkDeviceWaitIdle(logicalDevice->device());
     }
 
     void Root::loadGameObjects() {

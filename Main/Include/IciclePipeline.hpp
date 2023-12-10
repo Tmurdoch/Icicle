@@ -30,7 +30,7 @@ namespace Icicle {
     class IciclePipeline {
     public:
         IciclePipeline(
-            LogicalDevice& device,
+            LogicalDevice* device,
             const std::string& vertFilepath,
             const std::string& fragFilepath,
             const PipelineConfigInfo& configInfo);
@@ -53,7 +53,7 @@ namespace Icicle {
 
         void createShaderModule(const std::vector<char>& code, VkShaderModule* shaderModule);
 
-        LogicalDevice& logicalDevice;
+        LogicalDevice* logicalDevice;
         VkPipeline graphicsPipeline;
         VkShaderModule vertShaderModule;
         VkShaderModule fragShaderModule;

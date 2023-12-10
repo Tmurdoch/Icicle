@@ -5,11 +5,12 @@
 
 namespace Icicle {
 
-IcicleWindow::IcicleWindow() {}
-IcicleWindow::~IcicleWindow() {}
-
 void IcicleWindow::startUp(int w, int h, std::string name) {
-  initWindow();
+    this->getInstance();
+    this->width = w;
+    this->height = h;
+    this->windowName = name;
+    initWindow();
 }
 
 void IcicleWindow::cleanUp() {

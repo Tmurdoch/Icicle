@@ -15,8 +15,8 @@ namespace Icicle {
     */
     class Renderer {
     public:
-        Renderer(IcicleWindow& window, LogicalDevice& device);
-        ~Renderer();
+        void startUp(IcicleWindow* windowPtr, LogicalDevice* devicePtr);
+        void cleanUp();
 
         Renderer(const Renderer&) = delete;
         Renderer& operator=(const Renderer&) = delete;
@@ -41,12 +41,14 @@ namespace Icicle {
         void endSwapChainRenderPass(VkCommandBuffer commandBuffer);
 
     private:
+        Renderer();
+        ~Renderer();
         void createCommandBuffers();
         void freeCommandBuffers();
         void recreateSwapChain();
 
-        IcicleWindow& window;
-        LogicalDevice& device;
+        IcicleWindow* window;
+        LogicalDevice* device;
         std::unique_ptr<SwapChain> swapChain;
         std::vector<VkCommandBuffer> commandBuffers;
 

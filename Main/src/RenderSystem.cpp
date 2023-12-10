@@ -14,22 +14,19 @@
 
 namespace Icicle {
 
-    RenderSystem::RenderSystem(); // do nothing
-    RenderSystem::~RenderSystem() {cleanUp();};
-
     struct SimplePushConstantData {
         glm::mat4 transform{ 1.f };
         alignas(16) glm::vec3 color{};
     };
 
-    RenderSystem::startUp(LogicalDevice& device, VkRenderPass renderPass)
-        : logicalDevice{ device } {
+    void RenderSystem::startUp(LogicalDevice* devicePtr, VkRenderPass renderPass) {
+        this->logicalDevice = devicePtr;
         createPipelineLayout();
         createPipeline(renderPass);
     }
 
-    RenderSystem::cleanUp() {
-        vkDestroyPipelineLayout(logicalDevice.device(), pipelineLayout, nullptr)
+    void RenderSystem::cleanUp() {
+        vkDestroyPipelineLayout(logicalDevice->device(), pipelineLayout, nullptr);
     }
 
     void RenderSystem::createPipelineLayout() {
@@ -44,7 +41,7 @@ namespace Icicle {
         pipelineLayoutInfo.pSetLayouts = nullptr;
         pipelineLayoutInfo.pushConstantRangeCount = 1;
         pipelineLayoutInfo.pPushConstantRanges = &pushConstantRange;
-        if (vkCreatePipelineLayout(logicalDevice.device(), &pipelineLayoutInfo, nullptr, &pipelineLayout) !=
+        if (vkCreatePipelineLayout(logicalDevice->device(), &pipelineLayoutInfo, nullptr, &pipelineLayout) !=
             VK_SUCCESS) {
             throw std::runtime_error("failed to create pipeline layout!");
         }

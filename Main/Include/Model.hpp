@@ -39,13 +39,13 @@ class Model {
          void loadModel(const std::string& filepath);
      };
 
-     Model(Icicle::LogicalDevice& device, const Model::Builder& builder);
+     Model(Icicle::LogicalDevice* device, const Model::Builder& builder);
      ~Model();
 
     
 
     static std::unique_ptr<Model> createModelFromFile(
-      Icicle::LogicalDevice& device, const std::string& filepath);
+      Icicle::LogicalDevice* device, const std::string& filepath);
 
     void bind(VkCommandBuffer commandBuffer);
     void draw(VkCommandBuffer commandBuffer);
@@ -54,7 +54,7 @@ class Model {
     void createVertexBuffers(const std::vector<Vertex> &vertices);
     void createIndexBuffers(const std::vector<uint32_t> &indices);
 
-    LogicalDevice &logicalDevice;
+    LogicalDevice *logicalDevice;
 
     VkBuffer vertexBuffer;
     VkDeviceMemory vertexBufferMemory;

@@ -33,7 +33,7 @@ class LogicalDevice {
   LogicalDevice(); //do nothing
   ~LogicalDevice();
 
-  void startUp(IcicleWindow &window);
+  void startUp(IcicleWindow *windowPtr);
   void cleanUp();
   // Not copyable or movable
   LogicalDevice(const LogicalDevice &) = delete;
@@ -95,7 +95,8 @@ class LogicalDevice {
   VkInstance instance;
   VkDebugUtilsMessengerEXT debugMessenger;
   VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
-  Icicle::IcicleWindow &window;
+  //ptr to singleton
+  Icicle::IcicleWindow *window;
   VkCommandPool commandPool;
 
   VkDevice device_;

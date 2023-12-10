@@ -27,6 +27,7 @@
 namespace Icicle {
 
 TEST_CASE("initialize") {
+    Icicle::Root::getInstance()->startUp();
     Icicle::Root::getInstance()->run();
 }
 
