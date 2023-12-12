@@ -33,12 +33,6 @@ class Root
 
     std::vector<GameObject> gameObjects;
 
-    IcicleWindow *window;
-    LogicalDevice *logicalDevice;
-
-    Renderer *renderer;
-    RenderSystem *renderSystem;
-
 
     Root();
 
@@ -59,6 +53,11 @@ class Root
 
     //singletons
     static RenderManager*           renderManager;
+    IcicleWindow *window;
+    LogicalDevice *logicalDevice;
+
+    Renderer *renderer;
+    RenderSystem *renderSystem;
 // PhysicsManager          zPhysicsManager;
 // AnimationManager        zAnimationManager;
 // TextureManager          zTextureManager;
@@ -67,6 +66,7 @@ class Root
 // FileSystemManager       zFileSystemManager;
     
     void startUp();
+    void cleanUp();
     void run();
 };
 

@@ -15,6 +15,12 @@ namespace Icicle {
     */
     class Renderer {
     public:
+        static Renderer* getInstance() {
+            if (instancePtr == nullptr) {
+                instancePtr = new Renderer();
+            }
+            return instancePtr;
+        }
         void startUp(IcicleWindow* windowPtr, LogicalDevice* devicePtr);
         void cleanUp();
 
@@ -22,7 +28,11 @@ namespace Icicle {
         Renderer& operator=(const Renderer&) = delete;
 
         VkRenderPass getSwapChainRenderPass() const { return swapChain->getRenderPass(); }
-        float getAspectRatio() const { return swapChain->extentAspectRatio(); }
+        float getAspectRatio() const { 
+            if (swapChain)
+            return swapChain->extentAspectRatio(); 
+            else throw std::runtime_error("swap chain is null in getAspectRatio");
+        }
         bool isFrameInProgress() const { return isFrameStarted; }
 
         VkCommandBuffer getCurrentCommandBuffer() const {
@@ -41,6 +51,7 @@ namespace Icicle {
         void endSwapChainRenderPass(VkCommandBuffer commandBuffer);
 
     private:
+        static Renderer* instancePtr;
         Renderer();
         ~Renderer();
         void createCommandBuffers();

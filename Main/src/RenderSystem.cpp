@@ -13,6 +13,8 @@
 #include <stdexcept>
 
 namespace Icicle {
+    RenderSystem::RenderSystem() {};
+    RenderSystem* RenderSystem::instancePtr = nullptr;
 
     struct SimplePushConstantData {
         glm::mat4 transform{ 1.f };
@@ -20,7 +22,7 @@ namespace Icicle {
     };
 
     void RenderSystem::startUp(LogicalDevice* devicePtr, VkRenderPass renderPass) {
-        this->logicalDevice = devicePtr;
+        this->logicalDevice = devicePtr->getInstance();
         createPipelineLayout();
         createPipeline(renderPass);
     }

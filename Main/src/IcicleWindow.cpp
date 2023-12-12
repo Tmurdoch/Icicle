@@ -4,9 +4,10 @@
 #include <stdexcept>
 
 namespace Icicle {
+IcicleWindow* IcicleWindow::instancePtr = nullptr;
+IcicleWindow::IcicleWindow()  {};
 
 void IcicleWindow::startUp(int w, int h, std::string name) {
-    this->getInstance();
     this->width = w;
     this->height = h;
     this->windowName = name;
@@ -30,7 +31,7 @@ void IcicleWindow::initWindow() {
 
 void IcicleWindow::createWindowSurface(VkInstance instance, VkSurfaceKHR *surface) {
   if (glfwCreateWindowSurface(instance, window, nullptr, surface) != VK_SUCCESS) {
-    throw std::runtime_error("failed to craete window surface");
+    throw std::runtime_error("failed to create window surface");
   }
 }
 

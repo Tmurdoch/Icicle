@@ -17,7 +17,6 @@ namespace Icicle {
             if (instancePtr == nullptr) {
                 instancePtr = new RenderSystem();
             }
-
             return instancePtr;
         }
 

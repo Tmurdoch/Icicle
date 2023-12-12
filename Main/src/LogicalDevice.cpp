@@ -9,17 +9,20 @@
 
 namespace Icicle {
 
+LogicalDevice::LogicalDevice() {};
+LogicalDevice* LogicalDevice::instancePtr = nullptr;
+
 //problem: I deleted assignment operator so i cant do this->window(window), and initializer
 //lists only work on constructors but it's bad practice to use the default constructors
 //because I want to control my components lifetimes
 void LogicalDevice::startUp(IcicleWindow *icicleWindowPtr) {
     this->window = icicleWindowPtr;
-  createInstance();
-  setupDebugMessenger();
-  createSurface();
-  pickPhysicalDevice();
-  createLogicalDevice();
-  createCommandPool();
+    createInstance();
+    setupDebugMessenger();
+    createSurface();
+    pickPhysicalDevice();
+    createLogicalDevice();
+    createCommandPool();
 }
 
 void LogicalDevice::cleanUp() { 
@@ -163,7 +166,7 @@ void LogicalDevice::createCommandPool() {
   }
 }
 
-void LogicalDevice::createSurface() { window->createWindowSurface(instance, &surface_); }
+void LogicalDevice::createSurface() { window->getInstance()->createWindowSurface(instance, &surface_); }
 
 bool LogicalDevice::isDeviceSuitable(VkPhysicalDevice device) {
   QueueFamilyIndices indices = findQueueFamilies(device);

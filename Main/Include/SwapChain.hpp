@@ -35,7 +35,12 @@ namespace Icicle {
         uint32_t height() { return swapChainExtent.height; }
 
         float extentAspectRatio() {
+            if (swapChain){
             return static_cast<float>(swapChainExtent.width) / static_cast<float>(swapChainExtent.height);
+            }
+            else {
+            throw std::runtime_error("swapChain is null in extentAspectRatio()");
+            }
         }
         VkFormat findDepthFormat();
 

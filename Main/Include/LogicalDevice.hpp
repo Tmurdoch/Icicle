@@ -30,9 +30,6 @@ class LogicalDevice {
   const bool enableValidationLayers = true;
 #endif
 
-  LogicalDevice(); //do nothing
-  ~LogicalDevice();
-
   void startUp(IcicleWindow *windowPtr);
   void cleanUp();
   // Not copyable or movable
@@ -74,7 +71,18 @@ class LogicalDevice {
 
   VkPhysicalDeviceProperties properties;
 
+  static LogicalDevice* getInstance() {
+      if (instancePtr == nullptr)
+		    {
+			    instancePtr = new LogicalDevice();
+		    }
+		  return instancePtr;
+  }
+
  private:
+  static LogicalDevice* instancePtr;
+  LogicalDevice(); //do nothing
+  ~LogicalDevice();
   void createInstance();
   void setupDebugMessenger();
   void createSurface();

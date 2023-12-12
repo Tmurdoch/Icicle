@@ -7,10 +7,13 @@
 #include <memory>
 
 namespace Icicle {
+    Renderer::Renderer() {};
+    Renderer* Renderer::instancePtr = nullptr;
+
 
     void Renderer::startUp(IcicleWindow* windowPtr, LogicalDevice* devicePtr) {
-        this->window = windowPtr;
-        this->device = devicePtr;
+        this->window = windowPtr->getInstance();
+        this->device = devicePtr->getInstance();
         recreateSwapChain();
         createCommandBuffers();
     }

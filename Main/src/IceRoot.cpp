@@ -14,14 +14,14 @@ namespace Icicle {
     void Root::startUp() {
 
         //window
-        window->startUp(WIDTH, HEIGHT, "Icicle");
+        window->getInstance()->startUp(WIDTH, HEIGHT, "Icicle");
         //device
-        logicalDevice->startUp(window);
+        logicalDevice->getInstance()->startUp(window);
         //renderer
-        renderer->startUp(window, logicalDevice );
+        renderer->getInstance()->startUp(window, logicalDevice );
         
         //renderSystem
-        renderSystem->startUp(logicalDevice, renderer->getSwapChainRenderPass());
+        renderSystem->getInstance()->startUp(logicalDevice, renderer->getInstance()->getSwapChainRenderPass());
 
 
     }
@@ -37,7 +37,7 @@ namespace Icicle {
         KeyboardMovementController cameraController{};
 
         auto currentTime = std::chrono::high_resolution_clock::now();
-        while (!window->shouldClose()) {
+        while (!window->getInstance()->shouldClose()) {
             glfwPollEvents();
 
             auto newTime = std::chrono::high_resolution_clock::now();
@@ -45,10 +45,11 @@ namespace Icicle {
                 std::chrono::duration<float, std::chrono::seconds::period>(newTime - currentTime).count();
             currentTime = newTime;
 
-            cameraController.moveInPlaneXZ(window->getGLFWwindow(), frameTime, viewerObject);
+            cameraController.moveInPlaneXZ(window->getInstance()->getGLFWwindow(), frameTime, viewerObject);
             camera.setViewYXZ(viewerObject.transform.translation, viewerObject.transform.rotation);
 
             float aspect = renderer->getAspectRatio();
+            std::cout << "past renderer aspect ratrio" << std::endl;
             camera.setPerspectiveProjection(glm::radians(50.0f), aspect, 0.1f, 10.f);
 
             if (auto commandBuffer = renderer->beginFrame()) {
@@ -62,6 +63,14 @@ namespace Icicle {
         }
 
         vkDeviceWaitIdle(logicalDevice->device());
+        cleanUp();
+    }
+
+    void Root::cleanUp() {
+        renderSystem->cleanUp();
+        renderer->cleanUp();
+        logicalDevice->cleanUp();
+        window->cleanUp();
     }
 
     void Root::loadGameObjects() {
