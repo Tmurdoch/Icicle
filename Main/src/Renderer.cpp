@@ -11,9 +11,9 @@ namespace Icicle {
     Renderer* Renderer::instancePtr = nullptr;
 
 
-    void Renderer::startUp(IcicleWindow* windowPtr, LogicalDevice* devicePtr) {
-        this->window = windowPtr->getInstance();
-        this->device = devicePtr->getInstance();
+    void Renderer::startUp() {
+        this->window = IcicleWindow::getInstance();
+        this->device = LogicalDevice::getInstance();
         recreateSwapChain();
         createCommandBuffers();
     }

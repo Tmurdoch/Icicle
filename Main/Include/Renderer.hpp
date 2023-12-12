@@ -21,13 +21,17 @@ namespace Icicle {
             }
             return instancePtr;
         }
-        void startUp(IcicleWindow* windowPtr, LogicalDevice* devicePtr);
+        void startUp();
         void cleanUp();
 
         Renderer(const Renderer&) = delete;
         Renderer& operator=(const Renderer&) = delete;
 
-        VkRenderPass getSwapChainRenderPass() const { return swapChain->getRenderPass(); }
+        VkRenderPass getSwapChainRenderPass() const { 
+            if (swapChain)
+            return swapChain->getRenderPass(); 
+            else throw std::runtime_error("swap chain is null in getSwapChainRenderPass");
+        }
         float getAspectRatio() const { 
             if (swapChain)
             return swapChain->extentAspectRatio(); 

@@ -21,8 +21,8 @@ namespace Icicle {
         alignas(16) glm::vec3 color{};
     };
 
-    void RenderSystem::startUp(LogicalDevice* devicePtr, VkRenderPass renderPass) {
-        this->logicalDevice = devicePtr->getInstance();
+    void RenderSystem::startUp(VkRenderPass renderPass) {
+        this->logicalDevice = LogicalDevice::getInstance(); //singleton
         createPipelineLayout();
         createPipeline(renderPass);
     }

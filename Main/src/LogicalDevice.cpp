@@ -15,8 +15,8 @@ LogicalDevice* LogicalDevice::instancePtr = nullptr;
 //problem: I deleted assignment operator so i cant do this->window(window), and initializer
 //lists only work on constructors but it's bad practice to use the default constructors
 //because I want to control my components lifetimes
-void LogicalDevice::startUp(IcicleWindow *icicleWindowPtr) {
-    this->window = icicleWindowPtr;
+void LogicalDevice::startUp() {
+    this->window = IcicleWindow::getInstance();
     createInstance();
     setupDebugMessenger();
     createSurface();

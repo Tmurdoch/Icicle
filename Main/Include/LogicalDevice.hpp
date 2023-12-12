@@ -30,7 +30,7 @@ class LogicalDevice {
   const bool enableValidationLayers = true;
 #endif
 
-  void startUp(IcicleWindow *windowPtr);
+  void startUp();
   void cleanUp();
   // Not copyable or movable
   LogicalDevice(const LogicalDevice &) = delete;

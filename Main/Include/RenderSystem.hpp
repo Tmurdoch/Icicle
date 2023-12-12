@@ -21,7 +21,7 @@ namespace Icicle {
         }
 
         //devicePtr is pointer to singleton class
-        void startUp(LogicalDevice* devicePtr, VkRenderPass renderPass);
+        void startUp(VkRenderPass renderPass);
         void cleanUp();
         RenderSystem(const RenderSystem&) = delete;
         RenderSystem& operator=(const RenderSystem&) = delete;

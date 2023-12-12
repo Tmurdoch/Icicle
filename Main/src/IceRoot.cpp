@@ -14,23 +14,21 @@ namespace Icicle {
     void Root::startUp() {
 
         //window
-        window->getInstance()->startUp(WIDTH, HEIGHT, "Icicle");
+        IcicleWindow::getInstance()->startUp(WIDTH, HEIGHT, "Icicle");
         //device
-        logicalDevice->getInstance()->startUp(window);
+        LogicalDevice::getInstance()->startUp();
         //renderer
-        renderer->getInstance()->startUp(window, logicalDevice );
+        Renderer::getInstance()->startUp();
         
         //renderSystem
-        renderSystem->getInstance()->startUp(logicalDevice, renderer->getInstance()->getSwapChainRenderPass());
+        RenderSystem::getInstance()->startUp(Renderer::getInstance()->getSwapChainRenderPass());
 
-
+        Root::run();
     }
 
     //TODO: rename this to run
     void Root::run() {
-
-
-        
+        loadGameObjects();
         Camera camera{};
 
         auto viewerObject = GameObject::createGameObject();
@@ -75,7 +73,7 @@ namespace Icicle {
 
     void Root::loadGameObjects() {
         std::shared_ptr<Model> model =
-            Model::createModelFromFile(logicalDevice, "../Resources/Models/character1.obj");
+            Model::createModelFromFile(LogicalDevice::getInstance(), "../Resources/Models/character1.obj");
         auto gameObj = GameObject::createGameObject();
         gameObj.model = model;
         gameObj.transform.translation = { 0.0f, 0.0f, 2.5f };
