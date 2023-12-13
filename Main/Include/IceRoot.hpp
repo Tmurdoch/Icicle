@@ -1,6 +1,12 @@
 #pragma once
 
 #include "MemoryManager.hpp"
+#include "Renderer.hpp"
+#include "RenderManager.hpp"
+#include "RenderSystem.hpp"
+#include "GameObject.hpp"
+#include "LogicalDevice.hpp"
+#include "IcicleWindow.hpp"
 
 
 
@@ -21,7 +27,12 @@ class Root
 
     static Root* instancePtr;
 
+    void loadGameObjects();
+
     
+
+    std::vector<GameObject> gameObjects;
+
 
     Root();
 
@@ -33,14 +44,20 @@ class Root
             instancePtr = new Root();
         }
         return instancePtr;
-    };
+    }
 
     Root(const Root& obj) = delete; //delete copy constructor
 
     void operator=(const Root &) = delete;
+    
 
     //singletons
-   // RenderManager           renderManager;
+    static RenderManager*           renderManager;
+    IcicleWindow *window;
+    LogicalDevice *logicalDevice;
+
+    Renderer *renderer;
+    RenderSystem *renderSystem;
 // PhysicsManager          zPhysicsManager;
 // AnimationManager        zAnimationManager;
 // TextureManager          zTextureManager;
@@ -48,9 +65,9 @@ class Root
 
 // FileSystemManager       zFileSystemManager;
     
-    int testWindow();
-    
-    int startUp();
+    void startUp();
+    void cleanUp();
+    void run();
 };
 
 }
