@@ -8,6 +8,7 @@
 #include <cassert>
 #include <memory>
 #include <vector>
+#include <stdexcept>
 
 namespace Icicle {
     /*

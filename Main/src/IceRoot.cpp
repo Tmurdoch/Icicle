@@ -35,7 +35,7 @@ namespace Icicle {
         KeyboardMovementController cameraController{};
 
         auto currentTime = std::chrono::high_resolution_clock::now();
-        while (!window->getInstance()->shouldClose()) {
+        while (!IcicleWindow::getInstance()->shouldClose()) {
             glfwPollEvents();
 
             auto newTime = std::chrono::high_resolution_clock::now();
@@ -43,20 +43,20 @@ namespace Icicle {
                 std::chrono::duration<float, std::chrono::seconds::period>(newTime - currentTime).count();
             currentTime = newTime;
 
-            cameraController.moveInPlaneXZ(window->getInstance()->getGLFWwindow(), frameTime, viewerObject);
+            cameraController.moveInPlaneXZ(IcicleWindow::getInstance()->getGLFWwindow(), frameTime, viewerObject);
             camera.setViewYXZ(viewerObject.transform.translation, viewerObject.transform.rotation);
 
-            float aspect = renderer->getAspectRatio();
+            float aspect = Renderer::getInstance()->getAspectRatio();
             std::cout << "past renderer aspect ratrio" << std::endl;
             camera.setPerspectiveProjection(glm::radians(50.0f), aspect, 0.1f, 10.f);
 
-            if (auto commandBuffer = renderer->beginFrame()) {
-                renderer->beginSwapChainRenderPass(commandBuffer);
+            if (auto commandBuffer = Renderer::getInstance()->beginFrame()) {
+                Renderer::getInstance()->beginSwapChainRenderPass(commandBuffer);
 
-                renderSystem->renderGameObjects(commandBuffer, gameObjects, camera);
+                RenderSystem::getInstance()->renderGameObjects(commandBuffer, gameObjects, camera);
 
-                renderer->endSwapChainRenderPass(commandBuffer);
-                renderer->endFrame();
+                Renderer::getInstance()->endSwapChainRenderPass(commandBuffer);
+                Renderer::getInstance()->endFrame();
             }
         }
 
