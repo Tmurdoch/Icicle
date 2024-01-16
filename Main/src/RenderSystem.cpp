@@ -84,9 +84,11 @@ namespace Icicle {
                 0,
                 sizeof(SimplePushConstantData),
                 &push);
+
             obj.model->bind(commandBuffer);
             obj.model->draw(commandBuffer);
         }
+        gameObjects[0].transform.translation.x += .0001f;
     }
 
 }  // namespace Icicle

@@ -26,7 +26,6 @@ namespace Icicle {
         Root::run();
     }
 
-    //TODO: rename this to run
     void Root::run() {
         loadGameObjects();
         Camera camera{};
