@@ -26,7 +26,7 @@ namespace Icicle {
         Root::run();
     }
 
-    //TODO: rename this to run
+    
     void Root::run() {
         loadGameObjects();
         Camera camera{};
@@ -47,8 +47,8 @@ namespace Icicle {
             camera.setViewYXZ(viewerObject.transform.translation, viewerObject.transform.rotation);
 
             float aspect = Renderer::getInstance()->getAspectRatio();
-            std::cout << "past renderer aspect ratrio" << std::endl;
-            camera.setPerspectiveProjection(glm::radians(50.0f), aspect, 0.1f, 10.f);
+            
+            camera.setPerspectiveProjection(glm::radians(50.0f), aspect, 0.1f, 15.f);
 
             if (auto commandBuffer = Renderer::getInstance()->beginFrame()) {
                 Renderer::getInstance()->beginSwapChainRenderPass(commandBuffer);
@@ -72,8 +72,13 @@ namespace Icicle {
     }
 
     void Root::loadGameObjects() {
+#if WIN32
         std::shared_ptr<Model> model =
-            Model::createModelFromFile(LogicalDevice::getInstance(), "../Resources/Models/character1.obj");
+            Model::createModelFromFile(LogicalDevice::getInstance(), "D:\\Projects\\VSIcicle\\Main\\Resources\\Models\\diffuseTest.obj");
+#else
+        std::shared_ptr<Model> model =
+            Model::createModelFromFile(LogicalDevice::getInstance(), "../Resources/Models/diffuseTest.obj");
+#endif
         auto gameObj = GameObject::createGameObject();
         gameObj.model = model;
         gameObj.transform.translation = { 0.0f, 0.0f, 2.5f };
