@@ -1,6 +1,8 @@
 #include "../Include/MemoryManager.hpp"
 
 
+//something like this would be nice
+//https://ogrecave.github.io/ogre/api/latest/_resource-_management.html
 
 namespace Icicle {
     MemoryManager* MemoryManager::MemInstancePtr = nullptr;
