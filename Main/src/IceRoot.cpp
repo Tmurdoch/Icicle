@@ -23,7 +23,6 @@ namespace Icicle {
         //renderSystem
         RenderSystem::getInstance()->startUp(Renderer::getInstance()->getSwapChainRenderPass());
 
-        Root::run();
     }
 
     
@@ -64,13 +63,6 @@ namespace Icicle {
         cleanUp();
     }
 
-    void Root::cleanUp() {
-        renderSystem->cleanUp();
-        renderer->cleanUp();
-        logicalDevice->cleanUp();
-        window->cleanUp();
-    }
-
     void Root::loadGameObjects() {
 #if WIN32
         std::shared_ptr<Model> model =
@@ -85,6 +77,15 @@ namespace Icicle {
         gameObj.transform.scale = glm::vec3(3.0f);
         gameObjects.push_back(std::move(gameObj));
     }
+
+    void Root::cleanUp() {
+        renderSystem->cleanUp();
+        renderer->cleanUp();
+        logicalDevice->cleanUp();
+        window->cleanUp();
+    }
+
+    
 
 }
 

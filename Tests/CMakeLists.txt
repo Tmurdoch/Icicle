@@ -1,6 +1,6 @@
 include_directories(${PROJECT_SOURCE_DIR}/Main/Include)
 
-add_executable(testinstantiator TestInstantiator.cpp)
+add_executable(testinstantiator TestInstantiator.cpp "tickleSim/tickleSim.cpp")
 
 
 #target_link_libraries(Test IcicleMain)

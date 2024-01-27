@@ -25,18 +25,13 @@ class Root
 
     // member variables
 
-    static Root* instancePtr;
-
-    void loadGameObjects();
-
-    
-
-    std::vector<GameObject> gameObjects;
-
+        static Root* instancePtr;
 
     Root();
 
     public:
+    std::vector<GameObject> gameObjects;
+    void loadGameObjects();
     static Root* getInstance()
     {
         if (instancePtr == NULL)

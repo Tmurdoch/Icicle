@@ -18,6 +18,19 @@ unsigned char* load_image(int* width, int* height, int* channels) {
 	return pixels;
 }
 
+/*
+* pupulates width, height, and channels with data from stbi
+*/
+unsigned char* load_image_from_file(char* path, int* width, int* height, int* channels) {
+#ifdef WIN32
+	//requires absolute path if not in same directory as file
+	unsigned char* pixels = stbi_load(path, width, height, channels, STBI_rgb_alpha);
+#else       
+	unsigned char* pixels = stbi_load(path, width, height, channels, STBI_rgb_alpha);
+#endif
+	return pixels;
+}
+
 void free_image(unsigned char* image) {
 	stbi_image_free(image);
 }
