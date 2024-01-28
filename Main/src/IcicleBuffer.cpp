@@ -1,0 +1,117 @@
+
+
+#include "IcicleBuffer.hpp"
+
+ // std
+#include <cassert>
+#include <cstring>
+
+namespace Icicle {
+
+    
+    VkDeviceSize IcicleBuffer::getAlignment(VkDeviceSize instanceSize, VkDeviceSize minOffsetAlignment) {
+        if (minOffsetAlignment > 0) {
+            return (instanceSize + minOffsetAlignment - 1) & ~(minOffsetAlignment - 1);
+        }
+        return instanceSize;
+    }
+
+    IcicleBuffer::IcicleBuffer(
+        LogicalDevice &device,
+        VkDeviceSize instanceSize,
+        uint32_t instanceCount,
+        VkBufferUsageFlags usageFlags,
+        VkMemoryPropertyFlags memoryPropertyFlags,
+        VkDeviceSize minOffsetAlignment)
+        : logicalDevice{ device },
+            instanceSize{ instanceSize },
+            instanceCount{ instanceCount },
+            usageFlags{ usageFlags },
+            memoryPropertyFlags{ memoryPropertyFlags } {
+            alignmentSize = getAlignment(instanceSize, minOffsetAlignment);
+            bufferSize = alignmentSize * instanceCount;
+        device.createBuffer(bufferSize, usageFlags, memoryPropertyFlags, buffer, memory);
+    }
+
+    IcicleBuffer::~IcicleBuffer() {
+        unmap();
+        vkDestroyBuffer(logicalDevice.device(), buffer, nullptr);
+        vkFreeMemory(logicalDevice.device(), memory, nullptr);
+    }
+
+    
+    VkResult IcicleBuffer::map(VkDeviceSize size, VkDeviceSize offset) {
+        assert(buffer && memory && "Called map on buffer before create");
+        return vkMapMemory(logicalDevice.device(), memory, offset, size, 0, &mapped);
+    }
+
+    
+    void IcicleBuffer::unmap() {
+        if (mapped) {
+            vkUnmapMemory(logicalDevice.device(), memory);
+            mapped = nullptr;
+        }
+    }
+
+    
+    void IcicleBuffer::writeToBuffer(void* data, VkDeviceSize size, VkDeviceSize offset) {
+        assert(mapped && "Cannot copy to unmapped buffer");
+
+        if (size == VK_WHOLE_SIZE) {
+            memcpy(mapped, data, bufferSize);
+        }
+        else {
+            char* memOffset = (char*)mapped;
+            memOffset += offset;
+            memcpy(memOffset, data, size);
+        }
+    }
+
+    
+    VkResult IcicleBuffer::flush(VkDeviceSize size, VkDeviceSize offset) {
+        VkMappedMemoryRange mappedRange = {};
+        mappedRange.sType = VK_STRUCTURE_TYPE_MAPPED_MEMORY_RANGE;
+        mappedRange.memory = memory;
+        mappedRange.offset = offset;
+        mappedRange.size = size;
+        return vkFlushMappedMemoryRanges(logicalDevice.device(), 1, &mappedRange);
+    }
+
+    
+    VkResult IcicleBuffer::invalidate(VkDeviceSize size, VkDeviceSize offset) {
+        VkMappedMemoryRange mappedRange = {};
+        mappedRange.sType = VK_STRUCTURE_TYPE_MAPPED_MEMORY_RANGE;
+        mappedRange.memory = memory;
+        mappedRange.offset = offset;
+        mappedRange.size = size;
+        return vkInvalidateMappedMemoryRanges(logicalDevice.device(), 1, &mappedRange);
+    }
+
+    
+    VkDescriptorBufferInfo IcicleBuffer::descriptorInfo(VkDeviceSize size, VkDeviceSize offset) {
+        return VkDescriptorBufferInfo{
+            buffer,
+            offset,
+            size,
+        };
+    }
+
+    
+    void IcicleBuffer::writeToIndex(void* data, int index) {
+        writeToBuffer(data, instanceSize, index * alignmentSize);
+    }
+
+    
+    VkResult IcicleBuffer::flushIndex(int index) { return flush(alignmentSize, index * alignmentSize); }
+
+    
+    VkDescriptorBufferInfo IcicleBuffer::descriptorInfoForIndex(int index) {
+        return descriptorInfo(alignmentSize, index * alignmentSize);
+    }
+
+    
+    VkResult IcicleBuffer::invalidateIndex(int index) {
+        return invalidate(alignmentSize, index * alignmentSize);
+    }
+
+}  // namespace Icicle

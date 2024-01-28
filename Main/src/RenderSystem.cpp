@@ -16,13 +16,13 @@ namespace Icicle {
     RenderSystem::RenderSystem() {};
     RenderSystem* RenderSystem::instancePtr = nullptr;
 
-    struct SimplePushConstantData {
+    struct SimplePushConstantData { //limited to 128 bytes, if using more use uniform buffer
         glm::mat4 transform{ 1.f };
         glm::mat4 modelMatrix{ 1.f };
     };
 
     void RenderSystem::startUp(VkRenderPass renderPass) {
-        this->logicalDevice = LogicalDevice::getInstance(); //singleton
+        this->logicalDevice = LogicalDevice::getInstance(); 
         createPipelineLayout();
         createPipeline(renderPass);
     }
@@ -89,7 +89,7 @@ namespace Icicle {
             obj.model->bind(commandBuffer);
             obj.model->draw(commandBuffer);
         }
-        gameObjects[0].transform.translation.x += .0001f;
+        gameObjects[0].transform.translation.x += .0001f; //moving model
     }
 
 }  // namespace Icicle

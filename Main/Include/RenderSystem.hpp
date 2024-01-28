@@ -31,6 +31,11 @@ namespace Icicle {
             std::vector<GameObject>& gameObjects,
             const Camera& camera);
 
+        /*void renderImages(
+            VkCommandBuffer commandBuffer,
+            std::vector <
+        );*/
+
 
     private:
         static RenderSystem* instancePtr;

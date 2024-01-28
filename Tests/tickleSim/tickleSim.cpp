@@ -36,7 +36,7 @@ namespace Icicle {
 
             if (auto commandBuffer = Renderer::getInstance()->beginFrame()) {
                 Renderer::getInstance()->beginSwapChainRenderPass(commandBuffer);
-
+                
                 RenderSystem::getInstance()->renderGameObjects(commandBuffer, Root::getInstance()->gameObjects, camera);
 
                 Renderer::getInstance()->endSwapChainRenderPass(commandBuffer);
