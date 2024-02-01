@@ -4,6 +4,7 @@
 #include "Allocator.hpp"
 #include "IcicleMath.hpp"
 #include "keyboard_movement_controller.hpp"
+#include <chrono>
 
 namespace Icicle {
 

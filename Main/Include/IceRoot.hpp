@@ -2,7 +2,7 @@
 
 #include "MemoryManager.hpp"
 #include "Renderer.hpp"
-#include "RenderManager.hpp"
+
 #include "RenderSystem.hpp"
 #include "GameObject.hpp"
 #include "LogicalDevice.hpp"
@@ -23,15 +23,11 @@ class Root
 {
     private:
 
-    // member variables
-
-        static Root* instancePtr;
-
     Root();
+    static Root* instancePtr;
 
     public:
-    std::vector<GameObject> gameObjects;
-    void loadGameObjects();
+
     static Root* getInstance()
     {
         if (instancePtr == NULL)
@@ -42,24 +38,17 @@ class Root
     }
 
     Root(const Root& obj) = delete; //delete copy constructor
-
     void operator=(const Root &) = delete;
     
+    std::vector<GameObject> gameObjects;
 
-    //singletons
-    static RenderManager*           renderManager;
     IcicleWindow *window;
     LogicalDevice *logicalDevice;
 
     Renderer *renderer;
     RenderSystem *renderSystem;
-// PhysicsManager          zPhysicsManager;
-// AnimationManager        zAnimationManager;
-// TextureManager          zTextureManager;
-// VideoManager            zVideoManager;
 
-// FileSystemManager       zFileSystemManager;
-    
+    void loadGameObjects();
     void startUp();
     void cleanUp();
     void run();

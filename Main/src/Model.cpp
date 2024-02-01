@@ -188,8 +188,6 @@ void Model::Builder::loadModel(const std::string &filepath) {
             attrib.colors[3 * index.vertex_index + 1],
             attrib.colors[3 * index.vertex_index + 2],
         };
-
-        
       }
 
       if (index.normal_index >= 0) {

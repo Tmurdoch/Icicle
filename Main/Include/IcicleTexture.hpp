@@ -1,0 +1,5 @@
+
+
+namespace Icicle {
+	class IcicleTexture {};
+}

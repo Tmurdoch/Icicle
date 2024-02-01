@@ -4,6 +4,7 @@
 #include "LogicalDevice.hpp"
 #include "GameObject.hpp"
 #include "IciclePipeline.hpp"
+#include "IcicleTexture.hpp"
 
 // std
 #include <memory>
@@ -29,6 +30,11 @@ namespace Icicle {
         void renderGameObjects(
             VkCommandBuffer commandBuffer,
             std::vector<GameObject>& gameObjects,
+            const Camera& camera);
+
+        void renderTextures(
+            VkCommandBuffer commandBuffer, 
+            std::vector<IcicleTexture>& textures, 
             const Camera& camera);
 
 

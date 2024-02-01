@@ -92,4 +92,11 @@ namespace Icicle {
         gameObjects[0].transform.translation.x += .0001f;
     }
 
+    void RenderSystem::renderTextures(
+        VkCommandBuffer commandBuffer,
+        std::vector<IcicleTexture>& textures,
+        const Camera& camera) {
+
+    }
+
 }  // namespace Icicle
