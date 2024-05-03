@@ -18,6 +18,10 @@ class IcicleWindow {
 		 return instancePtr;
 	 }
 
+	 static bool isInstanceInitialized() {
+		return (instancePtr != nullptr);
+	 }
+
   void startUp(int w, int h, std::string name);
   void cleanUp();
 

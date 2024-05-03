@@ -22,6 +22,7 @@ namespace Icicle {
             }
             return instancePtr;
         }
+
         void startUp();
         void cleanUp();
 
@@ -33,11 +34,13 @@ namespace Icicle {
             return swapChain->getRenderPass(); 
             else throw std::runtime_error("swap chain is null in getSwapChainRenderPass");
         }
+
         float getAspectRatio() const { 
             if (swapChain)
             return swapChain->extentAspectRatio(); 
             else throw std::runtime_error("swap chain is null in getAspectRatio");
         }
+        
         bool isFrameInProgress() const { return isFrameStarted; }
 
         VkCommandBuffer getCurrentCommandBuffer() const {

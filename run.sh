@@ -1,8 +1,8 @@
-#!/bin/sh
+#!/bin/bash
 
-if [ $1 = "testinstantiator" ]
+if [ $1 == "testinstantiator" ]
 then
-    sh ./build/Tests/testinstantiator
+    bash ./build/Tests/testinstantiator
 #elif [$1 eq editor]
 
 #then

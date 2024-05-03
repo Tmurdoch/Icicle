@@ -1,3 +1,8 @@
+/*
+Old example using uniform buffer object
+*/
+
+
 #define GLFW_INCLUDE_VULKAN //tells glfw to include vulkan.h 
 #include <GLFW/glfw3.h> 
 

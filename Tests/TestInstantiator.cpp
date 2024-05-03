@@ -31,6 +31,14 @@ TEST_CASE("initialize") {
     Icicle::Root::getInstance()->run();
 }
 
+TEST_CASE("Test case while running") {
+    REQUIRE(Icicle::Root::getInstance()->window->isInstanceInitialized() == true);
+}
+
+TEST_CASE("Render Image") {
+
+}
+
 TEST_CASE("Stack Allocator") {
 
     std::cout << " testing things\n";
@@ -70,13 +78,8 @@ TEST_CASE("Math Lib") {
     Icicle::ptr_add(ptr, 10);
 
 }
-TEST_CASE("Both top and bottom of stack initialized and freed correctly") {
 
 }
-
-
-}
-
 
 
 //Black box tests, no namespace
