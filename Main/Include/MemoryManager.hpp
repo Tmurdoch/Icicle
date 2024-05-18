@@ -28,7 +28,7 @@ class IMemoryManager
  * make sure limit dynamic memory allocation where possible
  * 
  * 
- * TODO: A typical pattern of working with Vulkan involves 
+ * A typical pattern of working with Vulkan involves 
  * performing large (e.g. 16 MB – 256 MB depending on how 
  * dynamic the memory requirements are) allocations using 
  * vkAllocateMemory, and performing suballocation of objects
@@ -70,7 +70,6 @@ class MemoryManager : public IMemoryManager
 
     /**
      * Note: calling this initially will default to 100 memsize
-     * TODO: implement a constructor function
     */
     static MemoryManager* getInstance() {
         if (MemInstancePtr == NULL) 

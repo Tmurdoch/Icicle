@@ -11,12 +11,18 @@ namespace Icicle {
 	void run() {
        
         Root::getInstance()->loadGameObjects();
+
+        Root::getInstance()->addImage("Textures/right_hand.png", "right_hand");
+        Root::getInstance()->addImage("Textures/left_hand.png", "left_hand");
+
         Camera camera{};
 
         auto viewerObject = GameObject::createGameObject();
         KeyboardMovementController cameraController{};
 
         auto currentTime = std::chrono::high_resolution_clock::now();
+
+        //Similar to the main loop in Icicle->run()
         while (!IcicleWindow::getInstance()->shouldClose()) {
             glfwPollEvents();
 

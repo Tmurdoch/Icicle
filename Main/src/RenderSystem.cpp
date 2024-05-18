@@ -97,7 +97,7 @@ namespace Icicle {
         std::vector<IcicleTexture>& textures,
         const Camera& camera) {
 
-        
+        //TODO: implement
 
     }
 

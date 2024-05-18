@@ -51,8 +51,11 @@ namespace Icicle {
     }
 
 
-    //TODO: check direction provided is non ezero
+    //TODO: check direction provided is non zero
     void Camera::setViewTarget(glm::vec3 position, glm::vec3 target, glm::vec3 up) {
+        if (position == target) {
+			return;
+		}
         setViewDirection(position, target - position, up);
     }
 

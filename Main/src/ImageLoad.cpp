@@ -4,6 +4,8 @@
 #include "stb_image_resize.h"
 #include "stb_image_write.h"
 
+#include <iostream>;
+
 void free_image(unsigned char* image) {
 	stbi_image_free(image);
 }
@@ -32,5 +34,10 @@ char* convertPath(char* path) {
 
 unsigned char* load_texture(char* image_path, int* width, int* height, int* channels) {      
 	unsigned char* pixels = stbi_load(convertPath(image_path), width, height, channels, STBI_rgb_alpha);
+
+    if (!pixels) {
+        std::cerr << "Failed to load image: " << image_path << std::endl;
+        return NULL;
+    }
 	return pixels;
 }

@@ -7,10 +7,6 @@
 
 #include <catch2/catch_test_macros.hpp>
 
-
-
-//TODO: header file?
-
 /**
 ********************TESTS***************
 *
@@ -52,8 +48,6 @@ namespace Icicle {
 
 		sa->allocate(sizeof(memory_block), sizeof(uint8_t));
 
-
-		//TODO: split these up into multiple tests?
 		// allocating right amount of bytes;
 		REQUIRE(sa->getSize() * sizeof(sa->getStart()) == 80);
 		REQUIRE(sa->getStart() != nullptr); // sa is not pointing to memory_block? _start is not defined

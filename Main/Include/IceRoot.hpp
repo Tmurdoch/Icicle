@@ -49,6 +49,7 @@ class Root
     RenderSystem *renderSystem;
 
     void loadGameObjects();
+    bool addImage(char* path, char* name);
     void startUp();
     void cleanUp();
     void run();

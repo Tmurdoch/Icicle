@@ -2,6 +2,8 @@
 #include "VulkanUtils.hpp"
 #include "keyboard_movement_controller.hpp"
 
+#include "ImageLoad.cpp"
+
 
 namespace Icicle {
 
@@ -73,6 +75,15 @@ namespace Icicle {
         gameObj.transform.translation = { 0.0f, 0.0f, 2.5f };
         gameObj.transform.scale = glm::vec3(3.0f);
         gameObjects.push_back(std::move(gameObj));
+    }
+
+
+    bool Root::addImage(char* path, char* name) {
+        int texWidth, texHeight, texChannels;
+
+        unsigned char* pixels = load_texture(path, &texWidth, &texHeight, &texChannels, STBI_rgb_alpha);
+
+
     }
 
     void Root::cleanUp() {

@@ -48,6 +48,8 @@ namespace Icicle {
         }
     };
 
+    //TODO: make this generic and allow for images
+
     class GameObject {
     public:
         using id_t = unsigned int;
@@ -56,7 +58,7 @@ namespace Icicle {
             static id_t currentId = 0;
             return GameObject{ currentId++ };
         }
-
+        
         GameObject(const GameObject&) = delete;
         GameObject& operator=(const GameObject&) = delete;
         GameObject(GameObject&&) = default;
