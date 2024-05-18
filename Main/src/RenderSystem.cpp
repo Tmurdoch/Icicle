@@ -98,7 +98,9 @@ namespace Icicle {
         const Camera& camera) {
 
         //TODO: implement
+        //bind to models?
 
+        
     }
 
 }  // namespace Icicle

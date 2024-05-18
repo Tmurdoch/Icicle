@@ -79,11 +79,37 @@ namespace Icicle {
 
 
     bool Root::addImage(char* path, char* name) {
+        //https://vkguide.dev/docs/chapter-5/loading_images/
         int texWidth, texHeight, texChannels;
 
         unsigned char* pixels = load_texture(path, &texWidth, &texHeight, &texChannels, STBI_rgb_alpha);
 
+        void* pixel_ptr = pixels;
+        VkDeviceSize imageSize = texWidth * texHeight * 4;
 
+        //the format R8G8B8A8 matches exactly with the pixels loaded from stb_image lib
+        VkFormat image_format = VK_FORMAT_R8G8B8A8_SRGB;
+
+        //allocate temporary buffer for holding texture data to upload
+        VkBuffer stagingBuffer = 
+
+        //********* this allocates memory?????
+        LogicalDevice::getInstance()->createImageWithInfo();
+
+
+        LogicalDevice::getInstance()->create_buffer(imageSize, VK_BUFFER_USAGE_TRANSFER_SRC_BIT, VMA_MEMORY_USAGE_CPU_ONLY);
+
+        //copy data to buffer
+        void* data;
+        vmaMapMemory(engine._allocator, stagingBuffer._allocation, &data);
+
+        memcpy(data, pixel_ptr, static_cast<size_t>(imageSize));
+
+        vmaUnmapMemory(engine._allocator, stagingBuffer._allocation);
+        //we no longer need the loaded data, so we can free the pixels as they are now in the staging buffer
+        stbi_image_free(pixels);
+
+        
     }
 
     void Root::cleanUp() {
