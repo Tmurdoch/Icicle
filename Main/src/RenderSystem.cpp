@@ -97,6 +97,8 @@ namespace Icicle {
         std::vector<IcicleTexture>& textures,
         const Camera& camera) {
 
+        
+
     }
 
 }  // namespace Icicle

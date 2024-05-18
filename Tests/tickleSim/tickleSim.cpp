@@ -8,9 +8,6 @@
 
 namespace Icicle {
 
-	
-
-
 	void run() {
        
         Root::getInstance()->loadGameObjects();

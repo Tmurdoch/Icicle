@@ -13,18 +13,15 @@ namespace Icicle {
 
     void Root::startUp() {
 
-        //window
         IcicleWindow::getInstance()->startUp(WIDTH, HEIGHT, "Icicle");
-        //device
+        
         LogicalDevice::getInstance()->startUp();
-        //renderer
+        
         Renderer::getInstance()->startUp();
         
-        //renderSystem
         RenderSystem::getInstance()->startUp(Renderer::getInstance()->getSwapChainRenderPass());
 
     }
-
     
     void Root::run() {
         loadGameObjects();
@@ -84,8 +81,6 @@ namespace Icicle {
         logicalDevice->cleanUp();
         window->cleanUp();
     }
-
-    
 
 }
 
