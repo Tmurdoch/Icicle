@@ -44,9 +44,9 @@ namespace Icicle {
 
 		VkApplicationInfo appInfo = {};
 		appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
-		appInfo.pApplicationName = "LittleVulkanEngine App";
+		appInfo.pApplicationName = "Icicle App Instance";
 		appInfo.applicationVersion = VK_MAKE_VERSION(1, 0, 0);
-		appInfo.pEngineName = "No Engine";
+		appInfo.pEngineName = "Icicle";
 		appInfo.engineVersion = VK_MAKE_VERSION(1, 0, 0);
 		appInfo.apiVersion = VK_API_VERSION_1_0;
 
@@ -384,6 +384,7 @@ namespace Icicle {
 		VkMemoryPropertyFlags properties,
 		VkBuffer& buffer,
 		VkDeviceMemory& bufferMemory) {
+
 		VkBufferCreateInfo bufferInfo{};
 		bufferInfo.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
 		bufferInfo.size = size;
@@ -391,7 +392,7 @@ namespace Icicle {
 		bufferInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
 
 		if (vkCreateBuffer(device_, &bufferInfo, nullptr, &buffer) != VK_SUCCESS) {
-			throw std::runtime_error("failed to create vertex buffer!");
+			throw std::runtime_error("failed to create buffer!");
 		}
 
 		VkMemoryRequirements memRequirements;
@@ -403,7 +404,7 @@ namespace Icicle {
 		allocInfo.memoryTypeIndex = findMemoryType(memRequirements.memoryTypeBits, properties);
 
 		if (vkAllocateMemory(device_, &allocInfo, nullptr, &bufferMemory) != VK_SUCCESS) {
-			throw std::runtime_error("failed to allocate vertex buffer memory!");
+			throw std::runtime_error("failed to allocate buffer memory!");
 		}
 
 		vkBindBufferMemory(device_, buffer, bufferMemory, 0);

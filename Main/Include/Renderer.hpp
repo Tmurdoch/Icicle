@@ -12,6 +12,9 @@
 
 namespace Icicle {
     /*
+    * command buffer creation and deletion,
+    * frame handling and swapchain swapping
+    *
     * Double buffering is used, see SwapChain::MAX_FRAMES_IN_FLIGHT
     */
     class Renderer {

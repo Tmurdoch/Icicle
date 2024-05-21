@@ -51,6 +51,16 @@ namespace Icicle {
 			const std::vector<VkFormat>& candidates, VkImageTiling tiling, VkFormatFeatureFlags features);
 
 		// Buffer Helper Functions
+
+		/*
+		* For creating a staging buffer, you would pass VK_BUFFER_USAGE_TRANSFER_SRC_BIT as 
+		* the usage parameter. This flag indicates that the buffer will be used as a source
+		* for a transfer operation.
+
+		* For creating a storage buffer, you would pass VK_BUFFER_USAGE_STORAGE_BUFFER_BIT
+		* as the usage parameter. This flag indicates that the buffer will be used as a 
+		* storage buffer in a shader.
+		*/
 		void createBuffer(
 			VkDeviceSize size,
 			VkBufferUsageFlags usage,
