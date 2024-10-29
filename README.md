@@ -20,7 +20,11 @@ should handle this automatically
 
 ## Building the project examples
 
-#### Windows 
+#### Windows
+
+install make for windows: https://gnuwin32.sourceforge.net/packages/make.htm, 
+add the folder above make.exe to the path
+
 - use (if using msys):
 ```
 cmake -S [source_dir] -B [build_dir] -G "MSYS Makefiles"
