@@ -18,6 +18,13 @@ should handle this automatically
 - Fast development for use in game jams (this will require editors probably - TBD)
 
 
+##  Prerequsite installs:
+C++ compiler
+Vulkan - see the vulkan website
+GLFW - see https://www.glfw.org/docs/3.3/compile.html for install instructions
+    - source files are in lib/glfw
+`sudo apt install vulkan-validationlayers`
+
 ## Building the project examples
 
 #### Windows
