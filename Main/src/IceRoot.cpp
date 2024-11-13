@@ -69,7 +69,7 @@ void Root::loadGameObjects() {
 #if WIN32
   std::shared_ptr<Model> model = Model::createModelFromFile(
       LogicalDevice::getInstance(),
-      "D:\\Projects\\VSIcicle\\Main\\Resources\\Models\\diffuseTest.obj");
+      "..\\Resources\\Models\\diffuseTest.obj");
 #else
   std::shared_ptr<Model> model = Model::createModelFromFile(
       LogicalDevice::getInstance(), "../Resources/Models/diffuseTest.obj");
