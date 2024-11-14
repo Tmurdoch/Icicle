@@ -8,6 +8,9 @@ cmake_minimum_required (VERSION 3.8)
 set(CMAKE_CXX_STANDARD 17)
 project ("Icicle")
 
+
+# set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON CACHE INTERNAL "") # works
 option(BUILD_TESTS "Build tests" ON)
 
 # Enable Hot Reload for MSVC compilers if supported.

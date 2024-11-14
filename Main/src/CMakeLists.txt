@@ -1,6 +1,7 @@
 include_directories(${PROJECT_SOURCE_DIR}/Main/Include)
 include_directories(${PROJECT_SOURCE_DIR}/lib/stb)
 include_directories(${PROJECT_SOURCE_DIR}/lib/tinyobjloader)
+set(CMAKE_CXX_STANDARD 20)
 
 
 #TODO: switch this to listing them becuause cmake cannot track dependency changes if use this
