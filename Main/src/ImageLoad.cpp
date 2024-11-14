@@ -4,22 +4,12 @@
 #include "stb_image_resize.h"
 #include "stb_image_write.h"
 
-
 /*
-* pupulates width, height, and channels with data from stbi
-*/
-unsigned char* load_image(int* width, int* height, int* channels) {
-#ifdef WIN32
-	//requires absolute path if not in same directory as file
-	unsigned char* pixels = stbi_load("D:\\Projects\\VSIcicle\\Tests\\editor\\textures\\texture.png", width, height, channels, STBI_rgb_alpha);
-#else       
-	unsigned char* pixels = stbi_load("../textures/texture.png", width, height, channels, STBI_rgb_alpha);
-#endif
-	return pixels;
-}
-
-/*
-* pupulates width, height, and channels with data from stbi
+ * populates width, height, and channels with data from stbi
+* return value is pointer to pixel data
+* or NULL on allocation/corruption failure
+*
+* - see stb_image.h for more info
 */
 unsigned char* load_image_from_file(char* path, int* width, int* height, int* channels) {
 #ifdef WIN32
@@ -31,9 +21,7 @@ unsigned char* load_image_from_file(char* path, int* width, int* height, int* ch
 	return pixels;
 }
 
-void free_image(unsigned char* image) {
-	stbi_image_free(image);
-}
+
 
 /*
 converts given path to the correct operating system format
@@ -57,7 +45,6 @@ char* convertPath(char* path) {
     return path;
 }
 
-unsigned char* load_sprite(char* image_path, int* width, int* height, int* channels) {      
-	unsigned char* pixels = stbi_load(convertPath(image_path), width, height, channels, STBI_rgb_alpha);
-	return pixels;
+void free_image(unsigned char* image) {
+	stbi_image_free(image);
 }
