@@ -32,6 +32,12 @@ GLFW - see https://www.glfw.org/docs/3.3/compile.html for install instructions
 install make for windows: https://gnuwin32.sourceforge.net/packages/make.htm, 
 add the folder above make.exe to the path
 
+Recompile the libraries for windows
+    - for glfw, cd into glfw and run cmake .
+    this will generate the following files:
+        lib/glfw/src/glfw3.pc
+        lib/glfw/src/glfw_config.h
+
 - use (if using msys):
 ```
 cmake -S [source_dir] -B [build_dir] -G "MSYS Makefiles"

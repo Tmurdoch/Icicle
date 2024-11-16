@@ -13,6 +13,8 @@ project ("Icicle")
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON CACHE INTERNAL "") # works
 option(BUILD_TESTS "Build tests" ON)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 # Enable Hot Reload for MSVC compilers if supported.
 if (POLICY CMP0141)
   cmake_policy(SET CMP0141 NEW)
