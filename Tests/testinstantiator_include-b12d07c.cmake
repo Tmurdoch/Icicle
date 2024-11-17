@@ -1,0 +1,5 @@
+if(EXISTS "C:/Users/kewl2/Projects/Icicle/Tests/testinstantiator_tests-b12d07c.cmake")
+  include("C:/Users/kewl2/Projects/Icicle/Tests/testinstantiator_tests-b12d07c.cmake")
+else()
+  add_test(testinstantiator_NOT_BUILT-b12d07c testinstantiator_NOT_BUILT-b12d07c)
+endif()

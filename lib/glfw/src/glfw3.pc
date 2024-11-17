@@ -1,7 +1,7 @@
-prefix=C:/Program Files (x86)/GLFW
+prefix=C:/Users/kewl2/Projects/Icicle/out/install/x64-Debug
 exec_prefix=${prefix}
-includedir=C:/Program Files (x86)/GLFW/include
-libdir=C:/Program Files (x86)/GLFW/lib
+includedir=C:/Users/kewl2/Projects/Icicle/out/install/x64-Debug/include
+libdir=C:/Users/kewl2/Projects/Icicle/out/install/x64-Debug/lib
 
 Name: GLFW
 Description: A multi-platform library for OpenGL, window and input
