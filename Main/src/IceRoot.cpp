@@ -48,7 +48,8 @@ void Root::run() {
 
     float aspect = Renderer::getInstance()->getAspectRatio();
 
-    camera.setPerspectiveProjection(glm::radians(50.0f), aspect, 0.1f, 15.f);
+    //set the clipping space
+    camera.setPerspectiveProjection(glm::radians(50.0f), aspect, 0.1f, 1000.f);
 
     if (auto commandBuffer = Renderer::getInstance()->beginFrame()) {
       Renderer::getInstance()->beginSwapChainRenderPass(commandBuffer);

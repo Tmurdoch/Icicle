@@ -15,6 +15,9 @@ _deps
 out.exe
 .vs
 CMakeSettings.json
+compile_commands.json
+**/CTestTestfile.cmake
+DartConfiguration.tcl
 
 
 ## Ignore Visual Studio temporary files, build results, and
