@@ -13,55 +13,63 @@
 #include <stdexcept>
 
 namespace Icicle {
-    RenderSystem::RenderSystem() {};
-    RenderSystem* RenderSystem::instancePtr = nullptr;
+RenderSystem::RenderSystem(){};
+RenderSystem *RenderSystem::instancePtr = nullptr;
 
-    struct SimplePushConstantData {
-        glm::mat4 transform{ 1.f };
-        glm::mat4 modelMatrix{ 1.f };
-    };
+struct SimplePushConstantData {
+  glm::mat4 transform{1.f};
+  glm::mat4 modelMatrix{1.f};
+};
 
-    void RenderSystem::startUp(VkRenderPass renderPass) {
-        this->logicalDevice = LogicalDevice::getInstance(); //singleton
-        createPipelineLayout();
-        createPipeline(renderPass);
-    }
+void RenderSystem::startUp(VkRenderPass renderPass) {
+  this->logicalDevice = LogicalDevice::getInstance(); // singleton
+  createPipelineLayout();
+  createPipeline(renderPass);
+}
 
-    void RenderSystem::cleanUp() {
-        vkDestroyPipelineLayout(logicalDevice->device(), pipelineLayout, nullptr);
-    }
+void RenderSystem::cleanUp() {
+  vkDestroyPipelineLayout(logicalDevice->device(), pipelineLayout, nullptr);
+}
 
-    void RenderSystem::createPipelineLayout() {
-        VkPushConstantRange pushConstantRange{};
-        pushConstantRange.stageFlags = VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT;
-        pushConstantRange.offset = 0;
-        pushConstantRange.size = sizeof(SimplePushConstantData);
+void RenderSystem::createPipelineLayout() {
+  VkPushConstantRange pushConstantRange{};
+  pushConstantRange.stageFlags =
+      VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT;
+  pushConstantRange.offset = 0;
+  pushConstantRange.size = sizeof(SimplePushConstantData);
 
-        VkPipelineLayoutCreateInfo pipelineLayoutInfo{};
-        pipelineLayoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
-        pipelineLayoutInfo.setLayoutCount = 0;
-        pipelineLayoutInfo.pSetLayouts = nullptr;
-        pipelineLayoutInfo.pushConstantRangeCount = 1;
-        pipelineLayoutInfo.pPushConstantRanges = &pushConstantRange;
-        if (vkCreatePipelineLayout(logicalDevice->device(), &pipelineLayoutInfo, nullptr, &pipelineLayout) !=
-            VK_SUCCESS) {
-            throw std::runtime_error("failed to create pipeline layout!");
-        }
-    }
+  VkPipelineLayoutCreateInfo pipelineLayoutInfo{};
+  pipelineLayoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
+  pipelineLayoutInfo.setLayoutCount = 0;
+  pipelineLayoutInfo.pSetLayouts = nullptr;
+  pipelineLayoutInfo.pushConstantRangeCount = 1;
+  pipelineLayoutInfo.pPushConstantRanges = &pushConstantRange;
+  if (vkCreatePipelineLayout(logicalDevice->device(), &pipelineLayoutInfo,
+                             nullptr, &pipelineLayout) != VK_SUCCESS) {
+    throw std::runtime_error("failed to create pipeline layout!");
+  }
+}
 
-    void RenderSystem::createPipeline(VkRenderPass renderPass) {
-        assert(pipelineLayout != nullptr && "Cannot create pipeline before pipeline layout");
+void RenderSystem::createPipeline(VkRenderPass renderPass) {
+  assert(pipelineLayout != nullptr &&
+         "Cannot create pipeline before pipeline layout");
 
-        PipelineConfigInfo pipelineConfig{};
-        IciclePipeline::defaultPipelineConfigInfo(pipelineConfig);
-        pipelineConfig.renderPass = renderPass;
-        pipelineConfig.pipelineLayout = pipelineLayout;
+  PipelineConfigInfo pipelineConfig{};
+  IciclePipeline::defaultPipelineConfigInfo(pipelineConfig);
+  pipelineConfig.renderPass = renderPass;
+  pipelineConfig.pipelineLayout = pipelineLayout;
 
-        pipeline = std::make_unique<IciclePipeline>(
+#if WIN32
+  pipeline = std::make_unique<IciclePipeline>(
+      logicalDevice, "../Resources/Shaders/nodescvert.spv",
+      "../Resources/Shaders/nodescfrag.spv", pipelineConfig);
+#else 
+  pipeline = std::make_unique<IciclePipeline>(
             logicalDevice,
-            "../Resources/Shaders/nodescvert.spv",
-            "../Resources/Shaders/nodescfrag.spv",
+            "build/Resources/Shaders/nodescvert.spv",
+            "build/Resources/Shaders/nodescfrag.spv",
             pipelineConfig);
+#endif
     }
 
     void RenderSystem::renderGameObjects(

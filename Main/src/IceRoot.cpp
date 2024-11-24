@@ -73,7 +73,7 @@ void Root::loadGameObjects() {
       "..\\Resources\\Models\\diffuseTest.obj");
 #else
   std::shared_ptr<Model> model = Model::createModelFromFile(
-      LogicalDevice::getInstance(), "../Resources/Models/diffuseTest.obj");
+      LogicalDevice::getInstance(), "build/Resources/Models/diffuseTest.obj");
 #endif
   auto gameObj = GameObject::createGameObject();
   gameObj.model = model;
