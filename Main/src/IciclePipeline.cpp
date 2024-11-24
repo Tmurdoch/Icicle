@@ -7,6 +7,7 @@
 #include <fstream>
 #include <iostream>
 #include <stdexcept>
+#include <filesystem>
 
 namespace Icicle {
 
@@ -29,7 +30,7 @@ namespace Icicle {
         std::ifstream file{ filepath, std::ios::ate | std::ios::binary };
 
         if (!file.is_open()) {
-            throw std::runtime_error("failed to open file: " + filepath);
+            throw std::runtime_error("failed to open file, filepath: " + std::filesystem::current_path().string() + filepath);
         }
 
         size_t fileSize = static_cast<size_t>(file.tellg());
