@@ -24,7 +24,7 @@ public:
     int escape = GLFW_KEY_ESCAPE;
   };
 
-  void moveInPlaneXZ(GLFWwindow *window, float dt, GameObject &gameObject);
+  int moveInPlaneXZ(GLFWwindow *window, float dt, GameObject &gameObject);
 
   /*
    *dt: delta?

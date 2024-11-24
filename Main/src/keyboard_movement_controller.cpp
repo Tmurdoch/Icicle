@@ -9,7 +9,7 @@
 
 namespace Icicle {
 
-    void KeyboardMovementController::moveInPlaneXZ(
+    int KeyboardMovementController::moveInPlaneXZ(
         GLFWwindow* window, float dt, GameObject& gameObject) {
         glm::vec3 rotate{ 0 };
         if (glfwGetKey(window, keys.lookRight) == GLFW_PRESS) rotate.y += 1.f;
@@ -37,10 +37,12 @@ namespace Icicle {
         if (glfwGetKey(window, keys.moveLeft) == GLFW_PRESS) moveDir -= rightDir;
         if (glfwGetKey(window, keys.moveUp) == GLFW_PRESS) moveDir += upDir;
         if (glfwGetKey(window, keys.moveDown) == GLFW_PRESS) moveDir -= upDir;
+        if (glfwGetKey(window, keys.escape) == GLFW_PRESS) return -1; 
 
         if (glm::dot(moveDir, moveDir) > std::numeric_limits<float>::epsilon()) {
             gameObject.transform.translation += moveSpeed * dt * glm::normalize(moveDir);
         }
+        return 0;
     }
 
     void KeyboardMovementController::topDownMovementController(GLFWwindow *window, float dt, GameObject selectedGameObjects[]) {

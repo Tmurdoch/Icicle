@@ -1,4 +1,5 @@
 #include "IceRoot.hpp"
+#include "IcicleWindow.hpp"
 #include "VulkanUtils.hpp"
 #include "keyboard_movement_controller.hpp"
 
@@ -41,8 +42,12 @@ void Root::run() {
             .count();
     currentTime = newTime;
 
-    cameraController.moveInPlaneXZ(IcicleWindow::getInstance()->getGLFWwindow(),
+    int ret = cameraController.moveInPlaneXZ(IcicleWindow::getInstance()->getGLFWwindow(),
                                    frameTime, viewerObject);
+
+    if (ret == -1)
+      IcicleWindow::getInstance()->cleanUp();
+
     camera.setViewYXZ(viewerObject.transform.translation,
                       viewerObject.transform.rotation);
 
