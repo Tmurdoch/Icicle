@@ -1,7 +1,11 @@
 #include "keyboard_movement_controller.hpp"
+#include "GameObject.hpp"
 
 // std
+#include <GLFW/glfw3.h>
+#include <exception>
 #include <limits>
+#include <stdexcept>
 
 namespace Icicle {
 
@@ -37,5 +41,9 @@ namespace Icicle {
         if (glm::dot(moveDir, moveDir) > std::numeric_limits<float>::epsilon()) {
             gameObject.transform.translation += moveSpeed * dt * glm::normalize(moveDir);
         }
+    }
+
+    void KeyboardMovementController::topDownMovementController(GLFWwindow *window, float dt, GameObject selectedGameObjects[]) {
+      throw std::logic_error("Not implemented");
     }
 }  // namespace Icicle
