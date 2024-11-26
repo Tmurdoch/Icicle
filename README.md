@@ -21,7 +21,7 @@ should handle this automatically
 ##  Prerequsite installs:
 C++ compiler
 Vulkan - see the vulkan website
-GLFW - see https://www.glfw.org/docs/3.3/compile.html for install instructions
+GLFW version  3+ - see https://www.glfw.org/docs/3.3/compile.html for install instructions
     - source files are in lib/glfw
 `sudo apt install vulkan-validationlayers`
 
