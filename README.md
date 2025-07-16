@@ -21,6 +21,7 @@ should handle this automatically
 ##  Prerequsite installs:
 C++ compiler
 Vulkan - see the vulkan website
+     - make sure VULKAN_SDK env variable is set to the x86_64 file folder that was extracted, and add the code from setup-environment.sh to .bashrc
 GLFW version  3+ - see https://www.glfw.org/docs/3.3/compile.html for install instructions
     - source files are in lib/glfw
 `sudo apt install vulkan-validationlayers`

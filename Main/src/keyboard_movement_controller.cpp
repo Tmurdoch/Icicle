@@ -46,7 +46,7 @@ namespace Icicle {
     }
 
     void KeyboardMovementController::topDownMovementController(GLFWwindow *window, float dt, GameObject selectedGameObjects[]) {
-      glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_CAPTURED); //see https://www.glfw.org/docs/latest/input_guide.html#input_mouse
+      glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); //see https://www.glfw.org/docs/latest/input_guide.html#input_mouse
       throw std::logic_error("Not implemented");
     }
 }  // namespace Icicle
