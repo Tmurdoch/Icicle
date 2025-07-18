@@ -1,15 +1,11 @@
 
 #include "IceRoot.hpp"
-#include "StackAllocator.hpp"
+#include "IcicleWindow.hpp"
 #include "Allocator.hpp"
-#include "IcicleMath.hpp"
 #include "keyboard_movement_controller.hpp"
 #include <chrono>
 
 namespace Icicle {
-
-	
-
 
 	void run() {
        
@@ -17,7 +13,7 @@ namespace Icicle {
         Camera camera{};
 
         auto viewerObject = GameObject::createGameObject();
-        KeyboardMovementController cameraController{};
+        KeyboardMovementController cameraController = KeyboardMovementController(IcicleWindow::getInstance()->getGLFWwindow());
 
         auto currentTime = std::chrono::high_resolution_clock::now();
         while (!IcicleWindow::getInstance()->shouldClose()) {

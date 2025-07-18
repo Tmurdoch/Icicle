@@ -1,37 +1,30 @@
-#include "Observer.cpp"
+#include "Subject.hpp"
+#include <vector>
+#include <algorithm>
 
+namespace Icicle {
+  
 #define MAX_OBSERVERS 10
 
-class Subject
-{
-private:
-  Observer* observers_[MAX_OBSERVERS];
-  int numObservers_;
-
-public:
-
-void addObserver(Observer* observer)
-  {
-    // Add to array...
-    observers_[numObservers_] = observer;
-    numObservers_++;
-  }
-
-void removeObserver(Observer* observer)
-  {
-  //stub
-
-  }
-
-  // Other stuff...
-
-protected:
-void notify(const Entity& entity, Event event)
-  {
-    for (int i = 0; i < numObservers_; i++)
-    {
-      observers_[i]->onNotify(entity, event);
+// Template-based Subject
+    template<typename T>
+    void Subject<T>::subscribe(Observer<T>* observer) {
+        observers.push_back(observer);
     }
-  }  
 
+    template<typename T>
+    void Subject<T>::unsubscribe(Observer<T>* observer) {
+        observers.erase(
+            std::remove(observers.begin(), observers.end(), observer),
+            observers.end()
+        );
+    }
+
+    template<typename T>
+    void Subject<T>::notify(const T& data) {
+        for (auto* observer : observers) {
+            observer->update(data);
+        }
+    }
 };
+

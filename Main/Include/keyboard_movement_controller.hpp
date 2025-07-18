@@ -1,15 +1,27 @@
 #pragma once
 
 #include "GameObject.hpp"
-#include "IcicleWindow.hpp"
+#include "Subject.hpp"
+#include <GLFW/glfw3.h>
 
 namespace Icicle {
 /*
  *TODO: add remappable keys
  *
  */
-class KeyboardMovementController {
+
+struct keyboardData {
+  double posx = 0;
+  double posy = 0;
+};
+
+class KeyboardMovementController : Subject<keyboardData> {
 public:
+
+  KeyboardMovementController(GLFWwindow *window) {
+    glfwSetWindowUserPointer(window, this);
+  }
+  keyboardData mouseData = {0.0, 0.0};
   struct KeyMappings {
     int moveLeft = GLFW_KEY_A;
     int moveRight = GLFW_KEY_D;
@@ -30,10 +42,14 @@ public:
    *dt: delta?
    * selectedGameObjects: game objects to move
    */
-  void topDownMovementController(GLFWwindow *window, float dt, GameObject selectedGameObjects[]);
+  int enableTopDownMovementController(GLFWwindow *window);
 
   KeyMappings keys{};
   float moveSpeed{6.f};
   float lookSpeed{1.5f};
+
+private:
+  static void mouse_button_callback(GLFWwindow *window, int button, int action,
+                                    int mods);
 };
 } // namespace Icicle

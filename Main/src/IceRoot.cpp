@@ -25,13 +25,18 @@ void Root::startUp() {
 }
 
 void Root::run() {
+  printf("running");
   loadGameObjects();
   Camera camera{};
 
   auto viewerObject = GameObject::createGameObject();
-  KeyboardMovementController cameraController{};
+  KeyboardMovementController cameraController =
+      KeyboardMovementController(IcicleWindow::getInstance()->getGLFWwindow());
+  cameraController.enableTopDownMovementController(
+      IcicleWindow::getInstance()->getGLFWwindow());
 
   auto currentTime = std::chrono::high_resolution_clock::now();
+  // Window loop
   while (!IcicleWindow::getInstance()->shouldClose()) {
     glfwPollEvents();
 
@@ -42,8 +47,8 @@ void Root::run() {
             .count();
     currentTime = newTime;
 
-    int ret = cameraController.moveInPlaneXZ(IcicleWindow::getInstance()->getGLFWwindow(),
-                                   frameTime, viewerObject);
+    int ret = cameraController.moveInPlaneXZ(
+        IcicleWindow::getInstance()->getGLFWwindow(), frameTime, viewerObject);
 
     if (ret == -1)
       IcicleWindow::getInstance()->cleanUp();
@@ -53,7 +58,7 @@ void Root::run() {
 
     float aspect = Renderer::getInstance()->getAspectRatio();
 
-    //set the clipping space
+    // set the clipping space
     camera.setPerspectiveProjection(glm::radians(50.0f), aspect, 0.1f, 1000.f);
 
     if (auto commandBuffer = Renderer::getInstance()->beginFrame()) {
@@ -74,8 +79,7 @@ void Root::run() {
 void Root::loadGameObjects() {
 #if WIN32
   std::shared_ptr<Model> model = Model::createModelFromFile(
-      LogicalDevice::getInstance(),
-      "..\\Resources\\Models\\diffuseTest.obj");
+      LogicalDevice::getInstance(), "..\\Resources\\Models\\diffuseTest.obj");
 #else
   std::shared_ptr<Model> model = Model::createModelFromFile(
       LogicalDevice::getInstance(), "build/Resources/Models/diffuseTest.obj");

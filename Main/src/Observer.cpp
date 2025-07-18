@@ -1,17 +1,11 @@
-struct Entity 
-{
-  /* data */
-};
+#include "Observer.hpp"
+namespace Icicle {
 
-struct Event
-{
-  /* data */
-};
-
-
-class Observer
-{
-public:
-  virtual ~Observer() {}
-  virtual void onNotify(const Entity& entity, Event event) = 0;
-};
+// Template-based Observer interface
+/*template<typename T>*/
+/*class Observer {*/
+/*public:*/
+/*    virtual ~Observer() = default;*/
+/*    virtual void update(const T& data) = 0;*/
+/*};*/
+}
